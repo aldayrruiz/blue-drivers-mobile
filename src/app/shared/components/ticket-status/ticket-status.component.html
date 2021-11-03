@@ -1,0 +1,5 @@
+<div [ngSwitch]="status">
+  <ion-badge *ngSwitchCase="'UNSOLVED'" color="warning">En espera</ion-badge>
+  <ion-badge *ngSwitchCase="'ACCEPTED'" color="success">Aceptado</ion-badge>
+  <ion-badge *ngSwitchCase="'DENIED'" color="danger">Denegado</ion-badge>
+</div>

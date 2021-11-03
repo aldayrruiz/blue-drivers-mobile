@@ -1,0 +1,93 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Editar perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="edit()" [formGroup]="profile">
+    <div class="input-group">
+      <!-- Full name -->
+      <ion-item>
+        <ion-input
+          class="padding"
+          type="text"
+          placeholder="Nombre y Apellidos"
+          formControlName="fullname"
+        ></ion-input>
+        <ion-label class="asterisk-required"></ion-label>
+      </ion-item>
+      <div
+        *ngIf="(fullname.dirty || fullname.touched) && fullname.errors"
+        class="errors"
+      >
+        <span *ngIf="fullname.errors?.required"
+          >Nombre y Apellidos es obligatorio</span
+        >
+      </div>
+      <!-- Email -->
+      <ion-item>
+        <ion-input
+          class="padding"
+          type="email"
+          placeholder="Email"
+          formControlName="email"
+        ></ion-input>
+        <ion-label class="asterisk-required"></ion-label>
+      </ion-item>
+      <div
+        *ngIf="(email.dirty || email.touched) && email.errors"
+        class="errors"
+      >
+        <span *ngIf="email.errors?.required">Email es obligatorio</span>
+        <span *ngIf="email.errors?.email">Email es invalido</span>
+      </div>
+      <!-- Password -->
+      <ion-item>
+        <app-show-hide-password class="padding">
+          <ion-input
+            type="password"
+            placeholder="Nueva contraseña"
+            formControlName="password"
+          ></ion-input>
+        </app-show-hide-password>
+      </ion-item>
+      <div
+        *ngIf="(password.dirty || password.touched) && password.errors"
+        class="errors"
+      >
+        <span *ngIf="password.errors?.required">Contraseña is obligatoria</span>
+        <span *ngIf="password.errors?.minlength"
+          >Contraseña necesita mas de 5 carácteres</span
+        >
+      </div>
+      <!-- Password 2 -->
+      <ion-item>
+        <app-show-hide-password class="padding">
+          <ion-input
+            type="password"
+            placeholder="Confirmar contraseña"
+            formControlName="password2"
+          ></ion-input>
+        </app-show-hide-password>
+      </ion-item>
+      <div
+        *ngIf="(password2.dirty || password2.touched) && password2.errors"
+        class="errors"
+      >
+        <span *ngIf="password2.errors?.required"
+          >Contraseña es obligatoria</span
+        >
+        <span *ngIf="password2.errors?.minlength"
+          >Contraseña necesita mas de 5 carácteres</span
+        >
+      </div>
+    </div>
+    <ion-button type="submit" expand="block" [disabled]="!profile.valid"
+      >Guardar</ion-button
+    >
+  </form>
+</ion-content>

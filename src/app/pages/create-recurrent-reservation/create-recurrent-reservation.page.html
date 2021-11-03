@@ -1,0 +1,146 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title> Crear Reserva Recurrente </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" padding>
+  <!-- Start date to End date -->
+  <ion-list>
+    <form [formGroup]="form">
+      <ion-card>
+        <!-- Title Field -->
+        <ion-item>
+          <ion-input
+            type="text"
+            placeholder="Título"
+            formControlName="title"
+          ></ion-input>
+          <ion-label class="asterisk-required"></ion-label>
+        </ion-item>
+        <div
+          *ngIf="(title.dirty || title.touched) && title.errors"
+          class="errors"
+        >
+          <span *ngIf="title.errors?.required">Este campo es obligatorio</span>
+          <span *ngIf="title.errors?.maxlength"
+            >El número de caracteres máximo es 100</span
+          >
+        </div>
+
+        <!-- Description Field -->
+        <ion-item>
+          <ion-textarea
+            formControlName="description"
+            rows="8"
+            cols="18"
+            placeholder="¿Por qué necesitas este vehículo?"
+          >
+          </ion-textarea>
+          <ion-label class="asterisk-required"></ion-label>
+        </ion-item>
+        <div
+          *ngIf="
+            (description.dirty || description.touched) && description.errors
+          "
+          class="errors"
+        >
+          <span *ngIf="description.errors?.required"
+            >Este campo es obligatorio</span
+          >
+          <span *ngIf="description.errors?.maxlength"
+            >El número de caracteres máximo 255</span
+          >
+        </div>
+      </ion-card>
+    </form>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Fecha de reservas</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <!-- Fecha de comienzo de reserva -->
+          <ion-row class="ion-align-items-center">
+            <ion-col>
+              <h2 (click)="openCalModal('start')">
+                {{ startRecurrent | date: 'dd/MM/yyyy' }}
+              </h2>
+            </ion-col>
+            <ion-col>
+              <h2>
+                <ion-datetime
+                  displayFormat="HH:mm"
+                  minuteValues="0,15,30,45"
+                  [(ngModel)]="startTime"
+                ></ion-datetime>
+              </h2>
+            </ion-col>
+          </ion-row>
+          <!-- Fecha de fin de reserva -->
+          <ion-row class="ion-align-items-center">
+            <ion-col>
+              <h2 (click)="openCalModal('end')">
+                {{ endRecurrent | date: 'dd/MM/yyyy' }}
+              </h2>
+            </ion-col>
+            <ion-col>
+              <h2>
+                <ion-datetime
+                  displayFormat="HH:mm"
+                  minuteValues="0,15,30,45"
+                  [(ngModel)]="endTime"
+                ></ion-datetime>
+              </h2>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Weekdays -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Se repiten los días</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let weekday of weekdays" lines="none">
+            <ion-label>{{ weekday.label }}</ion-label>
+            <ion-checkbox
+              slot="end"
+              [(ngModel)]="weekday.isChecked"
+            ></ion-checkbox>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Vehicles -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Ordenar por preferentes</ion-card-title>
+      </ion-card-header>
+      <ion-list>
+        <ion-reorder-group
+          (ionItemReorder)="doReorder($event)"
+          disabled="false"
+        >
+          <ion-item *ngFor="let vehicle of vehicles" lines="none">
+            <ion-label> {{ vehicle.brand }} {{ vehicle.model }} </ion-label>
+            <ion-reorder slot="end"></ion-reorder>
+          </ion-item>
+        </ion-reorder-group>
+      </ion-list>
+    </ion-card>
+    <ion-button
+      (click)="createRecurrentReservation()"
+      expand="block"
+      [disabled]="!form.valid"
+      >Crear</ion-button
+    >
+  </ion-list>
+</ion-content>

@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Solicitar cancelación</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item lines="none" class="transparent">
+    <ion-label
+      >Se solicitará el vehículo
+      <b>{{ vehicle.brand }} {{ vehicle.model }}</b></ion-label
+    >
+  </ion-item>
+
+  <form (ngSubmit)="send()" [formGroup]="form">
+    <!-- Title field -->
+    <ion-item>
+      <ion-input
+        type="text"
+        placeholder="Título del ticket"
+        formControlName="title"
+      ></ion-input>
+      <ion-label class="asterisk-required"></ion-label>
+    </ion-item>
+    <div *ngIf="(title.dirty || title.touched) && title.errors" class="errors">
+      <span *ngIf="title.errors?.required">Este campo es obligatorio</span>
+      <span *ngIf="title.errors?.maxlength"
+        >El número de caracteres máximo es 100</span
+      >
+    </div>
+
+    <!-- Description field -->
+    <ion-item>
+      <ion-textarea
+        formControlName="description"
+        rows="8"
+        cols="18"
+        placeholder="¿Por qué necesitas este vehículo?"
+      >
+      </ion-textarea>
+      <ion-label class="asterisk-required"></ion-label>
+    </ion-item>
+    <div
+      *ngIf="(description.dirty || description.touched) && description.errors"
+      class="errors"
+    >
+      <span *ngIf="description.errors?.required"
+        >Este campo es obligatorio</span
+      >
+      <span *ngIf="description.errors?.maxlength"
+        >El número de caracteres máximo 255</span
+      >
+    </div>
+
+    <!-- Button -->
+    <ion-grid>
+      <ion-row>
+        <ion-col class="ion-text-right">
+          <ion-button type="submit" expand="block" [disabled]="!form.valid"
+            >Crear ticket</ion-button
+          >
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

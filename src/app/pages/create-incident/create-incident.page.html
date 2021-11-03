@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Crear incidencia</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item lines="none" class="transparent"
+    >Reserva:
+    <pre></pre>
+    <b>{{ reservation.title }}</b></ion-item
+  >
+  <form (ngSubmit)="createIncident()" [formGroup]="form">
+    <!-- Title -->
+    <ion-item>
+      <ion-input
+        type="text"
+        placeholder="Título"
+        formControlName="title"
+      ></ion-input>
+      <ion-label class="asterisk-required"></ion-label>
+    </ion-item>
+    <div *ngIf="(title.dirty || title.touched) && title.errors" class="errors">
+      <span *ngIf="title.errors?.required">Este campo es obligatorio</span>
+      <span *ngIf="title.errors?.maxlength"
+        >El número de caracteres máximo es 100</span
+      >
+    </div>
+    <!-- Description -->
+    <ion-item>
+      <ion-textarea
+        formControlName="description"
+        rows="8"
+        cols="18"
+        placeholder="¿Que problema ha tenido?"
+      >
+      </ion-textarea>
+      <ion-label class="asterisk-required"></ion-label>
+    </ion-item>
+    <div
+      *ngIf="(description.dirty || description.touched) && description.errors"
+      class="errors"
+    >
+      <span *ngIf="description.errors?.required"
+        >Este campo es obligatorio</span
+      >
+      <span *ngIf="description.errors?.maxlength"
+        >El número de caracteres máximo 255</span
+      >
+    </div>
+    <!-- Type -->
+    <ion-item>
+      <ion-label>Tipo</ion-label>
+      <ion-select formControlName="incidentType">
+        <ion-select-option value="TIRE_PUNCTURE">Pinchazo</ion-select-option>
+        <ion-select-option value="BANG">Golpe</ion-select-option>
+        <ion-select-option value="USAGE_PROBLEMS"
+          >Problemas de uso</ion-select-option
+        >
+        <ion-select-option value="OTHERS">Otros</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Photo -->
+    <ion-grid>
+      <ion-row>
+        <ion-col class="ion-text-right">
+          <ion-button (click)="addPhoto()" expand="block"
+            >Añadir/Reemplazar foto</ion-button
+          >
+          <img *ngIf="photoBase64" [src]="photoBase64" alt="Foto adjunta" />
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-text-right">
+          <ion-button type="submit" expand="block" [disabled]="!form.valid"
+            >Crear incidencia</ion-button
+          >
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

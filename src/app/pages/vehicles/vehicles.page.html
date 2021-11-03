@@ -1,0 +1,19 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title> Vehículos </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" padding>
+  <!-- List of Text Items -->
+  <ion-list>
+    <ion-card *ngFor="let vehicle of vehicles" [routerLink]="[vehicle.id]">
+      <ion-card-header>
+        <ion-card-title>{{ vehicle.brand }} {{ vehicle.model }}</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </ion-list>
+</ion-content>

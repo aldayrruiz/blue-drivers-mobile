@@ -1,0 +1,96 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Detalles de tu ticket</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col size="12" class="ion-no-padding">
+        <ion-card class="border border-radius no-box-shadow ion-padding">
+          <ion-item lines="none" class="transparent">
+            <ion-badge color="primary">{{
+              ticket.reservation.vehicle.brand
+            }}</ion-badge>
+            <app-ticket-status [status]="ticket.status"></app-ticket-status>
+            <!-- <ion-note slot="end">{{ ticket.reservation.vehicle.model }}</ion-note> -->
+          </ion-item>
+          <ion-card-content>
+            <h1
+              class="
+                text-size-lg
+                font-regular
+                text-color-primary
+                ion-text-wrap ion-padding-bottom
+              "
+            >
+              {{ ticket.title }}
+            </h1>
+            <h3
+              class="
+                text-size-xs
+                font-regular
+                text-color-secondary
+                ion-text-wrap
+              "
+            >
+              {{ ticket.description }}
+            </h3>
+            <span class="text-size-sm font-medium text-color-primary">
+              Fecha de creación: {{ ticket.date_stored | date: 'dd/MM/yyyy' }}
+            </span>
+          </ion-card-content>
+          <ion-button
+            (click)="cancelTicket()"
+            class="default-button color-accent ion-margin-top box-shadow"
+            color="danger"
+            expand="block"
+            >Cancelar ticket</ion-button
+          >
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-card
+          class="no-box-shadow ion-padding ion-text-center border border-radius"
+        >
+          <h2
+            class="
+              text-size-lg
+              ion-padding-top ion-no-margin
+              text-color-primary
+            "
+          >
+            Desde
+          </h2>
+          <span class="text-size-xs">{{
+            reservation.start | date: 'dd/MM/yyyy, HH:mm'
+          }}</span>
+        </ion-card>
+      </ion-col>
+      <ion-col>
+        <ion-card
+          class="no-box-shadow ion-padding ion-text-center border border-radius"
+        >
+          <h2
+            class="
+              text-size-lg
+              ion-padding-top ion-no-margin
+              text-color-primary
+            "
+          >
+            Hasta
+          </h2>
+          <span class="text-size-xs">{{
+            reservation.end | date: 'dd/MM/yyyy, HH:mm'
+          }}</span>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

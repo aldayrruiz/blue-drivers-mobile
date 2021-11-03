@@ -1,0 +1,41 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title> Mis Incidencias </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-card
+      *ngFor="let incident of incidents"
+      [routerLink]="[incident.id]"
+      class="border border-radius no-box-shadow ion-padding"
+    >
+      <ion-item lines="none" class="transparent">
+        <ion-badge
+          >{{ incident.reservation.vehicle.brand }}
+          {{ incident.reservation.vehicle.model }}
+        </ion-badge>
+        <app-incident-type [type]="incident.type"></app-incident-type>
+      </ion-item>
+      <ion-card-content>
+        <h1
+          class="
+            text-size-lg
+            font-regular
+            text-color-primary
+            ion-text-wrap ion-padding-bottom
+          "
+        >
+          {{ incident.title }}
+        </h1>
+        <span class="text-size-sm font-medium text-color-primary">
+          {{ incident.date_stored | date: 'dd/MM/yyyy, HH:mm' }}
+        </span>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+</ion-content>

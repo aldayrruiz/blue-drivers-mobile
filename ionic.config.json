@@ -1,0 +1,7 @@
+{
+  "name": "MobileFleetManagement",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

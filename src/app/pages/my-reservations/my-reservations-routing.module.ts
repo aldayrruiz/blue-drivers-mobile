@@ -12,6 +12,13 @@ const routes: Routes = [
     },
   },
   {
+    path: 'create-recurrent',
+    loadChildren: () =>
+      import(
+        '../create-recurrent-reservation/create-recurrent-reservation.module'
+      ).then((m) => m.CreateRecurrentReservationPageModule),
+  },
+  {
     path: ':reservationId',
     loadChildren: () =>
       import('../reservation-details/reservation-details.module').then(

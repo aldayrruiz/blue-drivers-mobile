@@ -45,13 +45,6 @@ const routes: Routes = [
             (m) => m.MyIncidentsPageModule
           ),
       },
-      {
-        path: 'create-recurrent-reservation',
-        loadChildren: () =>
-          import(
-            '../create-recurrent-reservation/create-recurrent-reservation.module'
-          ).then((m) => m.CreateRecurrentReservationPageModule),
-      },
     ],
   },
 ];

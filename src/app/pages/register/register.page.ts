@@ -17,7 +17,6 @@ import {
   SnackerService,
 } from 'src/app/core/services';
 import { RegisterService } from 'src/app/core/services/register.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -27,7 +26,7 @@ import { environment } from 'src/environments/environment';
 export class RegisterPage implements OnInit {
   credentials: FormGroup;
   submitted = false;
-  availableServers = environment.servers;
+  // availableServers = environment.servers;
 
   constructor(
     private errorMessage: ErrorMessageService,
@@ -53,7 +52,7 @@ export class RegisterPage implements OnInit {
       return;
     }
 
-    const { email, fullname, password1, serverSelect } = this.credentials.value;
+    const { email, fullname, password1 } = this.credentials.value;
 
     const newUser: CreateUser = {
       email,
@@ -62,11 +61,11 @@ export class RegisterPage implements OnInit {
     };
 
     this.registerSrv
-      .register(newUser, serverSelect)
+      .register(newUser)
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
         async () => {
-          await this.login(email, password1, serverSelect);
+          await this.login(email, password1);
         },
         async (error) => {
           const message = this.errorMessage.get(error);
@@ -76,15 +75,11 @@ export class RegisterPage implements OnInit {
       );
   }
 
-  async login(
-    username: string,
-    password: string,
-    serverUrl: string
-  ): Promise<void> {
+  async login(username: string, password: string): Promise<void> {
     await this.loadingSrv.present();
 
     this.loginSrv
-      .login({ username, password, serverUrl })
+      .login({ username, password })
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
         async () => {
@@ -119,25 +114,25 @@ export class RegisterPage implements OnInit {
     return this.credentials.get('password2');
   }
 
-  get serverSelect(): AbstractControl {
-    return this.credentials.get('serverSelect');
-  }
+  // get serverSelect(): AbstractControl {
+  //   return this.credentials.get('serverSelect');
+  // }
 
   private initFormGroup() {
-    const urlReg = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
+    // const urlReg = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
 
-    const prodValidators = [Validators.required, Validators.pattern(urlReg)];
-    const envValidators = [Validators.required];
-    const urlValidators = environment.production
-      ? prodValidators
-      : envValidators;
+    // const prodValidators = [Validators.required, Validators.pattern(urlReg)];
+    // const envValidators = [Validators.required];
+    // const urlValidators = environment.production
+    //   ? prodValidators
+    //   : envValidators;
 
     this.credentials = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       fullname: ['', [Validators.required, Validators.minLength(3)]],
       password1: ['', [Validators.required, Validators.minLength(6)]],
       password2: ['', [Validators.required, Validators.minLength(6)]],
-      serverSelect: ['', urlValidators],
+      // serverSelect: ['', urlValidators],
     });
   }
 

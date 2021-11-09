@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 export interface UserData {
   id: string;
@@ -22,12 +23,16 @@ export class FastStorageService {
   }
 
   getBaseUrl(): string {
-    return this.serverUrl;
+    return environment.fleetBaseUrl;
   }
 
   setAll(user: UserData, serverUrl: string): void {
-    this.user = user;
+    this.setUserData(user);
     this.serverUrl = serverUrl;
+  }
+
+  setUserData(user: UserData): void {
+    this.user = user;
   }
 
   removeUser(): void {

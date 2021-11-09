@@ -46,10 +46,6 @@ export class MyReservationsPage implements OnInit {
     this.router.navigateByUrl(`members/my-reservations/${id}`);
   }
 
-  gotToCreateReservationPage(): void {
-    this.router.navigateByUrl(`members/create-recurrent-reservation`);
-  }
-
   next(): void {
     this.myCal.slideNext();
   }

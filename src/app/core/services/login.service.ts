@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { ApiPaths } from 'src/app/shared/api-paths.enum';
+import { environment } from 'src/environments/environment';
 import { FastStorageService, UserData } from './fast-storage.service';
 import { Key, StorageService } from './storage.service';
 
@@ -34,14 +35,14 @@ export class LoginService {
   async loadStorageVariables(): Promise<void> {
     console.log('Loading storage variables...');
     this.storage
-      .getAllFrom([Key.user, Key.serverUrl])
+      .getAllFrom([Key.user])
       .subscribe((values: string[]) => {
-        const [userJson, serverUrl] = values;
+        const [userJson] = values;
 
         const user = JSON.parse(userJson);
 
-        if (user && serverUrl) {
-          this.fastStorage.setAll(user, serverUrl);
+        if (user) {
+          this.fastStorage.setUserData(user);
           this.isAuthenticated.next(true);
         } else {
           this.isAuthenticated.next(false);
@@ -53,19 +54,19 @@ export class LoginService {
   login(credentials: {
     username: string;
     password: string;
-    serverUrl: string;
+    // serverUrl: string;
   }): Observable<void[]> {
     console.log('Login...');
-    const serverUrl = credentials.serverUrl.trim();
-    const path = `${serverUrl}${ApiPaths.login}/`;
+    // const serverUrl = credentials.serverUrl.trim();
+    const path = `${environment.fleetBaseUrl}${ApiPaths.login}/`;
     return this.http.post<LoginResponse>(path, credentials).pipe(
       switchMap((data: LoginResponse) => {
         const userData = this.getUserDataFromResponse(data);
-        this.fastStorage.setAll(userData, serverUrl);
+        this.fastStorage.setUserData(userData);
 
         return this.storage.setAll([
           { key: Key.user, value: JSON.stringify(userData) },
-          { key: Key.serverUrl, value: serverUrl },
+          // { key: Key.serverUrl, value: serverUrl },
         ]);
       }),
       tap((_) => {

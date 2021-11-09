@@ -4,13 +4,7 @@
 
 export const environment = {
   production: false,
-  servers: [
-    { name: 'Localhost', url: 'http://localhost:8000' },
-    {
-      name: 'Deusto',
-      url: 'https://fleetmanagement.app.mobility.deustotech.eu',
-    },
-  ],
+  fleetBaseUrl: 'http://localhost:8000',
 };
 
 /*

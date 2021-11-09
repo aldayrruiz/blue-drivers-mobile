@@ -26,7 +26,7 @@ import { environment } from 'src/environments/environment';
 export class LoginPage implements OnInit {
   credentials: FormGroup;
   submitted = false;
-  availableServers = environment.servers;
+  // availableServers = environment.servers;
 
   constructor(
     private fb: FormBuilder,
@@ -97,9 +97,9 @@ export class LoginPage implements OnInit {
   //   return this.credentials.get('serverText');
   // }
 
-  get serverSelect(): AbstractControl {
-    return this.credentials.get('serverSelect');
-  }
+  // get serverSelect(): AbstractControl {
+  //   return this.credentials.get('serverSelect');
+  // }
 
   private async loadServerUrl(): Promise<void> {
     const serverUrl = await this.storage.getP(Key.serverUrl);
@@ -123,17 +123,17 @@ export class LoginPage implements OnInit {
       username: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       // serverText: ['', urlValidators],
-      serverSelect: ['', urlValidators],
+      // serverSelect: ['', urlValidators],
     });
 
-    this.loadServerUrl();
+    // this.loadServerUrl();
   }
 
   private getCredentials() {
     return {
       username: this.username.value,
       password: this.password.value,
-      serverUrl: this.serverSelect.value,
+      // serverUrl: this.serverSelect.value,
     };
   }
 }

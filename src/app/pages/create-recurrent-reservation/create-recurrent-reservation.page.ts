@@ -195,10 +195,18 @@ export class CreateRecurrentReservationPage implements OnInit {
   private getRecReservationData(): CreateRecurrentReservation {
     const { title, description } = this.form.value;
     const weekdays = this.weekdaySrv.getValuesFromCheckBoxes(this.weekdays);
-    const startReservationTime = new Date(this.startTime).toJSON();
-    const endReservationTime = new Date(this.endTime).toJSON();
-    const startReservations = new Date(this.startRecurrent).toJSON();
-    const endReservations = new Date(this.endRecurrent).toJSON();
+    const startReservationTime = this.dateSrv
+      .removeSeconds(new Date(this.startTime))
+      .toJSON();
+    const endReservationTime = this.dateSrv
+      .removeSeconds(new Date(this.endTime))
+      .toJSON();
+    const startReservations = this.dateSrv
+      .removeSeconds(new Date(this.startRecurrent))
+      .toJSON();
+    const endReservations = this.dateSrv
+      .removeSeconds(new Date(this.endRecurrent))
+      .toJSON();
     const vehicles = this.getVehiclesIds(this.vehicles);
 
     return {

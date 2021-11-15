@@ -65,4 +65,11 @@ export class MyDateService {
       this.months[date.getMonth()]
     } ${date.getUTCDate()} ${date.getFullYear()}`;
   }
+
+  public removeSeconds(date: Date) {
+    const newDate = new Date(date);
+    newDate.setSeconds(0);
+    newDate.setMilliseconds(0);
+    return newDate;
+  }
 }

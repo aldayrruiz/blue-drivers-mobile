@@ -42,7 +42,8 @@ export class MyDateService {
   }
 
   public getHmEach15m(date: Date): Date {
-    const minutes = date.getMinutes();
+    const newDate = new Date(date);
+    const minutes = newDate.getMinutes();
     let result = 0;
 
     if (minutes < 15) {
@@ -52,12 +53,12 @@ export class MyDateService {
     } else if (minutes < 45) {
       result = 45;
     } else {
-      date.setHours(date.getHours() + 1);
+      newDate.setHours(newDate.getHours() + 1);
       result = 0;
     }
 
-    date.setMinutes(result);
-    return date;
+    newDate.setMinutes(result);
+    return newDate;
   }
 
   public toDateString(date: Date) {

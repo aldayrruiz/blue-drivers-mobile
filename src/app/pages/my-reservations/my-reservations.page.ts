@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CalendarComponent } from 'ionic2-calendar';
 import { Reservation } from 'src/app/core/models/reservation.model';
+import { ReservationService } from 'src/app/core/services';
 import { MyDateService } from 'src/app/core/services/my-date.service';
 
 @Component({
@@ -34,8 +35,7 @@ export class MyReservationsPage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initReservations();
-    this.loadReservations();
+    this.refreshComponentData();
   }
 
   segmentChanged(event) {
@@ -78,9 +78,10 @@ export class MyReservationsPage implements OnInit {
     return start <= now;
   }
 
-  private initReservations(): void {
+  private refreshComponentData(): void {
     this.route.data.subscribe((response) => {
       this.reservations = response.myReservations;
+      this.loadReservations();
     });
   }
 

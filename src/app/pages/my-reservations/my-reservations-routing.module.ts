@@ -19,6 +19,13 @@ const routes: Routes = [
       ).then((m) => m.CreateRecurrentReservationPageModule),
   },
   {
+    path: 'create-by-date',
+    loadChildren: () =>
+      import(
+        '../create-reservation-by-date/create-reservation-by-date.module'
+      ).then((m) => m.CreateReservationByDatePageModule),
+  },
+  {
     path: ':reservationId',
     loadChildren: () =>
       import('../reservation-details/reservation-details.module').then(

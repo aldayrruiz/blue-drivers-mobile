@@ -14,7 +14,6 @@ export class VehiclesPage implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe((response) => {
-      console.log('Vehicles response received!');
       this.vehicles = response.vehicles;
     });
   }

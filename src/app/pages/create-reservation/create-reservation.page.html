@@ -21,7 +21,7 @@
     </ion-card-header>
     <ion-card-content>
       <ion-grid>
-        <ion-row>
+        <ion-row class="ion-align-items-center">
           <!-- Start date -->
           <ion-col>
             <ion-text>
@@ -32,11 +32,13 @@
           </ion-col>
           <!-- Start hour and minutes -->
           <ion-col>
-            <ion-datetime
-              displayFormat="HH:mm"
-              minuteValues="0,15,30,45"
-              [(ngModel)]="hourMinutesStart"
-            ></ion-datetime>
+            <h2>
+              <ion-datetime
+                displayFormat="HH:mm"
+                minuteValues="0,15,30,45"
+                [(ngModel)]="hourMinutesStart"
+              ></ion-datetime>
+            </h2>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -49,7 +51,7 @@
     </ion-card-header>
     <ion-card-content>
       <ion-grid>
-        <ion-row>
+        <ion-row class="ion-align-items-center">
           <!-- End date -->
           <ion-col>
             <ion-text>
@@ -60,11 +62,13 @@
           </ion-col>
           <!-- End hour and minutes -->
           <ion-col>
-            <ion-datetime
-              displayFormat="HH:mm"
-              minuteValues="0,15,30,45"
-              [(ngModel)]="hourMinutesEnd"
-            ></ion-datetime>
+            <h2>
+              <ion-datetime
+                displayFormat="HH:mm"
+                minuteValues="0,15,30,45"
+                [(ngModel)]="hourMinutesEnd"
+              ></ion-datetime>
+            </h2>
           </ion-col>
         </ion-row>
       </ion-grid>

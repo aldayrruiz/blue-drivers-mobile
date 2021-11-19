@@ -42,17 +42,17 @@ export class CreateRecurrentReservationPage implements OnInit {
   vehicles: Vehicle[] = [];
 
   constructor(
-    private router: Router,
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private dateSrv: MyDateService,
-    private snacker: SnackerService,
-    private alertCtrl: AlertController,
-    private modalCtrl: ModalController,
-    private loadingSrv: LoadingService,
-    private weekdaySrv: WeekdaysService,
+    private reservationSrv: ReservationService,
     private calModalSrv: CalModalService,
-    private reservationSrv: ReservationService
+    private weekdaySrv: WeekdaysService,
+    private loadingSrv: LoadingService,
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController,
+    private snacker: SnackerService,
+    private dateSrv: MyDateService,
+    private route: ActivatedRoute,
+    private fb: FormBuilder,
+    private router: Router
   ) {}
 
   ngOnInit() {

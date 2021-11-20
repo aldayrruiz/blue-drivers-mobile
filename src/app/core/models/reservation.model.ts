@@ -11,4 +11,6 @@ export interface Reservation {
   owner?: User;
   vehicle: Vehicle;
   is_cancelled: boolean;
+  is_recurrent: boolean;
+  recurrent_id: string;
 }

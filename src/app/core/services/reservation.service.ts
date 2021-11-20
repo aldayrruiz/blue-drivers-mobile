@@ -70,9 +70,10 @@ export class ReservationService {
    *
    * @param id Reservation's id to delete
    */
-  delete(id: string): Observable<void> {
+  delete(id: string, deletePost: boolean): Observable<void> {
+    const options = { params: new HttpParams().set('deletePost', deletePost) };
     const reservationUrl = this.urlSrv.getReservations();
     const path = `${reservationUrl}/${id}/`;
-    return this.http.delete<void>(path);
+    return this.http.delete<void>(path, options);
   }
 }

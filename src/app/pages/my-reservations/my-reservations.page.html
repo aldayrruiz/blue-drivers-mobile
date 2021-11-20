@@ -110,8 +110,8 @@
             >{{ reservation.vehicle.brand }}
             {{ reservation.vehicle.model }}</ion-badge
           >
-          <ion-badge color="danger" *ngIf="reservation.is_cancelled" slot="end"
-            >Cancelada</ion-badge
+          <ion-badge color="warning" *ngIf="reservation.is_recurrent" slot="end"
+            >Recurrente</ion-badge
           >
         </ion-item>
         <ion-card-content>

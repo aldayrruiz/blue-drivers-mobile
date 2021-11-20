@@ -23,15 +23,15 @@ export class ReservationDetailsPage implements OnInit {
   vehicle: Vehicle;
 
   constructor(
-    private tabStorage: MyReservationsTabStorage,
     private reservationService: ReservationService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private snacker: SnackerService,
+    private tabStorage: MyReservationsTabStorage,
+    private errorMessage: ErrorMessageService,
     private alertCtrl: AlertController,
     private loadingSrv: LoadingService,
-    private errorMessage: ErrorMessageService,
-    private dateSrv: MyDateService
+    private snacker: SnackerService,
+    private dateSrv: MyDateService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -51,37 +51,29 @@ export class ReservationDetailsPage implements OnInit {
   }
 
   async showCancelReservationAlert(): Promise<void> {
-    const alerElement = await this.alertCtrl.create({
-      message: '¿Esta seguro que quiere cancelar esta reserva?',
-      buttons: [
-        {
-          text: 'No',
-          role: 'cancel',
-        },
-        {
-          text: 'Si',
-          handler: async () => await this.cancelReservation(),
-        },
-      ],
+    const buttons = this.getAlertButtons();
+    const alertElement = await this.alertCtrl.create({
+      message: '¿Esta seguro?',
+      buttons,
     });
 
-    await alerElement.present(); // Mostrar al usuario
+    await alertElement.present(); // Mostrar al usuario
   }
 
   private storeReservationInTab() {
     this.tabStorage.setCurrentReservation(this.reservation);
   }
 
-  private async cancelReservation(): Promise<void> {
+  private async cancelReservation(subsequentReservations: boolean) {
     await this.loadingSrv.present();
 
     this.reservationService
-      .delete(this.reservation.id)
+      .delete(this.reservation.id, subsequentReservations)
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
         async () => {
           this.router.navigate(['..'], { relativeTo: this.route });
-          const message = 'Reserva cancelada con exito';
+          const message = 'Operación realizada con exito';
           const toast = await this.snacker.createSuccessful(message);
           await toast.present();
         },
@@ -91,5 +83,29 @@ export class ReservationDetailsPage implements OnInit {
           await toast.present();
         }
       );
+  }
+
+  private getAlertButtons() {
+    const buttons = [
+      {
+        text: 'No',
+        role: 'cancel',
+      },
+      {
+        text: 'Si',
+        handler: async () => await this.cancelReservation(false),
+      },
+    ];
+
+    const cancelRecurrentButton = {
+      text: 'Si y posteriores',
+      handler: async () => await this.cancelReservation(true),
+    };
+
+    if (this.reservation.is_recurrent) {
+      buttons.push(cancelRecurrentButton);
+    }
+
+    return buttons;
   }
 }

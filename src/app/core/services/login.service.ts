@@ -34,20 +34,18 @@ export class LoginService {
 
   async loadStorageVariables(): Promise<void> {
     console.log('Loading storage variables...');
-    this.storage
-      .getAllFrom([Key.user])
-      .subscribe((values: string[]) => {
-        const [userJson] = values;
+    this.storage.getAllFrom([Key.user]).subscribe((values: string[]) => {
+      const [userJson] = values;
 
-        const user = JSON.parse(userJson);
+      const user = JSON.parse(userJson);
 
-        if (user) {
-          this.fastStorage.setUserData(user);
-          this.isAuthenticated.next(true);
-        } else {
-          this.isAuthenticated.next(false);
-        }
-      });
+      if (user) {
+        this.fastStorage.setUserData(user);
+        this.isAuthenticated.next(true);
+      } else {
+        this.isAuthenticated.next(false);
+      }
+    });
     console.log('Ending loading storage variables.');
   }
 

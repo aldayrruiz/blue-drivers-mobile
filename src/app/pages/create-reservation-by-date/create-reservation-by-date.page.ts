@@ -17,11 +17,13 @@ import {
   WeekdaysService,
 } from 'src/app/core/services';
 import {
+  combine,
   combineAndSerialize,
   getStartEndDateTimes,
   nextMonth,
   now,
   serializeDate,
+  validate,
 } from 'src/app/shared/utils/dates';
 import {
   descriptionValidators,
@@ -69,40 +71,50 @@ export class CreateReservationByDatePage implements OnInit {
   }
 
   async create(isRecurrent: boolean) {
-    if (this.endDate <= this.startDate) {
-      const message = 'La fecha de comienzo debe ser anterior a la final';
-      const toast = await this.snacker.createFailed(message);
-      await toast.present();
-      return;
-    }
     if (isRecurrent) {
-      const data = this.getRecurrentData();
-      await this.createRecurrentReservation(data);
+      // * Create Recurrent reservation
+      if (this.untilDate > now()) {
+        await this.createRecurrentReservation();
+        return;
+      }
+      await this.showTryingToCreateRecurrentUntilToday();
     } else {
-      const data = this.getData();
-      await this.createReservation(data);
+      // * Create Normal Reservation
+      const start = combine(this.startDate, this.startTime);
+      const end = combine(this.endDate, this.endTime);
+      const [msg, datesValid] = validate(start, end);
+      if (datesValid) {
+        await this.createReservation();
+        return;
+      }
+      this.showDatesAreNotValid(msg);
     }
   }
 
-  async createReservation(data: CreateReservationByDate) {
+  async createReservation() {
+    const data = this.getData();
     await this.loadingSrv.present();
     this.reservationSrv
       .createByDate(data)
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
         async (reservation) => {
-          this.showSuccessfulMessage(false);
-          this.goToReservationDetails(reservation.id);
+          await this.goToReservationDetails(reservation.id);
+          await this.showSuccessfulMessage(false);
         },
         async (error) => {
-          const message = this.errorMessage.get(error);
-          const toast = await this.snacker.createFailed(message);
-          await toast.present();
+          if (error.status === 409) {
+            await this.showNoneVehiclesAreAvailable();
+          } else {
+            const msg = this.errorMessage.get(error);
+            await this.snacker.showFailed(msg);
+          }
         }
       );
   }
 
-  async createRecurrentReservation(data: CreateRecurrentReservation) {
+  async createRecurrentReservation() {
+    const data = this.getRecurrentData();
     await this.loadingSrv.present();
     this.reservationSrv
       .createRecurrent(data, false)
@@ -111,20 +123,20 @@ export class CreateReservationByDatePage implements OnInit {
         async (response) => {
           const reservations = response.successfulReservations;
           if (reservations.length > 0) {
-            this.showSuccessfulMessage(true);
-            this.goToReservationDetails(reservations[0].id);
+            await this.goToReservationDetails(reservations[0].id);
+            await this.showSuccessfulMessage(true);
           } else {
             // * None reservation was created. Check the fields
-            this.showNoneReservationsWasCreated();
+            await this.showNoneReservationsWasCreated();
           }
         },
         async (error) => {
           const errorRes = error.error.errorReservations;
           const errorDates = errorRes.map((r) => new Date(r.start));
           if (error.status === 409) {
-            this.showDialogWithImpossibleReservations(errorDates);
+            await this.showDialogWithImpossibleReservations(errorDates);
           } else {
-            this.showUnknownError();
+            await this.showUnknownError();
           }
         }
       );
@@ -140,13 +152,13 @@ export class CreateReservationByDatePage implements OnInit {
         async (response) => {
           const reservations = response.successfulReservations;
           if (reservations.length > 0) {
-            this.showSuccessfulMessage(true);
-            this.goToReservationDetails(response.successfulReservations[0].id);
+            await this.goToReservationDetails(reservations[0].id);
+            await this.showSuccessfulMessage(true);
           } else {
-            this.showNoneReservationsWasCreatedEvenForced();
+            await this.showNoneReservationsWasCreatedEvenForced();
           }
         },
-        async (error) => this.showUnknownError()
+        async (error) => await this.showUnknownError()
       );
   }
 
@@ -162,7 +174,7 @@ export class CreateReservationByDatePage implements OnInit {
     return this.form.get('isRecurrent');
   }
 
-  async openCalModal(type: string): Promise<void> {
+  async openCalModal(type: string) {
     const modal = await this.modalCtrl.create({
       component: CalModalPage,
       cssClass: 'cal-modal',
@@ -210,11 +222,11 @@ export class CreateReservationByDatePage implements OnInit {
     return newReservation;
   }
 
-  private goToReservationDetails(id: string) {
-    this.router.navigate(['..', id], { relativeTo: this.route });
+  private async goToReservationDetails(id: string) {
+    await this.router.navigate(['..', id], { relativeTo: this.route });
   }
 
-  private getRecurrentData() {
+  private getRecurrentData(): CreateRecurrentReservation {
     return {
       title: this.form.value.title,
       description: this.form.value.description,
@@ -247,6 +259,12 @@ export class CreateReservationByDatePage implements OnInit {
     this.endDate = endDate;
     this.endTime = endTime;
     this.untilDate = nextMonth(now());
+    console.log({
+      startDate,
+      startTime,
+      endDate,
+      endTime,
+    });
   }
 
   private initData() {
@@ -297,30 +315,40 @@ export class CreateReservationByDatePage implements OnInit {
     ];
   }
 
+  private async showTryingToCreateRecurrentUntilToday() {
+    const msg = 'El campo hasta cuando no debe ser hoy.';
+    this.snacker.showFailed(msg);
+  }
+
+  private async showNoneVehiclesAreAvailable() {
+    const msg = 'No hay vehículos disponibles';
+    this.snacker.showFailed(msg);
+  }
+
+  private async showDatesAreNotValid(msg: string) {
+    this.snacker.showFailed(msg);
+  }
+
   private async showUnknownError() {
-    const message = 'Error desconocido.';
-    const toast = await this.snacker.createFailed(message);
-    await toast.present();
+    const msg = 'Error desconocido.';
+    this.snacker.showFailed(msg);
   }
 
   private async showNoneReservationsWasCreated() {
-    const message = 'Ninguna reserva creada. Comprueba los campos.';
-    const toast = await this.snacker.createFailed(message);
-    await toast.present();
+    const msg = 'Ninguna reserva creada. Comprueba los campos.';
+    this.snacker.showFailed(msg);
   }
 
   private async showNoneReservationsWasCreatedEvenForced() {
-    const message = 'Se han forzado. Pero no se ha podido crear ninguna.';
-    const toast = await this.snacker.createFailed(message);
-    await toast.present();
+    const msg = 'Se han forzado. Pero no se ha podido crear ninguna.';
+    this.snacker.showFailed(msg);
   }
 
   private async showSuccessfulMessage(recurrent: boolean) {
     const normalMsg = 'Reserva creada con exito';
     const recurrentMsg = 'Reservas creadas con exito';
     const msg = recurrent ? recurrentMsg : normalMsg;
-    const toast = await this.snacker.createSuccessful(msg);
-    await toast.present();
+    this.snacker.showSuccessful(msg);
   }
 
   private async showDialogWithImpossibleReservations(dates: Date[]) {

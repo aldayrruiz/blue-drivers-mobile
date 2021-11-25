@@ -110,10 +110,30 @@ export const getStartEndDateTimes = () => {
   const startDate = now();
   const startTime = next15Minutes(now()).toISOString();
 
-  const endDate = nextHour(startTime);
+  const endDate = nextHour(startDate);
   const endTime = nextHour(startTime).toISOString();
 
   return { startDate, startTime, endDate, endTime };
 };
 
 export const now = (): Date => new Date();
+
+export const validate = (
+  s: StringOrDate,
+  e: StringOrDate
+): [string, boolean] => {
+  const start = new Date(s);
+  const end = new Date(e);
+
+  if (end <= start) {
+    const msg = 'Fecha final ocurre antes de la inicial';
+    return [msg, false];
+  }
+
+  if (start <= now()) {
+    const msg = 'La fecha inicial ocurre antes de este momento (ahora).';
+    return [msg, false];
+  }
+
+  return ['', true];
+};

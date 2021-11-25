@@ -39,6 +39,7 @@
       [eventSource]="eventSource"
       [calendarMode]="calendar.mode"
       [currentDate]="calendar.currentDate"
+      (onTimeSelected)="onTimeSelected($event)"
       (onTitleChanged)="onViewTitleChanged($event)"
       [monthviewDisplayEventTemplate]="cal_template"
       [monthviewEventDetailTemplate]="template"

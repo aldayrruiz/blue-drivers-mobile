@@ -26,7 +26,7 @@
           <ion-col>
             <ion-text>
               <h2 (click)="openCalModal('start')">
-                {{ dayMonthYearStart | date: 'dd/MM/yyyy' }}
+                {{ startDate | date: 'dd/MM/yyyy' }}
               </h2>
             </ion-text>
           </ion-col>
@@ -36,7 +36,7 @@
               <ion-datetime
                 displayFormat="HH:mm"
                 minuteValues="0,15,30,45"
-                [(ngModel)]="hourMinutesStart"
+                [(ngModel)]="startTime"
               ></ion-datetime>
             </h2>
           </ion-col>
@@ -56,7 +56,7 @@
           <ion-col>
             <ion-text>
               <h2 (click)="openCalModal('end')">
-                {{ dayMonthYearEnd | date: 'dd/MM/yyyy' }}
+                {{ endDate | date: 'dd/MM/yyyy' }}
               </h2>
             </ion-text>
           </ion-col>
@@ -66,7 +66,7 @@
               <ion-datetime
                 displayFormat="HH:mm"
                 minuteValues="0,15,30,45"
-                [(ngModel)]="hourMinutesEnd"
+                [(ngModel)]="endTime"
               ></ion-datetime>
             </h2>
           </ion-col>

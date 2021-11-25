@@ -1,3 +1,5 @@
+import { days, months } from './utils';
+
 type StringOrDate = Date | string;
 
 /**
@@ -106,8 +108,10 @@ export const next15Minutes = (date: StringOrDate): Date => {
  *
  * @returns
  */
-export const getStartEndDateTimes = () => {
-  const startDate = now();
+export const initDates = (from?: StringOrDate) => {
+  const date = new Date(from ? from : now());
+
+  const startDate = date;
   const startTime = next15Minutes(now()).toISOString();
 
   const endDate = nextHour(startDate);
@@ -136,4 +140,28 @@ export const validate = (
   }
 
   return ['', true];
+};
+
+export const getTimeBetween = (s: StringOrDate, e: StringOrDate) => {
+  const start = new Date(s);
+  const end = new Date(e);
+  const milliseconds = end.getTime() - start.getTime(); // milliseconds
+  const hours = Math.floor((milliseconds % 86400000) / 3600000); // hours
+  const minutes = Math.round(((milliseconds % 86400000) % 3600000) / 60000); // minutes
+  return { hours, minutes };
+};
+
+/**
+ * Return string from date in format `dd DD mm YYYY`.
+ *
+ * @param date
+ * @returns
+ */
+export const toDateString = (date: Date) => {
+  const day = days[date.getDay()];
+  const month = months[date.getMonth()];
+  const dayName = date.getUTCDate();
+  const year = date.getFullYear();
+
+  return `${day} ${dayName} ${month} ${year}`;
 };

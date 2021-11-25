@@ -10,7 +10,7 @@ import {
   CalModalService,
   ErrorMessageService,
   LoadingService,
-  MyDateService,
+  MyReservationsTabStorage,
   ReservationService,
   SnackerService,
   WeekdayCheckbox,
@@ -19,12 +19,14 @@ import {
 import {
   combine,
   combineAndSerialize,
-  getStartEndDateTimes,
+  initDates,
   nextMonth,
   now,
   serializeDate,
+  toDateString,
   validate,
-} from 'src/app/shared/utils/dates';
+} from 'src/app/shared/utils/dates/dates';
+import { Ghost } from 'src/app/shared/utils/routing';
 import {
   descriptionValidators,
   isRecurrentValidators,
@@ -52,12 +54,12 @@ export class CreateReservationByDatePage implements OnInit {
     private reservationSrv: ReservationService,
     private errorMessage: ErrorMessageService,
     private calModalService: CalModalService,
+    private tabStorage: MyReservationsTabStorage,
     private weekdaySrv: WeekdaysService,
     private alertCtrl: AlertController,
     private loadingSrv: LoadingService,
     private modalCtrl: ModalController,
     private snacker: SnackerService,
-    private dateSrv: MyDateService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private router: Router
@@ -99,7 +101,7 @@ export class CreateReservationByDatePage implements OnInit {
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
         async (reservation) => {
-          await this.goToReservationDetails(reservation.id);
+          await Ghost.goToReservationDetails(this.router, reservation.id);
           await this.showSuccessfulMessage(false);
         },
         async (error) => {
@@ -123,7 +125,7 @@ export class CreateReservationByDatePage implements OnInit {
         async (response) => {
           const reservations = response.successfulReservations;
           if (reservations.length > 0) {
-            await this.goToReservationDetails(reservations[0].id);
+            await Ghost.goToReservationDetails(this.router, reservations[0].id);
             await this.showSuccessfulMessage(true);
           } else {
             // * None reservation was created. Check the fields
@@ -152,7 +154,7 @@ export class CreateReservationByDatePage implements OnInit {
         async (response) => {
           const reservations = response.successfulReservations;
           if (reservations.length > 0) {
-            await this.goToReservationDetails(reservations[0].id);
+            await Ghost.goToReservationDetails(this.router, reservations[0].id);
             await this.showSuccessfulMessage(true);
           } else {
             await this.showNoneReservationsWasCreatedEvenForced();
@@ -222,10 +224,6 @@ export class CreateReservationByDatePage implements OnInit {
     return newReservation;
   }
 
-  private async goToReservationDetails(id: string) {
-    await this.router.navigate(['..', id], { relativeTo: this.route });
-  }
-
   private getRecurrentData(): CreateRecurrentReservation {
     return {
       title: this.form.value.title,
@@ -253,7 +251,8 @@ export class CreateReservationByDatePage implements OnInit {
   }
 
   private initDates() {
-    const { startDate, startTime, endDate, endTime } = getStartEndDateTimes();
+    const from = this.tabStorage.getDate();
+    const { startDate, startTime, endDate, endTime } = initDates(from);
     this.startDate = startDate;
     this.startTime = startTime;
     this.endDate = endDate;
@@ -295,7 +294,7 @@ export class CreateReservationByDatePage implements OnInit {
   private getElementHtml(date: Date) {
     const elementTemplate = `
     <ion-item>
-      <ion-label>${this.dateSrv.toDateString(date)}</ion-label>
+      <ion-label>${toDateString(date)}</ion-label>
     </ion-item>
     `;
     return elementTemplate;

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CalendarComponent } from 'ionic2-calendar';
 import { Reservation } from 'src/app/core/models/reservation.model';
-import { ReservationService } from 'src/app/core/services';
+import { MyReservationsTabStorage } from 'src/app/core/services';
 import { MyDateService } from 'src/app/core/services/my-date.service';
 
 @Component({
@@ -31,11 +31,18 @@ export class MyReservationsPage implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private dateSrv: MyDateService
+    private dateSrv: MyDateService,
+    private tabStorage: MyReservationsTabStorage
   ) {}
 
   ngOnInit(): void {
     this.refreshComponentData();
+  }
+
+  onTimeSelected(event): void {
+    const date = new Date(event.selectedTime);
+    console.log(date);
+    this.tabStorage.selectDate(date);
   }
 
   segmentChanged(event) {

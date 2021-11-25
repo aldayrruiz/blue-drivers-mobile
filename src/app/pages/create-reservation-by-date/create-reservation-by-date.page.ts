@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
 import { ItemReorderEventDetail } from '@ionic/core';
@@ -15,13 +10,29 @@ import {
   CalModalService,
   ErrorMessageService,
   LoadingService,
-  MyDateService,
+  MyReservationsTabStorage,
   ReservationService,
   SnackerService,
   WeekdayCheckbox,
   WeekdaysService,
 } from 'src/app/core/services';
-import { DESC_LEN, TITLE_LEN } from 'src/app/shared/utils/fields-config';
+import {
+  combine,
+  combineAndSerialize,
+  initDates,
+  nextMonth,
+  now,
+  serializeDate,
+  toDateString,
+  validate,
+} from 'src/app/shared/utils/dates/dates';
+import { Ghost } from 'src/app/shared/utils/routing';
+import {
+  descriptionValidators,
+  isRecurrentValidators,
+  titleValidators,
+  weekdaysValidators,
+} from 'src/app/shared/utils/validators';
 import { CalModalPage } from '../cal-modal/cal-modal.page';
 
 @Component({
@@ -43,12 +54,12 @@ export class CreateReservationByDatePage implements OnInit {
     private reservationSrv: ReservationService,
     private errorMessage: ErrorMessageService,
     private calModalService: CalModalService,
+    private tabStorage: MyReservationsTabStorage,
     private weekdaySrv: WeekdaysService,
     private alertCtrl: AlertController,
     private loadingSrv: LoadingService,
     private modalCtrl: ModalController,
     private snacker: SnackerService,
-    private dateSrv: MyDateService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private router: Router
@@ -62,46 +73,50 @@ export class CreateReservationByDatePage implements OnInit {
   }
 
   async create(isRecurrent: boolean) {
-    if (this.endDate <= this.startDate) {
-      const message = 'La fecha de comienzo debe ser anterior a la final';
-      const toast = await this.snacker.createFailed(message);
-      await toast.present();
-      return;
-    }
     if (isRecurrent) {
-      const data = this.getRecurrentData();
-      this.createRecurrentReservation(data);
+      // * Create Recurrent reservation
+      if (this.untilDate > now()) {
+        await this.createRecurrentReservation();
+        return;
+      }
+      await this.showTryingToCreateRecurrentUntilToday();
     } else {
-      const data = this.getData();
-      this.createReservation(data);
+      // * Create Normal Reservation
+      const start = combine(this.startDate, this.startTime);
+      const end = combine(this.endDate, this.endTime);
+      const [msg, datesValid] = validate(start, end);
+      if (datesValid) {
+        await this.createReservation();
+        return;
+      }
+      this.showDatesAreNotValid(msg);
     }
   }
 
-  async createReservation(data: CreateReservationByDate) {
+  async createReservation() {
+    const data = this.getData();
     await this.loadingSrv.present();
     this.reservationSrv
       .createByDate(data)
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
-        // newReservation is the response from server - executes if response was ok
         async (reservation) => {
-          this.router.navigate(['..', reservation.id], {
-            relativeTo: this.route,
-          });
-          const message = 'Reserva creada con exito';
-          const toast = await this.snacker.createSuccessful(message);
-          await toast.present();
+          await Ghost.goToReservationDetails(this.router, reservation.id);
+          await this.showSuccessfulMessage(false);
         },
-        // error is the message from the server - executes if response was not ok
         async (error) => {
-          const message = this.errorMessage.get(error);
-          const toast = await this.snacker.createFailed(message);
-          await toast.present();
+          if (error.status === 409) {
+            await this.showNoneVehiclesAreAvailable();
+          } else {
+            const msg = this.errorMessage.get(error);
+            await this.snacker.showFailed(msg);
+          }
         }
       );
   }
 
-  async createRecurrentReservation(data: CreateRecurrentReservation) {
+  async createRecurrentReservation() {
+    const data = this.getRecurrentData();
     await this.loadingSrv.present();
     this.reservationSrv
       .createRecurrent(data, false)
@@ -109,29 +124,43 @@ export class CreateReservationByDatePage implements OnInit {
       .subscribe(
         async (response) => {
           const reservations = response.successfulReservations;
-          if (reservations.length === 0) {
-            const message = 'Ninguna reserva creada. Comprueba los campos.';
-            const toast = await this.snacker.createFailed(message);
-            await toast.present();
+          if (reservations.length > 0) {
+            await Ghost.goToReservationDetails(this.router, reservations[0].id);
+            await this.showSuccessfulMessage(true);
           } else {
-            const firstReservation = reservations[0];
-            this.goToReservationDetails(firstReservation.id);
-            const message = 'Reservas creadas con exito';
-            const toast = await this.snacker.createSuccessful(message);
-            await toast.present();
+            // * None reservation was created. Check the fields
+            await this.showNoneReservationsWasCreated();
           }
         },
         async (error) => {
           const errorRes = error.error.errorReservations;
           const errorDates = errorRes.map((r) => new Date(r.start));
           if (error.status === 409) {
-            const alert = await this.alertCtrl.create({
-              message: this.getThereAreErrorReservationsMsg(errorDates),
-              buttons: this.getThereAreErrorReservationsButtons(),
-            });
-            await alert.present();
+            await this.showDialogWithImpossibleReservations(errorDates);
+          } else {
+            await this.showUnknownError();
           }
         }
+      );
+  }
+
+  async forceCreateRecurrentReservation() {
+    await this.loadingSrv.present();
+    const data = this.getRecurrentData();
+    this.reservationSrv
+      .createRecurrent(data, true)
+      .pipe(finalize(async () => await this.loadingSrv.dismiss()))
+      .subscribe(
+        async (response) => {
+          const reservations = response.successfulReservations;
+          if (reservations.length > 0) {
+            await Ghost.goToReservationDetails(this.router, reservations[0].id);
+            await this.showSuccessfulMessage(true);
+          } else {
+            await this.showNoneReservationsWasCreatedEvenForced();
+          }
+        },
+        async (error) => await this.showUnknownError()
       );
   }
 
@@ -147,7 +176,7 @@ export class CreateReservationByDatePage implements OnInit {
     return this.form.get('isRecurrent');
   }
 
-  async openCalModal(type: string): Promise<void> {
+  async openCalModal(type: string) {
     const modal = await this.modalCtrl.create({
       component: CalModalPage,
       cssClass: 'cal-modal',
@@ -184,92 +213,28 @@ export class CreateReservationByDatePage implements OnInit {
   }
 
   private getData() {
-    const hmStart = new Date(this.startTime);
-    const hmEnd = new Date(this.endTime);
-    this.startDate.setHours(hmStart.getHours());
-    this.startDate.setMinutes(hmStart.getMinutes());
-    this.endDate.setHours(hmEnd.getHours());
-    this.endDate.setMinutes(hmEnd.getMinutes());
-
-    const start = this.dateSrv.removeSeconds(this.startDate);
-    const end = this.dateSrv.removeSeconds(this.endDate);
-
-    const title = this.form.value.title;
-    const description = this.form.value.description;
-
-    const vehicles = this.vehicles.map((vehicle) => vehicle.id);
-    const weekdays = this.weekdaySrv.getValuesFromCheckBoxes(this.weekdays);
-
     const newReservation: CreateReservationByDate = {
-      title,
-      start: start.toJSON(),
-      end: end.toJSON(),
-      weekdays,
-      description,
-      vehicles,
+      title: this.form.value.title,
+      description: this.form.value.description,
+      start: combineAndSerialize(this.startDate, this.startTime),
+      end: combineAndSerialize(this.endDate, this.endTime),
+      weekdays: this.weekdaySrv.getValuesFromCheckBoxes(this.weekdays),
+      vehicles: this.vehicles.map((vehicle) => vehicle.id),
     };
     return newReservation;
   }
 
-  private goToReservationDetails(reservationId: string) {
-    this.router.navigateByUrl(`members/my-reservations/${reservationId}`);
-  }
-
-  private getRecurrentData() {
-    const { title, description } = this.form.value;
-    const weekdays = this.weekdaySrv.getValuesFromCheckBoxes(this.weekdays);
-    const startReservationTime = this.dateSrv
-      .removeSeconds(new Date(this.startTime))
-      .toJSON();
-    const endReservationTime = this.dateSrv
-      .removeSeconds(new Date(this.endTime))
-      .toJSON();
-
-    const startReservations = this.dateSrv
-      .removeSeconds(new Date(startReservationTime))
-      .toJSON();
-    const endReservations = this.dateSrv.removeSeconds(this.untilDate).toJSON();
-    const vehicles = this.getVehiclesIds(this.vehicles);
-
+  private getRecurrentData(): CreateRecurrentReservation {
     return {
-      title,
-      description,
-      weekdays,
-      startReservationTime,
-      endReservationTime,
-      startReservations,
-      endReservations,
-      vehicles,
+      title: this.form.value.title,
+      description: this.form.value.description,
+      weekdays: this.weekdaySrv.getValuesFromCheckBoxes(this.weekdays),
+      startReservationTime: serializeDate(this.startTime), // Reservation start time HH:mm (only HH:mm will count)
+      endReservationTime: serializeDate(this.endTime), // Reservation end time (only HH:mm will count)
+      startReservations: serializeDate(new Date()), // Reservations will be created since now
+      endReservations: serializeDate(this.untilDate), // Until
+      vehicles: this.getVehiclesIds(this.vehicles),
     };
-  }
-
-  private async forceCreateRecurrentReservation() {
-    await this.loadingSrv.present();
-    const data = this.getRecurrentData();
-    this.reservationSrv
-      .createRecurrent(data, true)
-      .pipe(finalize(async () => await this.loadingSrv.dismiss()))
-      .subscribe(
-        async (response) => {
-          if (response.successfulReservations.length === 0) {
-            const message =
-              'Se han forzado. Pero no se ha podido crear ninguna.';
-            const toast = await this.snacker.createFailed(message);
-            await toast.present();
-          } else {
-            const message = 'Las reservas se han creado exitosamente';
-            const toast = await this.snacker.createSuccessful(message);
-            await toast.present();
-            this.goToReservationDetails(response.successfulReservations[0].id);
-          }
-        },
-        async (error) => {
-          const status = error?.error?.status;
-          const message = `Error desconocido. Intentalo mas tarde`;
-          const toast = await this.snacker.createFailed(message);
-          await toast.present();
-        }
-      );
   }
 
   private getVehiclesIds(vehicles: Vehicle[]): string[] {
@@ -278,28 +243,27 @@ export class CreateReservationByDatePage implements OnInit {
 
   private initFormGroup() {
     this.form = this.fb.group({
-      title: ['', [Validators.required, Validators.maxLength(TITLE_LEN)]],
-      description: ['', [Validators.required, Validators.maxLength(DESC_LEN)]],
-      isRecurrent: [false, [Validators.required]],
-      weekdays: [[], []],
+      title: titleValidators,
+      description: descriptionValidators,
+      isRecurrent: isRecurrentValidators,
+      weekdays: weekdaysValidators,
     });
   }
 
   private initDates() {
-    const now = new Date();
-    this.startDate = new Date(now);
-    const hms = this.dateSrv.getHmEach15m(now);
-    this.startTime = hms.toISOString();
-
-    // Set end date
-    const hme = this.dateSrv.getHmEach15m(now);
-    hme.setHours(hms.getHours() + 1);
-    this.endTime = hme.toISOString();
-    this.endDate = new Date(this.startTime);
-    this.endDate.setHours(this.startDate.getHours() + 1);
-
-    this.untilDate = new Date();
-    this.untilDate.setUTCMonth(new Date().getUTCMonth() + 1);
+    const from = this.tabStorage.getDate();
+    const { startDate, startTime, endDate, endTime } = initDates(from);
+    this.startDate = startDate;
+    this.startTime = startTime;
+    this.endDate = endDate;
+    this.endTime = endTime;
+    this.untilDate = nextMonth(now());
+    console.log({
+      startDate,
+      startTime,
+      endDate,
+      endTime,
+    });
   }
 
   private initData() {
@@ -330,7 +294,7 @@ export class CreateReservationByDatePage implements OnInit {
   private getElementHtml(date: Date) {
     const elementTemplate = `
     <ion-item>
-      <ion-label>${this.dateSrv.toDateString(date)}</ion-label>
+      <ion-label>${toDateString(date)}</ion-label>
     </ion-item>
     `;
     return elementTemplate;
@@ -348,5 +312,49 @@ export class CreateReservationByDatePage implements OnInit {
         text: 'Cancelar',
       },
     ];
+  }
+
+  private async showTryingToCreateRecurrentUntilToday() {
+    const msg = 'El campo hasta cuando no debe ser hoy.';
+    this.snacker.showFailed(msg);
+  }
+
+  private async showNoneVehiclesAreAvailable() {
+    const msg = 'No hay vehículos disponibles';
+    this.snacker.showFailed(msg);
+  }
+
+  private async showDatesAreNotValid(msg: string) {
+    this.snacker.showFailed(msg);
+  }
+
+  private async showUnknownError() {
+    const msg = 'Error desconocido.';
+    this.snacker.showFailed(msg);
+  }
+
+  private async showNoneReservationsWasCreated() {
+    const msg = 'Ninguna reserva creada. Comprueba los campos.';
+    this.snacker.showFailed(msg);
+  }
+
+  private async showNoneReservationsWasCreatedEvenForced() {
+    const msg = 'Se han forzado. Pero no se ha podido crear ninguna.';
+    this.snacker.showFailed(msg);
+  }
+
+  private async showSuccessfulMessage(recurrent: boolean) {
+    const normalMsg = 'Reserva creada con exito';
+    const recurrentMsg = 'Reservas creadas con exito';
+    const msg = recurrent ? recurrentMsg : normalMsg;
+    this.snacker.showSuccessful(msg);
+  }
+
+  private async showDialogWithImpossibleReservations(dates: Date[]) {
+    const alert = await this.alertCtrl.create({
+      message: this.getThereAreErrorReservationsMsg(dates),
+      buttons: this.getThereAreErrorReservationsButtons(),
+    });
+    await alert.present();
   }
 }

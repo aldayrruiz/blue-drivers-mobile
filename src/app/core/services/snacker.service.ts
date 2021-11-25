@@ -23,4 +23,14 @@ export class SnackerService {
       duration: toastConfig.time,
     });
   }
+
+  async showSuccessful(msg: string) {
+    const toast = await this.createSuccessful(msg);
+    await toast.present();
+  }
+
+  async showFailed(msg: string) {
+    const toast = await this.createFailed(msg);
+    await toast.present();
+  }
 }

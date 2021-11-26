@@ -1,3 +1,7 @@
-export const TITLE_LEN = 50;
-export const DESC_LEN = 50;
-export const PASS_LEN = 50;
+// Max
+export const TITLE_MAX_LENGTH = 50;
+export const DESCRIPTION_MAX_LENGTH = 50;
+export const PASS_MAX_LENGTH = 50;
+
+// Min
+export const PASSWORD_MIN_LENGTH = 6;

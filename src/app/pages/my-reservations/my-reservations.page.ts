@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CalendarComponent } from 'ionic2-calendar';
 import { Reservation } from 'src/app/core/models/reservation.model';
-import { MyReservationsTabStorage } from 'src/app/core/services';
+import { GhostService, MyReservationsTabStorage } from 'src/app/core/services';
 import { MyDateService } from 'src/app/core/services/my-date.service';
 
 @Component({
@@ -29,10 +29,10 @@ export class MyReservationsPage implements OnInit {
   };
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
+    private tabStorage: MyReservationsTabStorage,
     private dateSrv: MyDateService,
-    private tabStorage: MyReservationsTabStorage
+    private route: ActivatedRoute,
+    private ghost: GhostService
   ) {}
 
   ngOnInit(): void {
@@ -41,7 +41,6 @@ export class MyReservationsPage implements OnInit {
 
   onTimeSelected(event): void {
     const date = new Date(event.selectedTime);
-    console.log(date);
     this.tabStorage.selectDate(date);
   }
 
@@ -49,8 +48,8 @@ export class MyReservationsPage implements OnInit {
     this.segmentValue = event.detail.value;
   }
 
-  goToReservation(id: string): void {
-    this.router.navigateByUrl(`members/my-reservations/${id}`);
+  async goToReservation(id: string) {
+    await this.ghost.goToReservationDetails(id);
   }
 
   next(): void {

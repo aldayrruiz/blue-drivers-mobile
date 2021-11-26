@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Reservation, Ticket, Vehicle } from 'src/app/core/models';
-import { TicketService } from 'src/app/core/services';
+import { GhostService, TicketService } from 'src/app/core/services';
 import { SnackerService } from 'src/app/core/services/snacker.service';
 
 @Component({
@@ -16,16 +16,15 @@ export class TicketDetailsPage implements OnInit {
 
   constructor(
     private ticketService: TicketService,
-    private route: ActivatedRoute,
     private snacker: SnackerService,
-    private router: Router
+    private route: ActivatedRoute,
+    private ghost: GhostService
   ) {}
 
   ngOnInit(): void {
     this.route.data.subscribe((response) => {
       console.log('Ticket details response received!');
       this.ticket = response.ticket;
-      console.log(this.ticket);
       this.reservation = this.ticket.reservation;
       this.vehicle = this.reservation.vehicle;
     });
@@ -34,17 +33,13 @@ export class TicketDetailsPage implements OnInit {
   cancelTicket(): void {
     this.ticketService.delete(this.ticket.id).subscribe(
       async () => {
-        this.router.navigateByUrl('members/my-tickets', {
-          replaceUrl: true,
-        });
-        const message = 'Ticket cancelado con exito';
-        const toast = await this.snacker.createSuccessful(message);
-        await toast.present();
+        await this.ghost.goBack(this.route);
+        const msg = 'Ticket cancelado con exito';
+        this.snacker.showSuccessful(msg);
       },
       async (errors) => {
-        const message = 'Error cancelando el ticket';
-        const toast = await this.snacker.createFailed(message);
-        await toast.present();
+        const msg = 'Error cancelando el ticket';
+        this.snacker.showFailed(msg);
       }
     );
   }

@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { finalize } from 'rxjs/operators';
 import { CreateReservation, Vehicle } from 'src/app/core/models';
 import {
   CalModalService,
   ErrorMessageService,
+  GhostService,
   LoadingService,
   ReservationService,
   SnackerService,
@@ -17,7 +18,6 @@ import {
   initDates,
   validate,
 } from 'src/app/shared/utils/dates/dates';
-import { Ghost } from 'src/app/shared/utils/routing';
 import {
   descriptionValidators,
   titleValidators,
@@ -46,8 +46,8 @@ export class CreateReservationPage implements OnInit {
     private modalCtrl: ModalController,
     private snacker: SnackerService,
     private route: ActivatedRoute,
-    private fb: FormBuilder,
-    private router: Router
+    private ghost: GhostService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -66,7 +66,7 @@ export class CreateReservationPage implements OnInit {
     const [msg, isValid] = validate(start, end);
 
     if (!isValid) {
-      this.snacker.showFailed(msg);
+      await this.snacker.showFailed(msg);
       return;
     }
 
@@ -77,7 +77,7 @@ export class CreateReservationPage implements OnInit {
       .subscribe(
         // newReservation is the response from server - executes if response was ok
         async (reservation) => {
-          await Ghost.goToReservationDetails(this.router, reservation.id);
+          await this.ghost.goToReservationDetails(reservation.id);
           await this.showSuccessfulMsg();
         },
         // error is the message from the server - executes if response was not ok
@@ -136,8 +136,8 @@ export class CreateReservationPage implements OnInit {
 
   private initFormGroup() {
     this.form = this.fb.group({
-      title: titleValidators,
-      description: descriptionValidators,
+      title: ['', titleValidators],
+      description: ['', descriptionValidators],
     });
   }
 

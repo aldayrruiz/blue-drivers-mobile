@@ -5,6 +5,7 @@ import { finalize } from 'rxjs/operators';
 import { CreateTicket, Vehicle } from 'src/app/core/models';
 import {
   ErrorMessageService,
+  GhostService,
   LoadingService,
   SnackerService,
   TicketService,
@@ -30,6 +31,7 @@ export class CreateTicketPage implements OnInit {
     private loadingSrv: LoadingService,
     private snacker: SnackerService,
     private route: ActivatedRoute,
+    private ghost: GhostService,
     private fb: FormBuilder,
     private router: Router
   ) {}
@@ -48,17 +50,13 @@ export class CreateTicketPage implements OnInit {
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
         async (ticket) => {
-          this.router.navigateByUrl(`members/my-tickets/${ticket.id}`, {
-            replaceUrl: true,
-          });
-          const message = 'Ticket creado con exito';
-          const toast = await this.snacker.createSuccessful(message);
-          await toast.present();
+          const msg = 'Ticket creado con exito';
+          await this.ghost.goToTicketDetails(ticket.id);
+          await this.snacker.showSuccessful(msg);
         },
         async (error) => {
-          const message = this.errorMessage.get(error);
-          const toast = await this.snacker.createFailed(message);
-          await toast.present();
+          const msg = this.errorMessage.get(error);
+          await this.snacker.showFailed(msg);
         }
       );
   }
@@ -73,8 +71,8 @@ export class CreateTicketPage implements OnInit {
 
   private initFormGroup() {
     this.form = this.fb.group({
-      title: titleValidators,
-      description: descriptionValidators,
+      title: ['', titleValidators],
+      description: ['', descriptionValidators],
     });
   }
 

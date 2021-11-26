@@ -9,6 +9,7 @@ import { CreateReservationByDate } from 'src/app/core/models/create/create-reser
 import {
   CalModalService,
   ErrorMessageService,
+  GhostService,
   LoadingService,
   MyReservationsTabStorage,
   ReservationService,
@@ -26,7 +27,6 @@ import {
   toDateString,
   validate,
 } from 'src/app/shared/utils/dates/dates';
-import { Ghost } from 'src/app/shared/utils/routing';
 import {
   descriptionValidators,
   isRecurrentValidators,
@@ -61,6 +61,7 @@ export class CreateReservationByDatePage implements OnInit {
     private modalCtrl: ModalController,
     private snacker: SnackerService,
     private route: ActivatedRoute,
+    private ghost: GhostService,
     private fb: FormBuilder,
     private router: Router
   ) {}
@@ -101,7 +102,7 @@ export class CreateReservationByDatePage implements OnInit {
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
         async (reservation) => {
-          await Ghost.goToReservationDetails(this.router, reservation.id);
+          await this.ghost.goToReservationDetails(reservation.id);
           await this.showSuccessfulMessage(false);
         },
         async (error) => {
@@ -125,7 +126,7 @@ export class CreateReservationByDatePage implements OnInit {
         async (response) => {
           const reservations = response.successfulReservations;
           if (reservations.length > 0) {
-            await Ghost.goToReservationDetails(this.router, reservations[0].id);
+            await this.ghost.goToReservationDetails(reservations[0].id);
             await this.showSuccessfulMessage(true);
           } else {
             // * None reservation was created. Check the fields
@@ -154,7 +155,7 @@ export class CreateReservationByDatePage implements OnInit {
         async (response) => {
           const reservations = response.successfulReservations;
           if (reservations.length > 0) {
-            await Ghost.goToReservationDetails(this.router, reservations[0].id);
+            await this.ghost.goToReservationDetails(reservations[0].id);
             await this.showSuccessfulMessage(true);
           } else {
             await this.showNoneReservationsWasCreatedEvenForced();
@@ -243,10 +244,10 @@ export class CreateReservationByDatePage implements OnInit {
 
   private initFormGroup() {
     this.form = this.fb.group({
-      title: titleValidators,
-      description: descriptionValidators,
-      isRecurrent: isRecurrentValidators,
-      weekdays: weekdaysValidators,
+      title: ['', titleValidators],
+      description: ['', descriptionValidators],
+      isRecurrent: [false, isRecurrentValidators],
+      weekdays: [[], weekdaysValidators],
     });
   }
 
@@ -316,38 +317,38 @@ export class CreateReservationByDatePage implements OnInit {
 
   private async showTryingToCreateRecurrentUntilToday() {
     const msg = 'El campo hasta cuando no debe ser hoy.';
-    this.snacker.showFailed(msg);
+    await this.snacker.showFailed(msg);
   }
 
   private async showNoneVehiclesAreAvailable() {
     const msg = 'No hay vehículos disponibles';
-    this.snacker.showFailed(msg);
+    await this.snacker.showFailed(msg);
   }
 
   private async showDatesAreNotValid(msg: string) {
-    this.snacker.showFailed(msg);
+    await this.snacker.showFailed(msg);
   }
 
   private async showUnknownError() {
     const msg = 'Error desconocido.';
-    this.snacker.showFailed(msg);
+    await this.snacker.showFailed(msg);
   }
 
   private async showNoneReservationsWasCreated() {
     const msg = 'Ninguna reserva creada. Comprueba los campos.';
-    this.snacker.showFailed(msg);
+    await this.snacker.showFailed(msg);
   }
 
   private async showNoneReservationsWasCreatedEvenForced() {
     const msg = 'Se han forzado. Pero no se ha podido crear ninguna.';
-    this.snacker.showFailed(msg);
+    await this.snacker.showFailed(msg);
   }
 
   private async showSuccessfulMessage(recurrent: boolean) {
     const normalMsg = 'Reserva creada con exito';
     const recurrentMsg = 'Reservas creadas con exito';
     const msg = recurrent ? recurrentMsg : normalMsg;
-    this.snacker.showSuccessful(msg);
+    await this.snacker.showSuccessful(msg);
   }
 
   private async showDialogWithImpossibleReservations(dates: Date[]) {

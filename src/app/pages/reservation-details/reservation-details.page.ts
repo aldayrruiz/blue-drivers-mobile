@@ -36,7 +36,6 @@ export class ReservationDetailsPage implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe((response) => {
-      console.log('Reservation details response received!');
       this.reservation = response.reservation;
       this.vehicle = this.reservation.vehicle;
       this.storeReservationInTab();

@@ -93,10 +93,8 @@ export class CreateReservationPage implements OnInit {
     });
 
     if (type === 'start') {
-      console.log(this.startDate);
       this.calModalService.setDate(this.startDate);
     } else {
-      console.log(this.endDate);
       this.calModalService.setDate(this.endDate);
     }
 
@@ -104,7 +102,6 @@ export class CreateReservationPage implements OnInit {
 
     modal.onDidDismiss().then((result) => {
       if (result.data && result.data.event) {
-        console.log(result.data.event);
         const date = result.data.event.date;
 
         if (type === 'start') {

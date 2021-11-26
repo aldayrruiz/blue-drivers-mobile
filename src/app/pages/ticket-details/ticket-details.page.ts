@@ -23,7 +23,6 @@ export class TicketDetailsPage implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe((response) => {
-      console.log('Ticket details response received!');
       this.ticket = response.ticket;
       this.reservation = this.ticket.reservation;
       this.vehicle = this.reservation.vehicle;

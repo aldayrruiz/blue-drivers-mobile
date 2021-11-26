@@ -33,7 +33,6 @@ export class LoginService {
   }
 
   async loadStorageVariables(): Promise<void> {
-    console.log('Loading storage variables...');
     this.storage.getAllFrom([Key.user]).subscribe((values: string[]) => {
       const [userJson] = values;
 
@@ -46,16 +45,12 @@ export class LoginService {
         this.isAuthenticated.next(false);
       }
     });
-    console.log('Ending loading storage variables.');
   }
 
   login(credentials: {
     username: string;
     password: string;
-    // serverUrl: string;
   }): Observable<void[]> {
-    console.log('Login...');
-    // const serverUrl = credentials.serverUrl.trim();
     const path = `${environment.fleetBaseUrl}${ApiPaths.login}/`;
     return this.http.post<LoginResponse>(path, credentials).pipe(
       switchMap((data: LoginResponse) => {
@@ -64,7 +59,6 @@ export class LoginService {
 
         return this.storage.setAll([
           { key: Key.user, value: JSON.stringify(userData) },
-          // { key: Key.serverUrl, value: serverUrl },
         ]);
       }),
       tap((_) => {

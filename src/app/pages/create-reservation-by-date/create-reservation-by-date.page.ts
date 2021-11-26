@@ -259,12 +259,6 @@ export class CreateReservationByDatePage implements OnInit {
     this.endDate = endDate;
     this.endTime = endTime;
     this.untilDate = nextMonth(now());
-    console.log({
-      startDate,
-      startTime,
-      endDate,
-      endTime,
-    });
   }
 
   private initData() {

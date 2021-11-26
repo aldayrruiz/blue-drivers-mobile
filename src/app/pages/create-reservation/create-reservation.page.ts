@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { finalize } from 'rxjs/operators';
-import { CreateReservation, VehicleDetails } from 'src/app/core/models';
+import { CreateReservation, Vehicle } from 'src/app/core/models';
 import {
   CalModalService,
   ErrorMessageService,
@@ -31,7 +31,7 @@ import { CalModalPage } from '../cal-modal/cal-modal.page';
 })
 export class CreateReservationPage implements OnInit {
   form: FormGroup;
-  vehicle: VehicleDetails;
+  vehicle: Vehicle;
   startDate: Date;
   endDate: Date;
   startTime: string;
@@ -45,14 +45,15 @@ export class CreateReservationPage implements OnInit {
     private loadingSrv: LoadingService,
     private modalCtrl: ModalController,
     private snacker: SnackerService,
+    private route: ActivatedRoute,
     private fb: FormBuilder,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.initFormGroup();
+    this.resolveData();
     this.initDates();
-    this.initVehicleFromTabStorage();
   }
 
   async createReservation() {
@@ -150,8 +151,10 @@ export class CreateReservationPage implements OnInit {
     this.endTime = endTime;
   }
 
-  private initVehicleFromTabStorage() {
-    this.vehicle = this.tabStorage.getCurrentVehicle();
+  private resolveData() {
+    this.route.data.subscribe((response) => {
+      this.vehicle = response.vehicle;
+    });
   }
 
   private async showSuccessfulMsg() {

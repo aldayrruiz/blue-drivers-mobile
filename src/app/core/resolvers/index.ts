@@ -7,4 +7,5 @@ export * from './reservations.resolver';
 export * from './ticket-details.resolver';
 export * from './user.resolver';
 export * from './vehicle-details.resolver';
+export * from './vehicle-simple.resolver';
 export * from './vehicles.resolver';

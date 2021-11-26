@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ServerUrlService } from '.';
@@ -10,10 +10,13 @@ import { Vehicle, VehicleDetails } from '../models';
 export class VehicleService {
   constructor(private http: HttpClient, private urlSrv: ServerUrlService) {}
 
-  get(id: string): Observable<VehicleDetails> {
+  get(id: string, reservations: boolean): Observable<VehicleDetails> {
+    const options = {
+      params: new HttpParams().set('reservations', reservations),
+    };
     const vehicleUrl = this.urlSrv.getVehicles();
     const path = `${vehicleUrl}/${id}/`;
-    return this.http.get<VehicleDetails>(path);
+    return this.http.get<VehicleDetails>(path, options);
   }
 
   getAll(): Observable<Vehicle[]> {

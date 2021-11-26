@@ -42,7 +42,6 @@ export class VehicleDetailsPage implements OnInit {
     this.route.data.subscribe((response) => {
       this.vehicle = response.vehicle;
       this.reservations = response.reservations;
-      this.vehiclesTabStorage.setCurrentVehicle(this.vehicle);
     });
 
     const userData = this.fastStorage.getUser();

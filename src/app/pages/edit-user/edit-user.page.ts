@@ -6,9 +6,11 @@ import { finalize } from 'rxjs/operators';
 import { User } from 'src/app/core/models';
 import { EditUser } from 'src/app/core/models/edit/edit.user.models';
 import {
-  FastStorageService,
+  GhostService,
+  Key,
   LoadingService,
   SnackerService,
+  StorageService,
   UserService,
 } from 'src/app/core/services';
 import {
@@ -27,10 +29,11 @@ export class EditUserPage implements OnInit {
   user: User;
 
   constructor(
-    private fastStorage: FastStorageService,
     private loadingSrv: LoadingService,
     private alertCtrl: AlertController,
     private snacker: SnackerService,
+    private storage: StorageService,
+    private ghost: GhostService,
     private route: ActivatedRoute,
     private userSrv: UserService,
     private fb: FormBuilder,
@@ -56,7 +59,7 @@ export class EditUserPage implements OnInit {
     });
   }
 
-  async edit(): Promise<void> {
+  async edit() {
     await this.loadingSrv.present();
 
     if (!this.passwordsMatch()) {
@@ -70,18 +73,17 @@ export class EditUserPage implements OnInit {
       return;
     }
 
-    const data = this.getEditUser();
-
-    const userData = this.fastStorage.getUser();
+    const userUpdated = this.getEditUser();
+    const userStored = await this.storage.getParsed(Key.user);
 
     this.userSrv
-      .update(userData.id, data)
+      .update(userStored.id, userUpdated)
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
         async () => {
+          await this.ghost.goBack(this.route);
           const msg = 'Se ha editado con exito.';
           await this.snacker.showSuccessful(msg);
-          this.router.navigate(['..'], { relativeTo: this.route });
         },
         async () => {
           const msg = 'Un error ha ocurrido.';
@@ -106,7 +108,7 @@ export class EditUserPage implements OnInit {
     return this.profile.get('password2');
   }
 
-  passwordsMatch(): boolean {
+  private passwordsMatch() {
     return this.profile.value.password === this.profile.value.password2;
   }
 

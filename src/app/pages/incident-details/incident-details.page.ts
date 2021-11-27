@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Incident, Reservation, Vehicle } from 'src/app/core/models';
-import { Key, StorageService } from 'src/app/core/services';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-incident-details',
@@ -12,13 +12,9 @@ export class IncidentDetailsPage implements OnInit {
   incident: Incident;
   reservation: Reservation;
   vehicle: Vehicle;
-  serverUrl: string;
   photoUrl: string;
 
-  constructor(
-    private route: ActivatedRoute,
-    private storageSrv: StorageService
-  ) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.data.subscribe(async (response) => {
@@ -30,11 +26,8 @@ export class IncidentDetailsPage implements OnInit {
   }
 
   private async getPhotoUrl(incident: Incident) {
-    this.serverUrl = await this.storageSrv.getP(Key.serverUrl);
-    if (incident.photo !== '/media/incidents/none.png') {
-      const photoUrl = `${this.serverUrl}${this.incident.photo}`;
-      return photoUrl;
-    }
-    return '';
+    const isPhotoAvailable = incident.photo !== '/media/incidents/none.png';
+    const url = `${environment.fleetBaseUrl}${this.incident.photo}`;
+    return isPhotoAvailable ? url : '';
   }
 }

@@ -10,8 +10,8 @@ import { LoginService } from 'src/app/core/services/login.service';
 export class AccountPage {
   constructor(private loginService: LoginService, private router: Router) {}
 
-  async logout(): Promise<void> {
-    this.loginService.logout();
-    this.router.navigateByUrl('/', { replaceUrl: true });
+  async logout() {
+    await this.loginService.logout();
+    await this.router.navigateByUrl('/', { replaceUrl: true });
   }
 }

@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { ApiPaths } from 'src/app/shared/api-paths.enum';
 import { environment } from 'src/environments/environment';
-import { FastStorageService, UserData } from './fast-storage.service';
 import { Key, StorageService } from './storage.service';
 
 interface LoginResponse {
@@ -16,71 +15,54 @@ interface LoginResponse {
   role: string;
 }
 
+interface UserData {
+  id: string;
+  email: string;
+  fullname: string;
+  role: string;
+  token: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-    null
-  );
+  isAuth: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
-  constructor(
-    private http: HttpClient,
-    private storage: StorageService,
-    private fastStorage: FastStorageService
-  ) {
+  constructor(private storage: StorageService, private http: HttpClient) {
     this.loadStorageVariables();
   }
 
-  async loadStorageVariables(): Promise<void> {
-    this.storage.getAllFrom([Key.user]).subscribe((values: string[]) => {
-      const [userJson] = values;
-
-      const user = JSON.parse(userJson);
-
-      if (user) {
-        this.fastStorage.setUserData(user);
-        this.isAuthenticated.next(true);
-      } else {
-        this.isAuthenticated.next(false);
-      }
-    });
+  async loadStorageVariables() {
+    const user = await this.storage.getParsed(Key.user);
+    this.isAuth.next(Boolean(user));
   }
 
-  login(credentials: {
-    username: string;
-    password: string;
-  }): Observable<void[]> {
+  login(body: { username: string; password: string }) {
     const path = `${environment.fleetBaseUrl}${ApiPaths.login}/`;
-    return this.http.post<LoginResponse>(path, credentials).pipe(
-      switchMap((data: LoginResponse) => {
-        const userData = this.getUserDataFromResponse(data);
-        this.fastStorage.setUserData(userData);
-
-        return this.storage.setAll([
-          { key: Key.user, value: JSON.stringify(userData) },
-        ]);
+    return this.http.post<LoginResponse>(path, body).pipe(
+      switchMap(async (response: LoginResponse) => {
+        const user = this.transformToUser(response);
+        return await this.storage.setStringify(Key.user, user);
       }),
       tap((_) => {
-        this.isAuthenticated.next(true);
+        this.isAuth.next(true);
       })
     );
   }
 
-  logout(): Observable<void> {
-    this.isAuthenticated.next(false);
-    this.fastStorage.removeUser();
-    return this.storage.remove(Key.user);
+  async logout() {
+    this.isAuth.next(false);
+    await this.storage.remove(Key.user);
   }
 
-  private getUserDataFromResponse(response: LoginResponse): UserData {
-    const result: UserData = {
+  private transformToUser(response: LoginResponse): UserData {
+    return {
       id: response.user_id,
       email: response.email,
       fullname: response.fullname,
       role: response.role,
       token: response.token,
     };
-    return result;
   }
 }

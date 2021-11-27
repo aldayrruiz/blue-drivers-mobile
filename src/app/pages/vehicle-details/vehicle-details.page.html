@@ -65,6 +65,17 @@
       </ion-list-header>
 
       <ion-item *ngFor="let event of selectedDate.events">
+        <ion-label *ngIf="differentDay(event); else sameDay">
+          De {{ event.startTime | date: 'dd/MM/YYYY, HH:mm' }}
+          <br />
+          A {{ event.endTime | date: 'dd/MM/YYYY, HH:mm' }}
+        </ion-label>
+        <ng-template #sameDay>
+          <ion-label
+            >De {{ event.startTime | date: 'HH:mm' }} a
+            {{ event.endTime | date: 'HH:mm' }}</ion-label
+          >
+        </ng-template>
         <ion-icon
           *ngIf="isMine(event.id); else notMine"
           slot="end"
@@ -79,17 +90,6 @@
           >
             <ion-icon item-right name="ticket-outline"></ion-icon>
           </ion-button>
-        </ng-template>
-        <ion-label *ngIf="differentDay(event); else sameDay">
-          De {{ event.startTime | date: 'dd/MM/YYYY, HH:mm' }}
-          <br />
-          A {{ event.endTime | date: 'dd/MM/YYYY, HH:mm' }}
-        </ion-label>
-        <ng-template #sameDay>
-          <ion-label
-            >De {{ event.startTime | date: 'HH:mm' }} a
-            {{ event.endTime | date: 'HH:mm' }}</ion-label
-          >
         </ng-template>
       </ion-item>
       <ion-item *ngIf="selectedDate.events.length === 0">

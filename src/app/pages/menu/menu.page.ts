@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FastStorageService } from 'src/app/core/services/fast-storage.service';
+import { Key, StorageService } from 'src/app/core/services';
 
 @Component({
   selector: 'app-menu',
@@ -22,11 +22,11 @@ export class MenuPage implements OnInit {
     { title: 'Cuenta', url: '/members/account', icon: 'person' },
   ];
 
-  constructor(private fastStorage: FastStorageService) {}
+  constructor(private storage: StorageService) {}
 
-  ngOnInit() {
-    const userData = this.fastStorage.getUser();
-    this.email = userData.email;
-    this.fullname = userData.fullname;
+  async ngOnInit() {
+    const user = await this.storage.getParsed(Key.user);
+    this.email = user.email;
+    this.fullname = user.fullname;
   }
 }

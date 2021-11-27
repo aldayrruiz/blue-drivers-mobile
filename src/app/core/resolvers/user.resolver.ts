@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { User } from 'src/app/core/models';
-import { FastStorageService } from 'src/app/core/services/fast-storage.service';
 import { UserService } from 'src/app/core/services/user.service';
+import { Key, StorageService } from '../services';
 import { LoadingService } from '../services/loading.service';
 
 @Injectable({
@@ -12,15 +12,15 @@ import { LoadingService } from '../services/loading.service';
 export class UserResolver implements Resolve<User> {
   constructor(
     private userSrv: UserService,
-    private fastStorage: FastStorageService,
+    private storage: StorageService,
     private loadingSrv: LoadingService
   ) {}
 
   async resolve(): Promise<User> {
     await this.loadingSrv.present();
-    const userData = this.fastStorage.getUser();
+    const user = await this.storage.getParsed(Key.user);
     return this.userSrv
-      .get(userData.id)
+      .get(user.id)
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .toPromise();
   }

@@ -1,6 +1,5 @@
 export * from './cal-modal.service';
 export * from './error-message.service';
-export * from './fast-storage.service';
 export * from './ghost.service';
 export * from './incident.service';
 export * from './loading.service';

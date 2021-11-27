@@ -12,6 +12,11 @@
     <ion-row>
       <ion-col size="12" class="ion-no-padding">
         <ion-card class="border border-radius no-box-shadow ion-padding">
+          <div id="map" style="height: 300px"></div>
+
+          <!-- <img
+            src="https://ionicframework.com/docs/demos/api/card/madison.jpg"
+          /> -->
           <ion-item lines="none" class="transparent">
             <ion-badge slot="start"
               >{{ reservation.vehicle.brand }}
@@ -23,7 +28,6 @@
               slot="end"
               >Recurrente</ion-badge
             >
-            <!-- <ion-note slot="end">{{ vehicle.brand }}</ion-note> -->
           </ion-item>
           <ion-card-content>
             <h1
@@ -46,9 +50,6 @@
             >
               {{ reservation.description }}
             </h3>
-            <!-- <span class="text-size-sm font-medium text-color-primary">
-              {{ reservation.date_stored | date: 'dd/MM/yyyy' }}
-            </span> -->
           </ion-card-content>
           <ion-grid>
             <ion-row>

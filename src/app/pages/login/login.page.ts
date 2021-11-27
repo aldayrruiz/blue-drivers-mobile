@@ -33,7 +33,7 @@ export class LoginPage implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.initFormGroup();
   }
 

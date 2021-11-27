@@ -41,32 +41,6 @@
           >Password needs to be 6 characters</span
         >
       </div>
-      <!-- Server url -->
-      <!-- <ion-item>
-        <ion-label>Servidor</ion-label>
-        <ion-select formControlName="serverSelect">
-          <span *ngFor="let server of availableServers">
-            <ion-select-option value="{{ server.url }}">{{
-              server.name
-            }}</ion-select-option>
-          </span>
-        </ion-select>
-      </ion-item> -->
-
-      <!-- <ion-item>
-        <ion-input
-          type="text"
-          placeholder="https://fleetmanagement.com"
-          formControlName="serverText"
-        ></ion-input>
-      </ion-item>
-      <div
-        *ngIf="(serverText.dirty || serverText.touched) && serverText.errors"
-        class="errors"
-      >
-        <span *ngIf="serverText.errors?.required">Server url is required</span>
-        <span *ngIf="serverText.errors?.pattern">Server url not valid</span>
-      </div> -->
     </div>
     <ion-button type="submit" expand="block" [disabled]="!credentials.valid"
       >Iniciar sesión</ion-button

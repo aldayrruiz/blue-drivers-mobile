@@ -1,6 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import * as L from 'leaflet';
 import { finalize } from 'rxjs/operators';
 import { Reservation, Vehicle } from 'src/app/core/models';
 import {
@@ -11,16 +17,20 @@ import {
   ReservationService,
   SnackerService,
 } from 'src/app/core/services';
+import { MapConfiguration } from 'src/app/shared/utils/leaflet/map-configuration';
+import { MapCreator } from 'src/app/shared/utils/leaflet/map-creator';
 
 @Component({
   selector: 'app-reservation-details',
   templateUrl: './reservation-details.page.html',
   styleUrls: ['./reservation-details.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ReservationDetailsPage implements OnInit {
+export class ReservationDetailsPage implements OnInit, AfterViewChecked {
   getTimeReserved = this.dateSrv.getTimeReserved;
   reservation: Reservation;
   vehicle: Vehicle;
+  map: L.Map;
 
   constructor(
     private reservationService: ReservationService,
@@ -34,12 +44,12 @@ export class ReservationDetailsPage implements OnInit {
     private router: Router
   ) {}
 
+  ngAfterViewChecked(): void {
+    setTimeout(() => this.initMap(), 500);
+  }
+
   ngOnInit(): void {
-    this.route.data.subscribe((response) => {
-      this.reservation = response.reservation;
-      this.vehicle = this.reservation.vehicle;
-      this.storeReservationInTab();
-    });
+    this.resolveData();
   }
 
   alreadyStarted(reservation: Reservation): boolean {
@@ -106,5 +116,18 @@ export class ReservationDetailsPage implements OnInit {
     }
 
     return buttons;
+  }
+
+  private resolveData() {
+    this.route.data.subscribe((response) => {
+      this.reservation = response.reservation;
+      this.vehicle = this.reservation.vehicle;
+      this.storeReservationInTab();
+    });
+  }
+
+  private initMap(): void {
+    const { tiles, map } = MapCreator.create(new MapConfiguration());
+    this.map = map;
   }
 }

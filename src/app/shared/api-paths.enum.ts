@@ -6,4 +6,5 @@ export enum ApiPaths {
   user = '/api/users',
   login = '/api/login',
   register = '/api/register/create_fake',
+  position = '/api/positions',
 }

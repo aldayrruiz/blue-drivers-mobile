@@ -1,3 +1,4 @@
+export * from './assets.service';
 export * from './cal-modal.service';
 export * from './error-message.service';
 export * from './ghost.service';

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PositionsResolver } from 'src/app/core/resolvers/positions.resolver';
 import { ReservationDetailsResolver } from '../../core/resolvers/reservation-details.resolver';
 import { ReservationDetailsPage } from './reservation-details.page';
 
@@ -7,7 +8,10 @@ const routes: Routes = [
   {
     path: '',
     component: ReservationDetailsPage,
-    resolve: { reservation: ReservationDetailsResolver },
+    resolve: {
+      reservation: ReservationDetailsResolver,
+      positions: PositionsResolver,
+    },
   },
   {
     path: 'create-incident',

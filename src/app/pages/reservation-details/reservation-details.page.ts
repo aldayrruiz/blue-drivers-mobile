@@ -5,6 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Geolocation } from '@capacitor/geolocation';
 import { AlertController } from '@ionic/angular';
 import * as L from 'leaflet';
 import { finalize } from 'rxjs/operators';
@@ -22,7 +23,9 @@ import { PositionService } from 'src/app/core/services/position.service';
 import { MapConfiguration } from 'src/app/shared/utils/leaflet/map-configuration';
 import { MapCreator } from 'src/app/shared/utils/leaflet/map-creator';
 
-const REFRESH_LOCATION_TIME = 60000;
+const REFRESH_LOCATION_TIME = 2000;
+const vehicleIcon = 'icon/vehicle.png';
+const userIcon = 'icon/user.png';
 
 @Component({
   selector: 'app-reservation-details',
@@ -36,7 +39,10 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
   vehicle: Vehicle;
   private positions: Position[];
   private map: L.Map;
-  private marker: L.Marker;
+  private vehicleMarker: L.Marker;
+  private userMarker: L.Marker;
+  private userIcon: L.Icon<L.IconOptions>;
+  private vehicleIcon: L.Icon<L.IconOptions>;
 
   constructor(
     private reservationService: ReservationService,
@@ -53,13 +59,17 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
   ) {}
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.initMap();
-      this.addMarkerAndKeepUpdating();
-    }, 400);
+    if (this.isReservationOccurringNow()) {
+      setTimeout(async () => {
+        await this.initMap();
+        this.addVehicleMarkerAndKeepUpdating();
+        await this.initUserMarker();
+      }, 400);
+    }
   }
 
   ngOnInit(): void {
+    this.initIcons();
     this.resolveData();
   }
 
@@ -70,7 +80,7 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
     return start <= now;
   }
 
-  async showCancelReservationAlert(): Promise<void> {
+  async showCancelReservationAlert() {
     const buttons = this.getAlertButtons();
     const alertElement = await this.alertCtrl.create({
       message: '¿Esta seguro?',
@@ -94,13 +104,11 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
         async () => {
           this.router.navigate(['..'], { relativeTo: this.route });
           const message = 'Operación realizada con exito';
-          const toast = await this.snacker.createSuccessful(message);
-          await toast.present();
+          this.snacker.showSuccessful(message);
         },
         async (error) => {
           const message = this.errorMessage.get(error);
-          const toast = await this.snacker.createFailed(message);
-          await toast.present();
+          this.snacker.showFailed(message);
         }
       );
   }
@@ -138,8 +146,11 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
     });
   }
 
-  private initMap(): void {
-    const { tiles, map } = MapCreator.create(new MapConfiguration());
+  private async initMap() {
+    const { latitude, longitude } = await this.getUserPosition();
+    const { tiles, map } = MapCreator.create(
+      new MapConfiguration('map', [latitude, longitude], 15)
+    );
     this.map = map;
   }
 
@@ -147,65 +158,102 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
     return positions.find((pos) => pos.deviceId === vehicle.gps_device.id);
   }
 
-  private addMarkerAndKeepUpdating() {
+  private addVehicleMarkerAndKeepUpdating() {
     const position = this.findPosition(this.positions, this.vehicle);
-    const icon = this.randomIcon();
-    this.marker = this.addMarkerToMap(position, icon);
-    const latLng = this.marker.getLatLng();
-    this.map.panTo(latLng);
-    this.keepUpdating();
+    console.assert(Boolean(position), 'Vehicle position not received.');
+    if (position) {
+      const latLng = this.latLng(position);
+      this.vehicleMarker = this.addMarkerToMap(latLng, this.vehicleIcon);
+    }
+    this.keepVehicleMarkerUpdating();
   }
 
-  private keepUpdating() {
+  private keepVehicleMarkerUpdating() {
     setTimeout(() => {
+      if (!this.isThisPageActive()) {
+        return;
+      }
       this.positionSrv.getAll().subscribe((positions) => {
-        this.marker?.removeFrom(this.map);
-        const icon = this.marker?.getIcon() as L.Icon<L.IconOptions>;
+        this.vehicleMarker?.removeFrom(this.map);
         const position = this.findPosition(positions, this.vehicle);
-        this.marker = this.addMarkerToMap(position, icon);
-        const latLng = this.marker.getLatLng();
-        this.map.panTo(latLng);
+        console.assert(Boolean(position), 'Vehicle position not received.');
+        if (position) {
+          const { latitude, longitude } = position;
+          this.vehicleMarker = this.addMarkerToMap(
+            [latitude, longitude],
+            this.vehicleIcon
+          );
+        }
       });
-      this.keepUpdating();
+      this.keepVehicleMarkerUpdating();
     }, REFRESH_LOCATION_TIME);
   }
 
-  private addMarkerToMap(position: Position, icon?: L.Icon<L.IconOptions>) {
-    if (!position) {
+  private addMarkerToMap([lat, lng]: [number, number], icon: any) {
+    if (!lat || !lng) {
       return undefined;
     }
 
-    if (!icon) {
-      icon = this.randomIcon();
-    }
-
-    const latLng = this.latLng(position);
-    const marker = L.marker(latLng, { icon }).addTo(this.map);
+    const marker = L.marker([lat, lng], { icon }).addTo(this.map);
     return marker;
   }
 
   private latLng = (p: Position): [number, number] => [p.latitude, p.longitude];
 
-  private randomIcon() {
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+
+  private async initUserMarker() {
+    await this.updateUserMarker();
+    this.keepUpdatingUserMarker();
+  }
+
+  private async keepUpdatingUserMarker() {
+    setTimeout(async () => {
+      if (!this.isThisPageActive()) {
+        return;
+      }
+      await this.updateUserMarker();
+      this.keepUpdatingUserMarker();
+    }, REFRESH_LOCATION_TIME);
+  }
+
+  private isThisPageActive() {
+    const url = `/members/my-reservations/${this.reservation.id}`;
+    return this.router.url === url;
+  }
+
+  private async updateUserMarker() {
+    this.userMarker?.removeFrom(this.map);
+    const { latitude, longitude } = await this.getUserPosition();
+    console.assert(Boolean(latitude), 'User position not received.');
+    this.userMarker = this.addMarkerToMap([latitude, longitude], this.userIcon);
+  }
+
+  private async getUserPosition() {
+    const { latitude, longitude } = (await Geolocation.getCurrentPosition())
+      .coords;
+    return { latitude, longitude };
+  }
+
+  private initIcons() {
+    this.userIcon = this.createIcon(userIcon);
+    this.vehicleIcon = this.createIcon(vehicleIcon);
+  }
+
+  private createIcon(url: string) {
     return L.icon({
-      iconUrl: this.assetsSrv.getUrl(this.icons.pop()),
+      iconUrl: this.assetsSrv.getUrl(url),
       iconSize: [22, 22], // size of the icon
       iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
       popupAnchor: [0, 0], // point from which the popup should open relative to the iconAnchor
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  private icons = [
-    'icon/pink-car.png',
-    'icon/light-green-car.png',
-    'icon/light-blue-car.png',
-    'icon/brown-car.png',
-    'icon/orange-car.png',
-    'icon/yellow-car.png',
-    'icon/green-car.png',
-    'icon/red-car.png',
-    'icon/blue-car.png',
-    'icon/black-car.png',
-  ];
+  private isReservationOccurringNow() {
+    const start = new Date(this.reservation.start);
+    const end = new Date(this.reservation.end);
+    const now = new Date();
+    start.setMinutes(start.getMinutes() - 15);
+    return start < now && now < end;
+  }
 }

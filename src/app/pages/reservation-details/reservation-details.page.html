@@ -12,7 +12,11 @@
     <ion-row>
       <ion-col size="12" class="ion-no-padding">
         <ion-card class="border border-radius no-box-shadow ion-padding">
-          <div id="map" style="height: 300px"></div>
+          <div
+            *ngIf="isReservationOccurringNow()"
+            id="map"
+            style="height: 300px"
+          ></div>
 
           <!-- <img
             src="https://ionicframework.com/docs/demos/api/card/madison.jpg"

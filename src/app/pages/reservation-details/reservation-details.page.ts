@@ -90,6 +90,14 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
     await alertElement.present(); // Mostrar al usuario
   }
 
+  isReservationOccurringNow() {
+    const start = new Date(this.reservation.start);
+    const end = new Date(this.reservation.end);
+    const now = new Date();
+    start.setMinutes(start.getMinutes() - 15);
+    return start < now && now < end;
+  }
+
   private storeReservationInTab() {
     this.tabStorage.setCurrentReservation(this.reservation);
   }
@@ -247,13 +255,5 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
       iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
       popupAnchor: [0, 0], // point from which the popup should open relative to the iconAnchor
     });
-  }
-
-  private isReservationOccurringNow() {
-    const start = new Date(this.reservation.start);
-    const end = new Date(this.reservation.end);
-    const now = new Date();
-    start.setMinutes(start.getMinutes() - 15);
-    return start < now && now < end;
   }
 }

@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Key, StorageService } from 'src/app/core/services';
+import {
+  GhostService,
+  Key,
+  LoginService,
+  StorageService,
+} from 'src/app/core/services';
 
 @Component({
   selector: 'app-menu',
@@ -22,11 +27,20 @@ export class MenuPage implements OnInit {
     { title: 'Cuenta', url: '/members/account', icon: 'person' },
   ];
 
-  constructor(private storage: StorageService) {}
+  constructor(
+    private loginService: LoginService,
+    private storage: StorageService,
+    private ghost: GhostService
+  ) {}
 
   async ngOnInit() {
     const user = await this.storage.getParsed(Key.user);
     this.email = user.email;
     this.fullname = user.fullname;
+  }
+
+  async logOut() {
+    await this.loginService.logout();
+    await this.ghost.goToLogin();
   }
 }

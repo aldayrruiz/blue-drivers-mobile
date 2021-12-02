@@ -32,4 +32,9 @@ export class GhostService {
   async goBack(route: ActivatedRoute) {
     return this.router.navigate(['..'], { relativeTo: route });
   }
+
+  async goToLogin() {
+    const to = `/login`;
+    this.router.navigateByUrl(to, this.extras);
+  }
 }

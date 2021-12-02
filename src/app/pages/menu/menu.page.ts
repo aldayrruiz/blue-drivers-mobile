@@ -11,7 +11,7 @@ export class MenuPage implements OnInit {
   email: string;
 
   pages = [
-    { title: 'Vehiculos', url: '/members/vehicles', icon: 'car' },
+    { title: 'Vehículos', url: '/members/vehicles', icon: 'car' },
     {
       title: 'Mis Reservas',
       url: '/members/my-reservations',

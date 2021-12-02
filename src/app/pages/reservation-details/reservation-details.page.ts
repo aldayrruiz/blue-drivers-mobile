@@ -24,8 +24,8 @@ import { MapConfiguration } from 'src/app/shared/utils/leaflet/map-configuration
 import { MapCreator } from 'src/app/shared/utils/leaflet/map-creator';
 
 const REFRESH_LOCATION_TIME = 2000;
-const vehicleIcon = 'icon/vehicle.png';
-const userIcon = 'icon/user.png';
+const vehicleIcon = 'img/icon/vehicle.png';
+const userIcon = 'img/icon/user.png';
 
 @Component({
   selector: 'app-reservation-details',

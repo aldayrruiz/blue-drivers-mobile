@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { ApiPaths } from 'src/app/shared/api-paths.enum';
 import { environment } from 'src/environments/environment';
-import { Key, StorageService } from './storage.service';
+import { Key, StorageService } from '../storage/storage.service';
 
 interface LoginResponse {
   token: string;

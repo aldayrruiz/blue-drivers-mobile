@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Position } from '../models';
-import { PositionService } from '../services/position.service';
+import { PositionService } from '../services/api';
 
 @Injectable({
   providedIn: 'root',

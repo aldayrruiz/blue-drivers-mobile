@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { Vehicle } from 'src/app/core/models';
-import { LoadingService } from 'src/app/core/services/loading.service';
-import { VehicleService } from 'src/app/core/services/vehicle.service';
+import { LoadingService, VehicleService } from '../services';
 
 @Injectable({
   providedIn: 'root',

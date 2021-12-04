@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Network } from '@capacitor/network';
 import { AlertController } from '@ionic/angular';
@@ -13,7 +8,12 @@ import {
   ErrorMessageService,
   LoadingService,
   LoginService,
+  PasswordRecover,
 } from 'src/app/core/services';
+import {
+  emailValidators,
+  passwordValidators,
+} from 'src/app/shared/utils/validators';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +26,7 @@ export class LoginPage implements OnInit {
 
   constructor(
     private errorMessage: ErrorMessageService,
+    private passwordRecover: PasswordRecover,
     private alertController: AlertController,
     private loginService: LoginService,
     private loadingSrv: LoadingService,
@@ -68,6 +69,10 @@ export class LoginPage implements OnInit {
       );
   }
 
+  async forgotPassword() {
+    this.passwordRecover.recover('email.com');
+  }
+
   goToRegisterPage() {
     this.router.navigateByUrl(`register`);
   }
@@ -105,8 +110,8 @@ export class LoginPage implements OnInit {
 
   private initFormGroup() {
     this.credentials = this.fb.group({
-      username: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      username: ['', emailValidators],
+      password: ['', passwordValidators],
     });
   }
 

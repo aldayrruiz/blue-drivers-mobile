@@ -3,22 +3,16 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiPaths } from 'src/app/shared/api-paths.enum';
 import { environment } from 'src/environments/environment';
-import { Position } from '../models/position.model';
+import { CreateUser } from '../../models';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PositionService {
-  private positionUrl = `${environment.fleetBaseUrl}${ApiPaths.position}`;
-
+export class RegisterService {
   constructor(private http: HttpClient) {}
 
-  /**
-   *
-   * @returns
-   */
-  getAll(): Observable<Position[]> {
-    const path = `${this.positionUrl}/`;
-    return this.http.get<Position[]>(path);
+  register(newUser: CreateUser): Observable<CreateUser> {
+    const path = `${environment.fleetBaseUrl}${ApiPaths.register}/`;
+    return this.http.post<CreateUser>(path, newUser);
   }
 }

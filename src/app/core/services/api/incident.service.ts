@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ServerUrlService } from '.';
-import { CreateIncident, Incident } from '../models';
+import { ServerUrlService } from '..';
+import { CreateIncident, Incident } from '../../models';
 
 @Injectable({
   providedIn: 'root',

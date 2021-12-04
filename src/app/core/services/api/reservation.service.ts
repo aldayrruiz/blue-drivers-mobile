@@ -1,14 +1,14 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ServerUrlService } from '.';
+import { ServerUrlService } from '..';
 import {
   CreateRecurrentReservation,
   CreateRecurrentResponse,
   CreateReservation,
-} from '../models';
-import { CreateReservationByDate } from '../models/create/create-reservation-by-date.model';
-import { Reservation } from '../models/reservation.model';
+  Reservation,
+} from '../../models';
+import { CreateReservationByDate } from '../../models/create/create-reservation-by-date.model';
 
 @Injectable({
   providedIn: 'root',

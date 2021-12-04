@@ -16,10 +16,10 @@ import {
   LoadingService,
   MyDateService,
   MyReservationsTabStorage,
+  PositionService,
   ReservationService,
   SnackerService,
 } from 'src/app/core/services';
-import { PositionService } from 'src/app/core/services/position.service';
 import { MapConfiguration } from 'src/app/shared/utils/leaflet/map-configuration';
 import { MapCreator } from 'src/app/shared/utils/leaflet/map-creator';
 

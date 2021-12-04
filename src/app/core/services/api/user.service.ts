@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ServerUrlService } from '.';
-import { User } from '../models';
-import { EditUser } from '../models/edit/edit.user.models';
+import { ServerUrlService } from '..';
+import { User } from '../../models';
+import { EditUser } from '../../models/edit/edit.user.models';
 
 @Injectable({
   providedIn: 'root',

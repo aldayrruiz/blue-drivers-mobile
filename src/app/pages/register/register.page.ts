@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Network } from '@capacitor/network';
 import { AlertController } from '@ionic/angular';
@@ -16,7 +11,12 @@ import {
   LoginService,
   SnackerService,
 } from 'src/app/core/services';
-import { RegisterService } from 'src/app/core/services/register.service';
+import { RegisterService } from 'src/app/core/services/auth/register.service';
+import {
+  emailValidators,
+  fullnameValidators,
+  passwordValidators,
+} from 'src/app/shared/utils/validators';
 
 @Component({
   selector: 'app-register',
@@ -114,25 +114,12 @@ export class RegisterPage implements OnInit {
     return this.credentials.get('password2');
   }
 
-  // get serverSelect(): AbstractControl {
-  //   return this.credentials.get('serverSelect');
-  // }
-
   private initFormGroup() {
-    // const urlReg = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
-
-    // const prodValidators = [Validators.required, Validators.pattern(urlReg)];
-    // const envValidators = [Validators.required];
-    // const urlValidators = environment.production
-    //   ? prodValidators
-    //   : envValidators;
-
     this.credentials = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      fullname: ['', [Validators.required, Validators.minLength(3)]],
-      password1: ['', [Validators.required, Validators.minLength(6)]],
-      password2: ['', [Validators.required, Validators.minLength(6)]],
-      // serverSelect: ['', urlValidators],
+      email: ['', emailValidators],
+      fullname: ['', fullnameValidators],
+      password1: ['', passwordValidators],
+      password2: ['', passwordValidators],
     });
   }
 

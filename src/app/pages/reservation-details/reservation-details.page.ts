@@ -94,7 +94,7 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
     const start = new Date(this.reservation.start);
     const end = new Date(this.reservation.end);
     const now = new Date();
-    start.setMinutes(start.getMinutes() - 15);
+    start.setMinutes(start.getMinutes() - 60);
     return start < now && now < end;
   }
 
@@ -155,9 +155,10 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
   }
 
   private async initMap() {
-    const { latitude, longitude } = await this.getUserPosition();
+    const position = this.findPosition(this.positions, this.vehicle);
+    const latLng = this.latLng(position);
     const { tiles, map } = MapCreator.create(
-      new MapConfiguration('map', [latitude, longitude], 15)
+      new MapConfiguration('map', latLng, 15)
     );
     this.map = map;
   }

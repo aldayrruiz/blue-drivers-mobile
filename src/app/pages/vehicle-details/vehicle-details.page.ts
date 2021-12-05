@@ -4,8 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { CalendarComponent } from 'ionic2-calendar';
 import { Reservation, VehicleDetails } from 'src/app/core/models';
-import { ReservationService, VehiclesTabStorage } from 'src/app/core/services';
-import { FastStorageService } from 'src/app/core/services/fast-storage.service';
+import {
+  Key,
+  ReservationService,
+  StorageService,
+  VehiclesTabStorage,
+} from 'src/app/core/services';
 
 @Component({
   selector: 'app-vehicle-details',
@@ -30,23 +34,17 @@ export class VehicleDetailsPage implements OnInit {
   selectedDate: Date;
   reservations: Reservation[];
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private alertCtrl: AlertController,
     private vehiclesTabStorage: VehiclesTabStorage,
-    private fastStorage: FastStorageService,
-    private reservationSrv: ReservationService
+    private reservationSrv: ReservationService,
+    private alertCtrl: AlertController,
+    private storage: StorageService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.route.data.subscribe((response) => {
-      this.vehicle = response.vehicle;
-      this.reservations = response.reservations;
-      this.vehiclesTabStorage.setCurrentVehicle(this.vehicle);
-    });
-
-    const userData = this.fastStorage.getUser();
-    this.userId = userData.id;
+  async ngOnInit() {
+    this.resolveData();
+    this.userId = (await this.storage.getParsed(Key.user)).id;
     this.loadReservations(this.reservations);
   }
 
@@ -97,7 +95,7 @@ export class VehicleDetailsPage implements OnInit {
   }
 
   async selectReservation(reservationId: string): Promise<void> {
-    const alerElement = await this.alertCtrl.create({
+    const alertElement = await this.alertCtrl.create({
       message: '¿Deseas pedir que el propietario cancele su reserva?',
       buttons: [
         {
@@ -115,7 +113,7 @@ export class VehicleDetailsPage implements OnInit {
       ],
     });
 
-    await alerElement.present(); // Mostrar al usuario
+    await alertElement.present(); // Mostrar al usuario
   }
 
   isMine(reservationId: string): boolean {
@@ -171,5 +169,12 @@ export class VehicleDetailsPage implements OnInit {
 
   private excludeCancelledReservations(reservations: Reservation[]) {
     return reservations.filter((r) => !r.is_cancelled);
+  }
+
+  private resolveData() {
+    this.route.data.subscribe((response) => {
+      this.vehicle = response.vehicle;
+      this.reservations = response.reservations;
+    });
   }
 }

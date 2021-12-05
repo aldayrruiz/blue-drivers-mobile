@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { finalize } from 'rxjs/operators';
-import { CreateReservation, VehicleDetails } from 'src/app/core/models';
+import { CreateReservation, Vehicle } from 'src/app/core/models';
 import {
   CalModalService,
   ErrorMessageService,
+  GhostService,
   LoadingService,
   ReservationService,
   SnackerService,
@@ -17,7 +18,6 @@ import {
   initDates,
   validate,
 } from 'src/app/shared/utils/dates/dates';
-import { Ghost } from 'src/app/shared/utils/routing';
 import {
   descriptionValidators,
   titleValidators,
@@ -31,7 +31,7 @@ import { CalModalPage } from '../cal-modal/cal-modal.page';
 })
 export class CreateReservationPage implements OnInit {
   form: FormGroup;
-  vehicle: VehicleDetails;
+  vehicle: Vehicle;
   startDate: Date;
   endDate: Date;
   startTime: string;
@@ -45,14 +45,15 @@ export class CreateReservationPage implements OnInit {
     private loadingSrv: LoadingService,
     private modalCtrl: ModalController,
     private snacker: SnackerService,
-    private fb: FormBuilder,
-    private router: Router
+    private route: ActivatedRoute,
+    private ghost: GhostService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
     this.initFormGroup();
+    this.resolveData();
     this.initDates();
-    this.initVehicleFromTabStorage();
   }
 
   async createReservation() {
@@ -65,7 +66,7 @@ export class CreateReservationPage implements OnInit {
     const [msg, isValid] = validate(start, end);
 
     if (!isValid) {
-      this.snacker.showFailed(msg);
+      await this.snacker.showFailed(msg);
       return;
     }
 
@@ -76,7 +77,7 @@ export class CreateReservationPage implements OnInit {
       .subscribe(
         // newReservation is the response from server - executes if response was ok
         async (reservation) => {
-          await Ghost.goToReservationDetails(this.router, reservation.id);
+          await this.ghost.goToReservationDetails(reservation.id);
           await this.showSuccessfulMsg();
         },
         // error is the message from the server - executes if response was not ok
@@ -92,10 +93,8 @@ export class CreateReservationPage implements OnInit {
     });
 
     if (type === 'start') {
-      console.log(this.startDate);
       this.calModalService.setDate(this.startDate);
     } else {
-      console.log(this.endDate);
       this.calModalService.setDate(this.endDate);
     }
 
@@ -103,7 +102,6 @@ export class CreateReservationPage implements OnInit {
 
     modal.onDidDismiss().then((result) => {
       if (result.data && result.data.event) {
-        console.log(result.data.event);
         const date = result.data.event.date;
 
         if (type === 'start') {
@@ -135,8 +133,8 @@ export class CreateReservationPage implements OnInit {
 
   private initFormGroup() {
     this.form = this.fb.group({
-      title: titleValidators,
-      description: descriptionValidators,
+      title: ['', titleValidators],
+      description: ['', descriptionValidators],
     });
   }
 
@@ -150,8 +148,10 @@ export class CreateReservationPage implements OnInit {
     this.endTime = endTime;
   }
 
-  private initVehicleFromTabStorage() {
-    this.vehicle = this.tabStorage.getCurrentVehicle();
+  private resolveData() {
+    this.route.data.subscribe((response) => {
+      this.vehicle = response.vehicle;
+    });
   }
 
   private async showSuccessfulMsg() {

@@ -1,20 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
-import { CreateTicket, VehicleDetails } from 'src/app/core/models';
+import { CreateTicket, Vehicle } from 'src/app/core/models';
 import {
   ErrorMessageService,
+  GhostService,
   LoadingService,
   SnackerService,
   TicketService,
-  VehiclesTabStorage,
 } from 'src/app/core/services';
+import {
+  descriptionValidators,
+  titleValidators,
+} from 'src/app/shared/utils/validators';
 
 @Component({
   selector: 'app-create-ticket',
@@ -22,32 +21,24 @@ import {
   styleUrls: ['./create-ticket.page.scss'],
 })
 export class CreateTicketPage implements OnInit {
-  vehicle: VehicleDetails;
+  vehicle: Vehicle;
   form: FormGroup;
   reservationId: string;
 
   constructor(
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private vehiclesTabStorage: VehiclesTabStorage,
-    private loadingSrv: LoadingService,
     private errorMessage: ErrorMessageService,
     private ticketService: TicketService,
+    private loadingSrv: LoadingService,
     private snacker: SnackerService,
+    private route: ActivatedRoute,
+    private ghost: GhostService,
+    private fb: FormBuilder,
     private router: Router
-  ) {
-    this.vehicle = this.vehiclesTabStorage.getCurrentVehicle();
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.form = this.fb.group({
-      title: ['', [Validators.required, Validators.maxLength(50)]],
-      description: ['', [Validators.required, Validators.maxLength(255)]],
-    });
-
-    this.route.paramMap.subscribe((paramMap) => {
-      this.reservationId = paramMap.get('reservationId');
-    });
+    this.initFormGroup();
+    this.resolveData();
   }
 
   async send(): Promise<void> {
@@ -59,32 +50,15 @@ export class CreateTicketPage implements OnInit {
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
         async (ticket) => {
-          this.router.navigateByUrl(`members/my-tickets/${ticket.id}`, {
-            replaceUrl: true,
-          });
-          const message = 'Ticket creado con exito';
-          const toast = await this.snacker.createSuccessful(message);
-          await toast.present();
+          const msg = 'Ticket creado con exito';
+          await this.ghost.goToTicketDetails(ticket.id);
+          await this.snacker.showSuccessful(msg);
         },
         async (error) => {
-          const message = this.errorMessage.get(error);
-          const toast = await this.snacker.createFailed(message);
-          await toast.present();
+          const msg = this.errorMessage.get(error);
+          await this.snacker.showFailed(msg);
         }
       );
-  }
-
-  private getTicket() {
-    const title = this.form.value.title;
-    const description = this.form.value.description;
-
-    const newTicket: CreateTicket = {
-      title,
-      description,
-      reservation: this.reservationId,
-    };
-
-    return newTicket;
   }
 
   get title(): AbstractControl {
@@ -93,5 +67,29 @@ export class CreateTicketPage implements OnInit {
 
   get description(): AbstractControl {
     return this.form.get('description');
+  }
+
+  private initFormGroup() {
+    this.form = this.fb.group({
+      title: ['', titleValidators],
+      description: ['', descriptionValidators],
+    });
+  }
+
+  private resolveData() {
+    this.route.paramMap.subscribe((paramMap) => {
+      this.reservationId = paramMap.get('reservationId');
+    });
+    this.route.data.subscribe((response) => {
+      this.vehicle = response.vehicle;
+    });
+  }
+
+  private getTicket(): CreateTicket {
+    return {
+      title: this.form.value.title,
+      description: this.form.value.description,
+      reservation: this.reservationId,
+    };
   }
 }

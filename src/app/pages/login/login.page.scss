@@ -3,22 +3,29 @@ ion-content {
   --padding-start: 10%;
   --padding-end: 10%;
 
-  --background: url("https://images.unsplash.com/photo-1542282088-fe8426682b8f?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8OHx8fGVufDB8fHw%3D&w=1000&q=80") 0 0/100% 100% no-repeat;
+  --background: url('/assets/img/background/login.jpg') 0 0/100% 100% no-repeat;
 }
 
-
-.input-group {
-  background: #fff;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 15px;
+.forgot-password-div {
+  font-family: 'Noto Sans', serif;
+  font-size: 15px;
+  font-weight: 600;
+  padding-bottom: 3px;
+  padding-top: 9px;
 }
 
-.errors {
-  font-size: small;
-  color: #fff;
-  background: var(--ion-color-danger);
-  padding-left: 15px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+.forgot-password {
+  border-radius: 4px;
+  color: #1a73e8;
+  display: inline-block;
+  outline: 0;
+  position: relative;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: inherit;
+  font-weight: inherit;
+  font-weight: inherit;
+  padding: 0;
+  text-align: left;
+  border: 0;
 }

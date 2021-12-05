@@ -1,22 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Network } from '@capacitor/network';
 import { AlertController } from '@ionic/angular';
 import { finalize } from 'rxjs/operators';
 import {
   ErrorMessageService,
-  Key,
   LoadingService,
   LoginService,
-  StorageService,
+  PasswordRecover,
 } from 'src/app/core/services';
-import { environment } from 'src/environments/environment';
+import {
+  emailValidators,
+  passwordValidators,
+} from 'src/app/shared/utils/validators';
 
 @Component({
   selector: 'app-login',
@@ -26,36 +23,27 @@ import { environment } from 'src/environments/environment';
 export class LoginPage implements OnInit {
   credentials: FormGroup;
   submitted = false;
-  // availableServers = environment.servers;
 
   constructor(
-    private fb: FormBuilder,
-    private loginService: LoginService,
-    private alertController: AlertController,
-    private router: Router,
-    private loadingSrv: LoadingService,
     private errorMessage: ErrorMessageService,
-    private storage: StorageService
+    private passwordRecover: PasswordRecover,
+    private alertController: AlertController,
+    private loginService: LoginService,
+    private loadingSrv: LoadingService,
+    private fb: FormBuilder,
+    private router: Router
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.initFormGroup();
   }
 
   async login(): Promise<void> {
     await this.loadingSrv.present();
 
-    const status = await Network.getStatus();
+    const isConnected = await this.showDialogIfNoConnection();
 
-    if (!status.connected) {
-      await this.loadingSrv.dismiss();
-      const alert = await this.alertController.create({
-        header: 'Login failed',
-        message: 'No tienes conexión a internet.',
-        buttons: ['OK'],
-      });
-
-      await alert.present();
+    if (!isConnected) {
       return;
     }
 
@@ -81,6 +69,10 @@ export class LoginPage implements OnInit {
       );
   }
 
+  async forgotPassword() {
+    this.passwordRecover.recover('email.com');
+  }
+
   goToRegisterPage() {
     this.router.navigateByUrl(`register`);
   }
@@ -93,47 +85,40 @@ export class LoginPage implements OnInit {
     return this.credentials.get('password');
   }
 
-  // get serverText(): AbstractControl {
-  //   return this.credentials.get('serverText');
-  // }
+  /**
+   * Show a dialog if no connection to internet is available.
+   *
+   * @returns true if connected to Internet. Otherwise, returns false
+   */
+  private async showDialogIfNoConnection() {
+    const status = await Network.getStatus();
 
-  // get serverSelect(): AbstractControl {
-  //   return this.credentials.get('serverSelect');
-  // }
+    if (status.connected) {
+      return true;
+    }
 
-  private async loadServerUrl(): Promise<void> {
-    const serverUrl = await this.storage.getP(Key.serverUrl);
-    this.credentials.setValue({
-      username: '',
-      password: '',
-      serverSelect: serverUrl,
+    await this.loadingSrv.dismiss();
+    const alert = await this.alertController.create({
+      header: 'Login failed',
+      message: 'No tienes conexión a internet.',
+      buttons: ['OK'],
     });
+
+    await alert.present();
+    return false;
   }
 
   private initFormGroup() {
-    const urlReg = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
-
-    const prodValidators = [Validators.required, Validators.pattern(urlReg)];
-    const devValidators = [Validators.required];
-    const urlValidators = environment.production
-      ? prodValidators
-      : devValidators;
-
     this.credentials = this.fb.group({
-      username: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      // serverText: ['', urlValidators],
-      // serverSelect: ['', urlValidators],
+      username: ['', emailValidators],
+      password: ['', passwordValidators],
     });
-
-    // this.loadServerUrl();
   }
 
   private getCredentials() {
     return {
       username: this.username.value,
       password: this.password.value,
-      // serverUrl: this.serverSelect.value,
     };
   }
 }

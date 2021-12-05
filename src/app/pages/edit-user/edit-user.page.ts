@@ -1,21 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { finalize } from 'rxjs/operators';
 import { User } from 'src/app/core/models';
 import { EditUser } from 'src/app/core/models/edit/edit.user.models';
 import {
-  FastStorageService,
+  GhostService,
+  Key,
   LoadingService,
   SnackerService,
+  StorageService,
   UserService,
 } from 'src/app/core/services';
+import {
+  emailValidators,
+  fullnameValidators,
+  passwordValidators,
+} from 'src/app/shared/utils/validators';
 
 @Component({
   selector: 'app-edit-user',
@@ -27,14 +29,15 @@ export class EditUserPage implements OnInit {
   user: User;
 
   constructor(
-    private fb: FormBuilder,
-    private router: Router,
+    private loadingSrv: LoadingService,
+    private alertCtrl: AlertController,
+    private snacker: SnackerService,
+    private storage: StorageService,
+    private ghost: GhostService,
     private route: ActivatedRoute,
     private userSrv: UserService,
-    private alertCtrll: AlertController,
-    private fastStorage: FastStorageService,
-    private snacker: SnackerService,
-    private loadingSrv: LoadingService
+    private fb: FormBuilder,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -49,19 +52,19 @@ export class EditUserPage implements OnInit {
 
   getProfile(user: User): FormGroup {
     return this.fb.group({
-      fullname: [user.fullname, [Validators.required]],
-      email: [user.email, [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      password2: ['', [Validators.required, Validators.minLength(6)]],
+      fullname: [user.fullname, fullnameValidators],
+      email: [user.email, emailValidators],
+      password: ['', passwordValidators],
+      password2: ['', passwordValidators],
     });
   }
 
-  async edit(): Promise<void> {
+  async edit() {
     await this.loadingSrv.present();
 
     if (!this.passwordsMatch()) {
       await this.loadingSrv.dismiss();
-      const alert = await this.alertCtrll.create({
+      const alert = await this.alertCtrl.create({
         message: 'Las contraseñas NO son iguales.',
         buttons: ['OK'],
       });
@@ -70,24 +73,21 @@ export class EditUserPage implements OnInit {
       return;
     }
 
-    const data = this.getEditUser();
-
-    const userData = this.fastStorage.getUser();
+    const userUpdated = this.getEditUser();
+    const userStored = await this.storage.getParsed(Key.user);
 
     this.userSrv
-      .update(userData.id, data)
+      .update(userStored.id, userUpdated)
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
         async () => {
-          const message = 'Se ha editado con exito.';
-          const toast = await this.snacker.createSuccessful(message);
-          await toast.present();
-          this.router.navigate(['..'], { relativeTo: this.route });
+          await this.ghost.goBack(this.route);
+          const msg = 'Se ha editado con exito.';
+          await this.snacker.showSuccessful(msg);
         },
         async () => {
-          const message = 'Un error ha ocurrido.';
-          const toast = await this.snacker.createFailed(message);
-          await toast.present();
+          const msg = 'Un error ha ocurrido.';
+          this.snacker.showFailed(msg);
         }
       );
   }
@@ -108,21 +108,15 @@ export class EditUserPage implements OnInit {
     return this.profile.get('password2');
   }
 
-  passwordsMatch(): boolean {
+  private passwordsMatch() {
     return this.profile.value.password === this.profile.value.password2;
   }
 
   private getEditUser(): EditUser {
-    const email = this.profile.value.email;
-    const fullname = this.profile.value.fullname;
-    const password = this.profile.value.password;
-
-    const editUser: EditUser = {
-      email,
-      fullname,
-      password,
+    return {
+      email: this.profile.value.email,
+      fullname: this.profile.value.fullname,
+      password: this.profile.value.password,
     };
-
-    return editUser;
   }
 }

@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { Router } from '@angular/router';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { finalize } from 'rxjs/operators';
 import { CreateIncident, Reservation } from 'src/app/core/models';
 import {
   ErrorMessageService,
+  GhostService,
   IncidentService,
   LoadingService,
   MyReservationsTabStorage,
   SnackerService,
 } from 'src/app/core/services';
+import {
+  descriptionValidators,
+  incidentTypeValidators,
+  titleValidators,
+} from 'src/app/shared/utils/validators';
 
 @Component({
   selector: 'app-create-incident',
@@ -28,17 +28,17 @@ export class CreateIncidentPage implements OnInit {
   photoBase64: string;
 
   constructor(
-    private fb: FormBuilder,
-    private incidentService: IncidentService,
     private tabStorage: MyReservationsTabStorage,
-    private loadingSrv: LoadingService,
     private errorMessage: ErrorMessageService,
+    private incidentService: IncidentService,
+    private loadingSrv: LoadingService,
     private snacker: SnackerService,
-    private router: Router
+    private ghost: GhostService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    this.form = this.getFormGroup();
+    this.form = this.initFormGroup();
     this.reservation = this.tabStorage.getCurrentReservation();
   }
 
@@ -50,18 +50,14 @@ export class CreateIncidentPage implements OnInit {
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
         async (incident) => {
-          this.router.navigateByUrl(`members/my-incidents/${incident.id}`, {
-            replaceUrl: true,
-          });
-          const message = 'Incidencia creado con exito';
-          const toast = await this.snacker.createSuccessful(message);
-          await toast.present();
+          await this.ghost.goToIncidentDetails(incident.id);
+          const msg = 'Incidencia creado con exito';
+          await this.snacker.showSuccessful(msg);
         },
         // error is the message from the server - executes if response was not ok
         async (error) => {
-          const message = this.errorMessage.get(error);
-          const toast = await this.snacker.createFailed(message);
-          await toast.present();
+          const msg = this.errorMessage.get(error);
+          await this.snacker.showFailed(msg);
         }
       );
   }
@@ -88,31 +84,29 @@ export class CreateIncidentPage implements OnInit {
     return this.form.get('incidentType');
   }
 
-  private getFormGroup(): FormGroup {
+  private initFormGroup(): FormGroup {
     return this.fb.group({
-      title: ['', [Validators.required, Validators.maxLength(50)]],
-      description: ['', [Validators.required, Validators.maxLength(255)]],
-      incidentType: ['OTHERS', [Validators.required]],
+      title: ['', titleValidators],
+      description: ['', descriptionValidators],
+      incidentType: ['OTHERS', incidentTypeValidators],
     });
   }
 
-  private getIncident(): CreateIncident {
-    const title = this.form.value.title;
-    const description = this.form.value.description;
-    const type = this.form.value.incidentType;
-    const reservationId = this.reservation.id;
-
+  private getIncident() {
     const incident: CreateIncident = {
-      title,
-      description,
-      type,
-      reservation: reservationId,
+      title: this.form.value.title,
+      description: this.form.value.description,
+      type: this.form.value.incidentType,
+      reservation: this.reservation.id,
     };
 
-    if (this.photoBase64) {
-      incident.photo = this.photoBase64;
-    }
+    return this.setPhoto(incident);
+  }
 
+  private setPhoto(incident: CreateIncident) {
+    if (this.photoBase64) {
+      incident.photo = this.photoBase64 ||= undefined;
+    }
     return incident;
   }
 }

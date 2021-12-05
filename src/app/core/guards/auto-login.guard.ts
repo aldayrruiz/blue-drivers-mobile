@@ -11,7 +11,7 @@ export class AutoLoginGuard implements CanLoad {
   constructor(private loginService: LoginService, private router: Router) {}
 
   canLoad(): Observable<boolean> {
-    return this.loginService.isAuthenticated.pipe(
+    return this.loginService.isAuth.pipe(
       filter((val) => val !== null),
       take(1),
       map((isAuthenticated) => {

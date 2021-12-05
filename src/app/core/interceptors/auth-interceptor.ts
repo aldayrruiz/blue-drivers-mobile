@@ -1,30 +1,27 @@
 import {
-  HttpEvent,
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { FastStorageService } from '../services/fast-storage.service';
+import { from } from 'rxjs';
+import { Key, StorageService } from '../services';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private fastStorage: FastStorageService) {}
+  constructor(private storage: StorageService) {}
 
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    const userData = this.fastStorage.getUser();
-    const authToken = userData !== undefined ? userData.token : '';
-    if (authToken) {
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      req = req.clone({ setHeaders: { Authorization: `Token ${authToken}` } });
-    } else {
-      req = req.clone();
-    }
+  intercept(req: HttpRequest<any>, next: HttpHandler) {
+    // convert promise to observable using 'from' operator
+    return from(this.handle(req, next));
+  }
 
-    return next.handle(req);
+  async handle(req: HttpRequest<any>, next: HttpHandler) {
+    const user = await this.storage.getParsed(Key.user);
+    const token = user ? user.token : '';
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const tokenHeaders = { setHeaders: { Authorization: `Token ${token}` } };
+    req = req.clone(token ? tokenHeaders : {});
+    return next.handle(req).toPromise();
   }
 }

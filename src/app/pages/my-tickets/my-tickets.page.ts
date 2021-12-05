@@ -15,7 +15,6 @@ export class MyTicketsPage implements OnInit {
   ngOnInit(): void {
     this.route.data.subscribe((response) => {
       this.tickets = response.myTickets;
-      console.log(this.tickets);
     });
   }
 }

@@ -14,7 +14,6 @@ export class MyIncidentsPage implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe((response) => {
-      console.log('My incidents response received!');
       this.incidents = response.myIncidents;
     });
   }

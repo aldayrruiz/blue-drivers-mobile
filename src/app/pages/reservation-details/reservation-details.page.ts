@@ -156,11 +156,18 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
 
   private async initMap() {
     const position = this.findPosition(this.positions, this.vehicle);
-    const latLng = this.latLng(position);
-    const { tiles, map } = MapCreator.create(
-      new MapConfiguration('map', latLng, 15)
-    );
-    this.map = map;
+    // ! If not position DO NOT LOAD MAP. Try to load map in after few seconds.
+    if (!position) {
+      setTimeout(async () => {
+        await this.initMap();
+      }, REFRESH_LOCATION_TIME);
+    } else {
+      const latLng = this.latLng(position);
+      const { tiles, map } = MapCreator.create(
+        new MapConfiguration('map', latLng, 15)
+      );
+      this.map = map;
+    }
   }
 
   private findPosition(positions: Position[], vehicle: Vehicle) {
@@ -208,8 +215,6 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
   }
 
   private latLng = (p: Position): [number, number] => [p.latitude, p.longitude];
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
 
   private async initUserMarker() {
     await this.updateUserMarker();

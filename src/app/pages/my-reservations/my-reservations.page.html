@@ -101,37 +101,45 @@
 
   <ng-template #list>
     <ion-list fullscreen>
-      <ion-card
-        *ngFor="let reservation of reservations"
-        [routerLink]="[reservation.id]"
-        class="border border-radius no-box-shadow ion-padding"
-      >
-        <ion-item lines="none" class="transparent">
-          <ion-badge slot="start"
-            >{{ reservation.vehicle.brand }}
-            {{ reservation.vehicle.model }}</ion-badge
-          >
-          <ion-badge color="warning" *ngIf="reservation.is_recurrent" slot="end"
-            >Recurrente</ion-badge
-          >
-        </ion-item>
-        <ion-card-content>
-          <h1
-            class="
-              text-size-lg
-              font-regular
-              text-color-primary
-              ion-text-wrap ion-padding-bottom
-            "
-          >
-            {{ reservation.title }}
-          </h1>
-          <span class="text-size-sm font-medium text-color-primary">
-            {{ reservation.start | date: 'dd/MM/yyyy HH:mm' }} -
-            {{ getTimeReserved(reservation) }}
-          </span>
-        </ion-card-content>
-      </ion-card>
+      <span *ngFor="let reservation of reservationsListMode">
+        <ion-card
+          [routerLink]="[reservation.id]"
+          [ngClass]="
+            alreadyStarted(reservation)
+              ? 'border border-radius no-box-shadow ion-padding opaque'
+              : 'border border-radius no-box-shadow ion-padding'
+          "
+        >
+          <ion-item lines="none">
+            <ion-badge slot="start"
+              >{{ reservation.vehicle.brand }}
+              {{ reservation.vehicle.model }}</ion-badge
+            >
+            <ion-badge
+              color="warning"
+              *ngIf="reservation.is_recurrent"
+              slot="end"
+              >Recurrente</ion-badge
+            >
+          </ion-item>
+          <ion-card-content>
+            <h1
+              class="
+                text-size-lg
+                font-regular
+                text-color-primary
+                ion-text-wrap ion-padding-bottom
+              "
+            >
+              {{ reservation.title }}
+            </h1>
+            <span class="text-size-sm font-medium text-color-primary">
+              {{ reservation.start | date: 'dd/MM/yyyy HH:mm' }} -
+              {{ getTimeReserved(reservation) }}
+            </span>
+          </ion-card-content>
+        </ion-card>
+      </span>
     </ion-list>
   </ng-template>
 

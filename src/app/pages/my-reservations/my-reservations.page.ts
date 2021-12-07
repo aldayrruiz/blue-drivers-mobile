@@ -14,7 +14,8 @@ export class MyReservationsPage implements OnInit {
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
   selectedDate: Date;
   getTimeReserved = this.dateSrv.getTimeReserved;
-  reservations: Reservation[] = [];
+  reservationsCalendarMode: Reservation[] = [];
+  reservationsListMode: Reservation[] = [];
   segmentValue = 'calendar';
 
   userId: string;
@@ -77,8 +78,7 @@ export class MyReservationsPage implements OnInit {
     return start.getUTCDay() !== end.getUTCDay();
   }
 
-  alreadyStarted(id: string) {
-    const reservation = this.reservations.find((r) => r.id === id);
+  alreadyStarted(reservation: Reservation) {
     const start = new Date(reservation.start);
     const now = new Date();
     return start <= now;
@@ -86,7 +86,7 @@ export class MyReservationsPage implements OnInit {
 
   private refreshComponentData(): void {
     this.route.data.subscribe((response) => {
-      this.reservations = response.myReservations;
+      this.reservationsCalendarMode = response.myReservations;
       this.loadReservations();
     });
   }
@@ -95,7 +95,7 @@ export class MyReservationsPage implements OnInit {
     const events = [];
 
     // These reservations are all from requester.
-    this.reservations.forEach((reservation) => {
+    this.reservationsCalendarMode.forEach((reservation) => {
       events.push({
         id: reservation.id,
         title: 'Reservado',
@@ -106,5 +106,50 @@ export class MyReservationsPage implements OnInit {
     });
 
     this.eventSource = events;
+    this.reservationsListMode = this.getFirstInstanceOfReservations(
+      this.reservationsCalendarMode
+    );
+  }
+
+  private getFirstInstanceOfReservations(reservations: Reservation[]) {
+    const ordered = this.orderReservationsByStart(reservations);
+    const result: Reservation[] = [];
+    ordered.forEach((reservation) => {
+      const isRecurrent = reservation.is_recurrent;
+      if (!isRecurrent) {
+        result.push(reservation);
+      } else {
+        // * Si es recurrente
+        const index = this.isRecurrentIdInto(result, reservation);
+
+        if (index >= 0) {
+          const recurrent = result[index];
+          const now = new Date();
+          const reservationCompleted = new Date(recurrent.start) < now;
+          if (reservationCompleted) {
+            // Replace recurrent reservation with newer instance of that same recurrent
+            result[index] = reservation;
+          }
+        } else {
+          result.push(reservation);
+        }
+      }
+    });
+    return this.orderReservationsByStart(result).reverse();
+  }
+
+  private isRecurrentIdInto(
+    reservations: Reservation[],
+    recurrent: Reservation
+  ) {
+    const recurrentId = recurrent.recurrent_id;
+    const index = reservations.findIndex((r) => r.recurrent_id === recurrentId);
+    return index;
+  }
+
+  private orderReservationsByStart(reservations: Reservation[]) {
+    return reservations.sort((a, b) =>
+      new Date(a.start) < new Date(b.start) ? -1 : 1
+    );
   }
 }

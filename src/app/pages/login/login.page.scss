@@ -3,7 +3,8 @@ ion-content {
   --padding-start: 10%;
   --padding-end: 10%;
 
-  --background: url('/assets/img/background/login.jpg') 0 0/100% 100% no-repeat;
+  --background: white url('/assets/img/background/login.jpg') bottom/100% no-repeat fixed !important;
+  --background-position: center !important;
 }
 
 .forgot-password-div {

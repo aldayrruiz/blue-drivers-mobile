@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
 import { ItemReorderEventDetail } from '@ionic/core';
 import { finalize } from 'rxjs/operators';
-import { CreateRecurrentReservation, Vehicle } from 'src/app/core/models';
+import {
+  CreateRecurrentReservation,
+  Recurrent,
+  Vehicle,
+} from 'src/app/core/models';
+import { CreateRecurrent } from 'src/app/core/models/create/create-recurrent.model';
 import { CreateReservationByDate } from 'src/app/core/models/create/create-reservation-by-date.model';
 import {
   CalModalService,
@@ -49,6 +54,7 @@ export class CreateReservationByDatePage implements OnInit {
   vehicles: Vehicle[] = [];
   weekdays: WeekdayCheckbox[];
   untilDate: Date;
+  recurrent: Recurrent;
 
   constructor(
     private reservationSrv: ReservationService,
@@ -62,8 +68,7 @@ export class CreateReservationByDatePage implements OnInit {
     private snacker: SnackerService,
     private route: ActivatedRoute,
     private ghost: GhostService,
-    private fb: FormBuilder,
-    private router: Router
+    private fb: FormBuilder
   ) {}
 
   ngOnInit() {
@@ -117,10 +122,11 @@ export class CreateReservationByDatePage implements OnInit {
   }
 
   async createRecurrentReservation() {
-    const data = this.getRecurrentData();
+    this.recurrent = await this.createRecurrent();
+    const data = this.getRecurrentReservation(this.recurrent.id);
     await this.loadingSrv.present();
     this.reservationSrv
-      .createRecurrent(data, false)
+      .createRecurrentReservations(data, false)
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
         async (response) => {
@@ -145,11 +151,21 @@ export class CreateReservationByDatePage implements OnInit {
       );
   }
 
-  async forceCreateRecurrentReservation() {
+  async createRecurrent() {
     await this.loadingSrv.present();
-    const data = this.getRecurrentData();
+    const recurrentData = this.getRecurrent();
+    const recurrent = await this.reservationSrv
+      .createRecurrent(recurrentData)
+      .pipe(finalize(async () => await this.loadingSrv.dismiss()))
+      .toPromise();
+    return recurrent;
+  }
+
+  async forceCreateRecurrentReservation() {
+    const data = this.getRecurrentReservation(this.recurrent.id);
+    await this.loadingSrv.present();
     this.reservationSrv
-      .createRecurrent(data, true)
+      .createRecurrentReservations(data, true)
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
         async (response) => {
@@ -177,7 +193,7 @@ export class CreateReservationByDatePage implements OnInit {
     return this.form.get('isRecurrent');
   }
 
-  async openCalModal(type: string) {
+  private async openCalModal(type: string) {
     const modal = await this.modalCtrl.create({
       component: CalModalPage,
       cssClass: 'cal-modal',
@@ -209,7 +225,7 @@ export class CreateReservationByDatePage implements OnInit {
     });
   }
 
-  doReorder(ev: CustomEvent<ItemReorderEventDetail>) {
+  private doReorder(ev: CustomEvent<ItemReorderEventDetail>) {
     this.vehicles = ev.detail.complete(this.vehicles);
   }
 
@@ -225,16 +241,28 @@ export class CreateReservationByDatePage implements OnInit {
     return newReservation;
   }
 
-  private getRecurrentData(): CreateRecurrentReservation {
+  private getRecurrentReservation(
+    recurrentId: string
+  ): CreateRecurrentReservation {
     return {
       title: this.form.value.title,
       description: this.form.value.description,
-      weekdays: this.weekdaySrv.getValuesFromCheckBoxes(this.weekdays),
-      startReservationTime: serializeDate(this.startTime), // Reservation start time HH:mm (only HH:mm will count)
-      endReservationTime: serializeDate(this.endTime), // Reservation end time (only HH:mm will count)
-      startReservations: serializeDate(new Date()), // Reservations will be created since now
-      endReservations: serializeDate(this.untilDate), // Until
+      startTime: serializeDate(this.startTime), // Reservation start time HH:mm (only HH:mm will count)
+      endTime: serializeDate(this.endTime), // Reservation end time (only HH:mm will count)
+      recurrent: recurrentId,
       vehicles: this.getVehiclesIds(this.vehicles),
+    };
+  }
+
+  private getRecurrent(): CreateRecurrent {
+    const since = serializeDate(new Date()); // Reservations will be created since now
+    const until = serializeDate(this.untilDate); // Until
+    const weekdays = this.weekdaySrv.getValuesFromCheckBoxes(this.weekdays);
+
+    return {
+      since,
+      until,
+      weekdays: weekdays.toString(),
     };
   }
 

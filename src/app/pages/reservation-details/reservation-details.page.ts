@@ -9,7 +9,7 @@ import { Geolocation } from '@capacitor/geolocation';
 import { AlertController } from '@ionic/angular';
 import * as L from 'leaflet';
 import { finalize } from 'rxjs/operators';
-import { Position, Reservation, Vehicle } from 'src/app/core/models';
+import { Position, Recurrent, Reservation, Vehicle } from 'src/app/core/models';
 import {
   AssetsService,
   ErrorMessageService,
@@ -19,11 +19,12 @@ import {
   PositionService,
   ReservationService,
   SnackerService,
+  WeekdaysService,
 } from 'src/app/core/services';
 import { MapConfiguration } from 'src/app/shared/utils/leaflet/map-configuration';
 import { MapCreator } from 'src/app/shared/utils/leaflet/map-creator';
 
-const REFRESH_LOCATION_TIME = 2000;
+const REFRESH_LOCATION_TIME = 10_000; // 10 sec.
 const vehicleIcon = 'img/icon/vehicle.png';
 const userIcon = 'img/icon/user.png';
 
@@ -36,6 +37,8 @@ const userIcon = 'img/icon/user.png';
 export class ReservationDetailsPage implements OnInit, AfterViewInit {
   getTimeReserved = this.dateSrv.getTimeReserved;
   reservation: Reservation;
+  recurrent: Recurrent;
+  weekdays: string[];
   vehicle: Vehicle;
   private positions: Position[];
   private map: L.Map;
@@ -49,6 +52,7 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
     private tabStorage: MyReservationsTabStorage,
     private errorMessage: ErrorMessageService,
     private positionSrv: PositionService,
+    private weekdaysSrv: WeekdaysService,
     private alertCtrl: AlertController,
     private loadingSrv: LoadingService,
     private assetsSrv: AssetsService,
@@ -150,6 +154,8 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
       this.reservation = response.reservation;
       this.positions = response.positions;
       this.vehicle = this.reservation.vehicle;
+      this.recurrent = this.reservation.recurrent;
+      this.weekdays = this.getWeekDaysLabels(this.recurrent);
       this.storeReservationInTab();
     });
   }
@@ -261,5 +267,17 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
       iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
       popupAnchor: [0, 0], // point from which the popup should open relative to the iconAnchor
     });
+  }
+
+  private getWeekDaysLabels(recurrent: Recurrent) {
+    if (!recurrent) {
+      return [];
+    }
+    const weekdays = recurrent.weekdays.split(',');
+    const labels = weekdays
+      .map((weekday) => parseInt(weekday, 10))
+      .map((weekday) => this.weekdaysSrv.getWeekDayLabel(weekday));
+
+    return labels;
   }
 }

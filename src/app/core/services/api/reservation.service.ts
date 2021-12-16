@@ -6,8 +6,10 @@ import {
   CreateRecurrentReservation,
   CreateRecurrentResponse,
   CreateReservation,
+  Recurrent,
   Reservation,
 } from '../../models';
+import { CreateRecurrent } from '../../models/create/create-recurrent.model';
 import { CreateReservationByDate } from '../../models/create/create-reservation-by-date.model';
 
 @Injectable({
@@ -47,13 +49,22 @@ export class ReservationService {
     return this.http.post<CreateReservation>(path, reservation);
   }
 
+  createRecurrent(recurrent: CreateRecurrent) {
+    const reservationUrl = this.urlSrv.getReservations();
+    const path = `${reservationUrl}/create_recurrent/`;
+    return this.http.post<Recurrent>(path, recurrent);
+  }
+
   createByDate(reservation: CreateReservationByDate) {
     const reservationUrl = this.urlSrv.getReservations();
     const path = `${reservationUrl}/create_by_date/`;
     return this.http.post<Reservation>(path, reservation);
   }
 
-  createRecurrent(recReservation: CreateRecurrentReservation, force: boolean) {
+  createRecurrentReservations(
+    recReservation: CreateRecurrentReservation,
+    force: boolean
+  ) {
     const options = { params: new HttpParams().set('force', force) };
 
     const reservationUrl = this.urlSrv.getReservations();

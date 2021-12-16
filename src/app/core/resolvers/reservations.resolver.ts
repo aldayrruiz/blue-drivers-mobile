@@ -19,18 +19,19 @@ export class ReservationsResolver implements Resolve<Reservation[]> {
     await this.loadingSrv.present();
 
     const vehicleId = route.params.vehicleId;
-    const date = new Date();
-    const firstDayThisMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-    const firstDayNextMonth = new Date(
-      date.getFullYear(),
-      date.getMonth() + 1,
-      1
-    );
+
+    // ! Just get all, independently of an start and end date.
+    // const date = new Date();
+    // const firstDayThisMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+    // const firstDayNextMonth = new Date(
+    //   date.getFullYear(),
+    //   date.getMonth() + 1,
+    //   1
+    // );
     const options = {
-      params: new HttpParams()
-        .set('vehicleId', vehicleId)
-        .set('from', firstDayThisMonth.toJSON())
-        .set('to', firstDayNextMonth.toJSON()),
+      params: new HttpParams().set('vehicleId', vehicleId),
+      // .set('from', firstDayThisMonth.toJSON())
+      // .set('to', firstDayNextMonth.toJSON()),
     };
     return this.service
       .getAll(options)

@@ -8,19 +8,15 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid class="ion-no-padding">
+  <ion-grid>
     <ion-row>
       <ion-col size="12" class="ion-no-padding">
-        <ion-card class="border border-radius no-box-shadow ion-padding">
+        <ion-card>
           <div
             *ngIf="isReservationOccurringNow()"
             id="map"
             style="height: 300px"
           ></div>
-
-          <!-- <img
-            src="https://ionicframework.com/docs/demos/api/card/madison.jpg"
-          /> -->
           <ion-item lines="none" class="transparent">
             <ion-badge slot="start"
               >{{ reservation.vehicle.brand }}
@@ -34,24 +30,10 @@
             >
           </ion-item>
           <ion-card-content>
-            <h1
-              class="
-                text-size-lg
-                font-regular
-                text-color-primary
-                ion-text-wrap ion-padding-bottom
-              "
-            >
+            <h1 class="reservation-title">
               {{ reservation.title }}
             </h1>
-            <h3
-              class="
-                text-size-xs
-                font-regular
-                text-color-secondary
-                ion-text-wrap
-              "
-            >
+            <h3 class="ion-text-wrap">
               {{ reservation.description }}
             </h3>
           </ion-card-content>
@@ -60,7 +42,7 @@
               <ion-col class="ion-text-center">
                 <ion-button
                   [routerLink]="['create-incident']"
-                  class="default-button color-accent ion-margin-top box-shadow"
+                  class="ion-margin-top"
                   color="danger"
                 >
                   Reportar incidencia
@@ -74,7 +56,7 @@
               >
                 <ion-button
                   (click)="showCancelReservationAlert()"
-                  class="default-button color-accent ion-margin-top box-shadow"
+                  class="ion-margin-top"
                   color="dark"
                 >
                   Cancelar
@@ -85,43 +67,54 @@
         </ion-card>
       </ion-col>
     </ion-row>
+
+    <!-- Start - End -->
     <ion-row>
       <ion-col>
-        <ion-card
-          class="no-box-shadow ion-padding ion-text-center border border-radius"
-        >
-          <h2
-            class="
-              text-size-lg
-              ion-padding-top ion-no-margin
-              text-color-primary
-            "
-          >
-            Desde
-          </h2>
-          <span class="text-size-xs">{{
-            reservation.start | date: 'dd/MM/yyyy, HH:mm'
-          }}</span>
+        <ion-card class="ion-text-center">
+          <h2 class="title">Recogida</h2>
+          <span>{{ reservation.start | date: 'dd/MM/yyyy, HH:mm' }}</span>
         </ion-card>
       </ion-col>
       <ion-col>
-        <ion-card
-          class="no-box-shadow ion-padding ion-text-center border border-radius"
-        >
-          <h2
-            class="
-              text-size-lg
-              ion-padding-top ion-no-margin
-              text-color-primary
-            "
-          >
-            Hasta
-          </h2>
-          <span class="text-size-xs">{{
-            reservation.end | date: 'dd/MM/yyyy, HH:mm'
-          }}</span>
+        <ion-card class="ion-text-center">
+          <h2 class="title">Entrega</h2>
+          <span>{{ reservation.end | date: 'dd/MM/yyyy, HH:mm' }}</span>
         </ion-card>
       </ion-col>
     </ion-row>
+
+    <!-- Recurrent information -->
+    <ion-card class="ion-text-center" *ngIf="reservation.is_recurrent">
+      <h2 class="title">Se repite</h2>
+      <ion-grid>
+        <ion-row>
+          <!-- Since -->
+          <ion-col>
+            <h2 class="title">Desde</h2>
+            <span>{{ recurrent.since | date: 'dd/MM/yyyy' }}</span>
+          </ion-col>
+          <!-- Until -->
+          <ion-col>
+            <h2 class="title">Hasta</h2>
+            <span>{{ recurrent.until | date: 'dd/MM/yyyy' }}</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <h2 class="title">Los días</h2>
+            <ion-grid>
+              <ion-row>
+                <ion-col
+                  class="ion-padding-horizontal"
+                  *ngFor="let weekday of weekdays"
+                  >{{ weekday }}</ion-col
+                >
+              </ion-row>
+            </ion-grid>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
   </ion-grid>
 </ion-content>

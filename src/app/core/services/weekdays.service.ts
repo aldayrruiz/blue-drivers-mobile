@@ -22,15 +22,7 @@ export class WeekdaysService {
     return checkboxes.filter((cb) => cb.isChecked).map((cb) => cb.value);
   }
 
-  private generateWeekDay(weekday: number) {
-    return {
-      value: weekday,
-      label: this.getWeekDayLabel(weekday),
-      isChecked: false,
-    };
-  }
-
-  private getWeekDayLabel(weekday: number) {
+  getWeekDayLabel(weekday: number) {
     switch (weekday) {
       case 0:
         return 'Lunes';
@@ -49,5 +41,13 @@ export class WeekdaysService {
       default:
         return 'Error';
     }
+  }
+
+  private generateWeekDay(weekday: number) {
+    return {
+      value: weekday,
+      label: this.getWeekDayLabel(weekday),
+      isChecked: false,
+    };
   }
 }

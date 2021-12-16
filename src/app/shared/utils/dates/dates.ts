@@ -165,3 +165,5 @@ export const toDateString = (date: Date) => {
 
   return `${day} ${dayName} ${month} ${year}`;
 };
+
+export const alreadyStarted = (date: StringOrDate) => new Date(date) < now();

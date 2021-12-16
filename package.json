@@ -1,7 +1,7 @@
 {
-  "name": "myapp",
+  "name": "eu.bluece.fleetmanagement",
   "version": "0.0.1",
-  "author": "Ionic Framework",
+  "author": "Aldayr Ruiz",
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "ng": "ng",
@@ -83,5 +83,5 @@
     "ts-node": "~8.3.0",
     "typescript": "~4.2.4"
   },
-  "description": "An Ionic project"
+  "description": "An ionic app to avoid conflicts among employees trying to reserve vehicles"
 }

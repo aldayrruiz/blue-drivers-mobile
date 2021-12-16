@@ -40,7 +40,6 @@
       [calendarMode]="calendar.mode"
       [currentDate]="calendar.currentDate"
       (onTimeSelected)="onTimeSelected($event)"
-      (onTitleChanged)="onViewTitleChanged($event)"
       [monthviewDisplayEventTemplate]="cal_template"
       [monthviewEventDetailTemplate]="template"
       [noEventsLabel]="calendar.noEventsLabel"
@@ -105,7 +104,7 @@
         <ion-card
           [routerLink]="[reservation.id]"
           [ngClass]="
-            alreadyStarted(reservation)
+            reservationAlreadyStarted(reservation.start)
               ? 'border border-radius no-box-shadow ion-padding opaque'
               : 'border border-radius no-box-shadow ion-padding'
           "

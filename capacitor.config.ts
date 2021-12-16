@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'fleet-management',
+  appId: 'eu.bluece.fleetmanagement',
+  appName: 'BlueCe Fleet Management',
   webDir: 'www',
   bundledWebRuntime: false,
 };

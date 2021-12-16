@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { User, Vehicle } from '.';
+import { Recurrent, User, Vehicle } from '.';
 
 export interface Reservation {
   id?: string;
@@ -12,5 +12,5 @@ export interface Reservation {
   vehicle: Vehicle;
   is_cancelled: boolean;
   is_recurrent: boolean;
-  recurrent_id: string;
+  recurrent?: Recurrent;
 }

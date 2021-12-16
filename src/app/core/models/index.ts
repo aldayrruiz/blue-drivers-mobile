@@ -9,6 +9,7 @@ export * from './enums/incident-type.model';
 export * from './enums/ticket-status.model';
 export * from './incident.model';
 export * from './position.model';
+export * from './recurrent.model';
 export * from './reservation.model';
 export * from './responses/create-recurrent-response.model';
 export * from './ticket.model';

@@ -4,6 +4,7 @@ import { CalendarComponent } from 'ionic2-calendar';
 import { Reservation } from 'src/app/core/models/reservation.model';
 import { GhostService, MyReservationsTabStorage } from 'src/app/core/services';
 import { MyDateService } from 'src/app/core/services/my-date.service';
+import { alreadyStarted } from 'src/app/shared/utils/dates/dates';
 
 @Component({
   selector: 'app-my-reservations',
@@ -12,22 +13,18 @@ import { MyDateService } from 'src/app/core/services/my-date.service';
 })
 export class MyReservationsPage implements OnInit {
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
-  selectedDate: Date;
-  getTimeReserved = this.dateSrv.getTimeReserved;
-  reservationsCalendarMode: Reservation[] = [];
-  reservationsListMode: Reservation[] = [];
-  segmentValue = 'calendar';
+  private reservationAlreadyStarted = alreadyStarted;
+  private getTimeReserved = this.dateSrv.getTimeReserved;
+  private reservationsCalendarMode: Reservation[] = [];
+  private reservationsListMode: Reservation[] = [];
 
-  userId: string;
-  eventSource = [];
-  viewTitle: string;
-  selectedMonth: number;
-
-  calendar = {
+  private calendar = {
     mode: 'month',
     currentDate: new Date(),
     noEventsLabel: 'No tienes reservas',
   };
+  private segmentValue = 'calendar';
+  private eventSource = [];
 
   constructor(
     private tabStorage: MyReservationsTabStorage,
@@ -38,50 +35,6 @@ export class MyReservationsPage implements OnInit {
 
   ngOnInit(): void {
     this.refreshComponentData();
-  }
-
-  onTimeSelected(event): void {
-    const date = new Date(event.selectedTime);
-    this.tabStorage.selectDate(date);
-  }
-
-  segmentChanged(event) {
-    this.segmentValue = event.detail.value;
-  }
-
-  async goToReservation(id: string) {
-    await this.ghost.goToReservationDetails(id);
-  }
-
-  next(): void {
-    this.myCal.slideNext();
-  }
-
-  back(): void {
-    this.myCal.slidePrev();
-  }
-
-  onViewTitleChanged(title: string): void {
-    // Parse title
-    this.viewTitle = title.replace('Week', 'Semana');
-  }
-
-  getFormattedHoursAndMinutes(date: Date): string {
-    const str = date.toLocaleTimeString();
-    return str.slice(0, -3);
-  }
-
-  differentDay(event): boolean {
-    const start = event.startTime;
-    const end = event.endTime;
-
-    return start.getUTCDay() !== end.getUTCDay();
-  }
-
-  alreadyStarted(reservation: Reservation) {
-    const start = new Date(reservation.start);
-    const now = new Date();
-    return start <= now;
   }
 
   private refreshComponentData(): void {
@@ -106,12 +59,10 @@ export class MyReservationsPage implements OnInit {
     });
 
     this.eventSource = events;
-    this.reservationsListMode = this.getFirstInstanceOfReservations(
-      this.reservationsCalendarMode
-    );
+    this.reservationsListMode = this.getListMode(this.reservationsCalendarMode);
   }
 
-  private getFirstInstanceOfReservations(reservations: Reservation[]) {
+  private getListMode(reservations: Reservation[]) {
     const ordered = this.orderReservationsByStart(reservations);
     const result: Reservation[] = [];
     ordered.forEach((reservation) => {
@@ -140,10 +91,12 @@ export class MyReservationsPage implements OnInit {
 
   private isRecurrentIdInto(
     reservations: Reservation[],
-    recurrent: Reservation
+    recurrentReservation: Reservation
   ) {
-    const recurrentId = recurrent.recurrent_id;
-    const index = reservations.findIndex((r) => r.recurrent_id === recurrentId);
+    const recurrentId = recurrentReservation.recurrent.id;
+    const index = reservations.findIndex(
+      (reservation) => reservation.recurrent?.id === recurrentId
+    );
     return index;
   }
 
@@ -152,4 +105,30 @@ export class MyReservationsPage implements OnInit {
       new Date(a.start) < new Date(b.start) ? -1 : 1
     );
   }
+
+  // Html Helper functions
+
+  private async goToReservation(id: string) {
+    await this.ghost.goToReservationDetails(id);
+  }
+
+  private differentDay(event): boolean {
+    const start = event.startTime;
+    const end = event.endTime;
+
+    return start.getUTCDay() !== end.getUTCDay();
+  }
+
+  // Ionic2 Calendar
+
+  private next = () => this.myCal.slideNext();
+
+  private back = () => this.myCal.slidePrev();
+
+  private onTimeSelected(event): void {
+    const date = new Date(event.selectedTime);
+    this.tabStorage.selectDate(date);
+  }
+
+  private segmentChanged = (e) => (this.segmentValue = e.detail.value);
 }

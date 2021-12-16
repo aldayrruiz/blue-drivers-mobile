@@ -32,7 +32,7 @@ export class VehicleDetailsPage implements OnInit {
   };
 
   selectedDate: Date;
-  reservations: Reservation[];
+  reservations: Reservation[] = [];
   constructor(
     private vehiclesTabStorage: VehiclesTabStorage,
     private reservationSrv: ReservationService,
@@ -43,26 +43,21 @@ export class VehicleDetailsPage implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.resolveData();
+    await this.resolveData();
     this.userId = (await this.storage.getParsed(Key.user)).id;
     this.loadReservations(this.reservations);
   }
 
   loadReservations(reservations: Reservation[]): void {
-    const events = [];
-    const reservationsExcluded =
-      this.excludeCancelledReservations(reservations);
+    this.eventSource = reservations.map((reservation) => ({
+      id: reservation.id,
+      title: 'Reservado',
+      startTime: new Date(reservation.start),
+      endTime: new Date(reservation.end),
+    }));
 
-    reservationsExcluded.forEach((reservation) => {
-      events.push({
-        id: reservation.id,
-        title: 'Reservado',
-        startTime: new Date(reservation.start),
-        endTime: new Date(reservation.end),
-      });
-    });
-
-    this.eventSource = events;
+    this.reservations = reservations;
+    this.myCal.loadEvents();
   }
 
   next(): void {
@@ -132,10 +127,17 @@ export class VehicleDetailsPage implements OnInit {
 
   alreadyStarted(id: string) {
     const reservation = this.reservations.find((r) => r.id === id);
+
     const start = new Date(reservation.start);
     const now = new Date();
     return start <= now;
   }
+
+  markDisabled = (date: Date) => {
+    const current = new Date();
+    current.setDate(current.getDate() - 1);
+    return date < current;
+  };
 
   /**
    * Basically load new reservations corresponded to the month visualized in calendar and its next to months.
@@ -143,22 +145,24 @@ export class VehicleDetailsPage implements OnInit {
    * @param ev Date clicked or changed in calendar
    */
   onCurrentDateChanged(ev: Date) {
+    return;
+
     if (this.selectedMonth !== ev.getUTCMonth()) {
-      const firstDayThisMonth = new Date(
-        ev.getFullYear(),
-        ev.getMonth() - 1,
-        1
-      );
-      const firstDayNextMonth = new Date(
-        ev.getFullYear(),
-        ev.getMonth() + 2,
-        1
-      );
+      // ! Just get all
+      // const firstDayThisMonth = new Date(
+      //   ev.getFullYear(),
+      //   ev.getMonth() - 1,
+      //   1
+      // );
+      // const firstDayNextMonth = new Date(
+      //   ev.getFullYear(),
+      //   ev.getMonth() + 2,
+      //   1
+      // );
       const options = {
-        params: new HttpParams()
-          .set('vehicleId', this.vehicle.id)
-          .set('from', firstDayThisMonth.toJSON())
-          .set('to', firstDayNextMonth.toJSON()),
+        params: new HttpParams().set('vehicleId', this.vehicle.id),
+        // .set('from', firstDayThisMonth.toJSON())
+        // .set('to', firstDayNextMonth.toJSON()),
       };
       this.reservationSrv.getAll(options).subscribe((response) => {
         this.loadReservations(response);
@@ -167,14 +171,11 @@ export class VehicleDetailsPage implements OnInit {
     }
   }
 
-  private excludeCancelledReservations(reservations: Reservation[]) {
-    return reservations.filter((r) => !r.is_cancelled);
-  }
-
-  private resolveData() {
+  private async resolveData() {
     this.route.data.subscribe((response) => {
-      this.vehicle = response.vehicle;
-      this.reservations = response.reservations;
+      const { reservations, vehicle } = response.vehicleDetails;
+      this.reservations = reservations;
+      this.vehicle = vehicle;
     });
   }
 }

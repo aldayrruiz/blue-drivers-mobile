@@ -13,6 +13,7 @@ import { alreadyStarted } from 'src/app/shared/utils/dates/dates';
 })
 export class MyReservationsPage implements OnInit {
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
+  segmentValue = 'calendar';
   private reservationAlreadyStarted = alreadyStarted;
   private getTimeReserved = this.dateSrv.getTimeReserved;
   private reservationsCalendarMode: Reservation[] = [];
@@ -23,7 +24,6 @@ export class MyReservationsPage implements OnInit {
     currentDate: new Date(),
     noEventsLabel: 'No tienes reservas',
   };
-  private segmentValue = 'calendar';
   private eventSource = [];
 
   constructor(
@@ -36,6 +36,8 @@ export class MyReservationsPage implements OnInit {
   ngOnInit(): void {
     this.refreshComponentData();
   }
+
+  segmentChanged = (e) => (this.segmentValue = e.detail.value);
 
   private refreshComponentData(): void {
     this.route.data.subscribe((response) => {
@@ -129,6 +131,4 @@ export class MyReservationsPage implements OnInit {
     const date = new Date(event.selectedTime);
     this.tabStorage.selectDate(date);
   }
-
-  private segmentChanged = (e) => (this.segmentValue = e.detail.value);
 }

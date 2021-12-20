@@ -181,6 +181,10 @@ export class CreateReservationByDatePage implements OnInit {
       );
   }
 
+  doReorder(ev: CustomEvent<ItemReorderEventDetail>) {
+    this.vehicles = ev.detail.complete(this.vehicles);
+  }
+
   get title(): AbstractControl {
     return this.form.get('title');
   }
@@ -223,10 +227,6 @@ export class CreateReservationByDatePage implements OnInit {
         }
       }
     });
-  }
-
-  private doReorder(ev: CustomEvent<ItemReorderEventDetail>) {
-    this.vehicles = ev.detail.complete(this.vehicles);
   }
 
   private getData() {

@@ -69,8 +69,7 @@ export class VehicleDetailsPage implements OnInit {
   }
 
   onViewTitleChanged(title: string): void {
-    // Parse title
-    this.viewTitle = title.replace('Week', 'Semana');
+    this.viewTitle = title;
   }
 
   onTimeSelected(event): void {

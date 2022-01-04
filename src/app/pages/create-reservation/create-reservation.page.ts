@@ -7,7 +7,7 @@ import { CreateReservation, Vehicle } from 'src/app/core/models';
 import {
   CalModalService,
   ErrorMessageService,
-  GhostService,
+  Ghost,
   LoadingService,
   ReservationService,
   SnackerService,
@@ -46,7 +46,7 @@ export class CreateReservationPage implements OnInit {
     private modalCtrl: ModalController,
     private snacker: SnackerService,
     private route: ActivatedRoute,
-    private ghost: GhostService,
+    private ghost: Ghost,
     private fb: FormBuilder
   ) {}
 

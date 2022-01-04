@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  GhostService,
+  Ghost,
   Key,
   LoginService,
   StorageService,
@@ -30,7 +30,7 @@ export class MenuPage implements OnInit {
   constructor(
     private loginService: LoginService,
     private storage: StorageService,
-    private ghost: GhostService
+    private ghost: Ghost
   ) {}
 
   async ngOnInit() {

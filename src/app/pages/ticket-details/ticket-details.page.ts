@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Reservation, Ticket, Vehicle } from 'src/app/core/models';
-import { GhostService, TicketService } from 'src/app/core/services';
+import { Ghost, TicketService } from 'src/app/core/services';
 import { SnackerService } from 'src/app/core/services/snacker.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class TicketDetailsPage implements OnInit {
     private ticketService: TicketService,
     private snacker: SnackerService,
     private route: ActivatedRoute,
-    private ghost: GhostService
+    private ghost: Ghost
   ) {}
 
   ngOnInit(): void {

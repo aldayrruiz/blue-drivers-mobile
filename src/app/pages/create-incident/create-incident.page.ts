@@ -5,7 +5,7 @@ import { finalize } from 'rxjs/operators';
 import { CreateIncident, Reservation } from 'src/app/core/models';
 import {
   ErrorMessageService,
-  GhostService,
+  Ghost,
   IncidentService,
   LoadingService,
   MyReservationsTabStorage,
@@ -33,7 +33,7 @@ export class CreateIncidentPage implements OnInit {
     private incidentService: IncidentService,
     private loadingSrv: LoadingService,
     private snacker: SnackerService,
-    private ghost: GhostService,
+    private ghost: Ghost,
     private fb: FormBuilder
   ) {}
 

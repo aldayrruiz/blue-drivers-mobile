@@ -35,6 +35,7 @@ const userIcon = 'img/icon/user.png';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReservationDetailsPage implements OnInit, AfterViewInit {
+  toolbarTitle = 'Detalles de tu reserva';
   getTimeReserved = this.dateSrv.getTimeReserved;
   reservation: Reservation;
   recurrent: Recurrent;

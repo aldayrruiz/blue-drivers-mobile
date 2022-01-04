@@ -46,6 +46,8 @@ import { CalModalPage } from '../cal-modal/cal-modal.page';
   styleUrls: ['./create-reservation-by-date.page.scss'],
 })
 export class CreateReservationByDatePage implements OnInit {
+  toolbarTitle = 'Crear reserva';
+
   form: FormGroup;
   startDate: Date;
   endDate: Date;

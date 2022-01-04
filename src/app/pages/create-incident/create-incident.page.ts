@@ -23,6 +23,7 @@ import {
   styleUrls: ['./create-incident.page.scss', '../../../styles.css'],
 })
 export class CreateIncidentPage implements OnInit {
+  toolbarTitle = 'Crear incidencia';
   form: FormGroup;
   reservation: Reservation;
   photoBase64: string;

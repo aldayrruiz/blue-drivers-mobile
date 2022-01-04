@@ -8,6 +8,7 @@ import { Incident } from 'src/app/core/models';
   styleUrls: ['./my-incidents.page.scss'],
 })
 export class MyIncidentsPage implements OnInit {
+  toolbarTitle = 'Mis Incidencias';
   incidents: Incident[] = [];
 
   constructor(private route: ActivatedRoute) {}

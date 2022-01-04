@@ -10,6 +10,7 @@ import { SnackerService } from 'src/app/core/services/snacker.service';
   styleUrls: ['./ticket-details.page.scss'],
 })
 export class TicketDetailsPage implements OnInit {
+  toolbarTitle = 'Detalles de tu ticket';
   reservation: Reservation;
   vehicle: Vehicle;
   ticket: Ticket;

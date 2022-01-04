@@ -9,6 +9,8 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./incident-details.page.scss'],
 })
 export class IncidentDetailsPage implements OnInit {
+  toolbarTitle = 'Detalles de incidencia';
+
   incident: Incident;
   reservation: Reservation;
   vehicle: Vehicle;

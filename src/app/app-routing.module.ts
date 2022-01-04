@@ -21,13 +21,6 @@ const routes: Routes = [
     canLoad: [AutoLoginGuard],
   },
   {
-    path: 'edit-user',
-    loadChildren: () =>
-      import('./pages/edit-user/edit-user.module').then(
-        (m) => m.EditUserPageModule
-      ),
-  },
-  {
     path: 'register',
     loadChildren: () =>
       import('./pages/register/register.module').then(

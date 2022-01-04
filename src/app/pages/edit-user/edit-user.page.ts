@@ -25,6 +25,7 @@ import {
   styleUrls: ['./edit-user.page.scss', '../../../styles.css'],
 })
 export class EditUserPage implements OnInit {
+  toolbarTitle = 'Editar perfil';
   profile: FormGroup;
   user: User;
 

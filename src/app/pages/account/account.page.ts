@@ -8,6 +8,7 @@ import { LoginService } from 'src/app/core/services';
   styleUrls: ['account.page.scss'],
 })
 export class AccountPage {
+  toolbarTitle = 'Tu cuenta';
   constructor(private loginService: LoginService, private router: Router) {}
 
   async logout() {

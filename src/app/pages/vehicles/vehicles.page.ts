@@ -8,6 +8,7 @@ import { Vehicle } from 'src/app/core/models';
   styleUrls: ['vehicles.page.scss'],
 })
 export class VehiclesPage implements OnInit {
+  toolbarTitle = 'Vehículos';
   vehicles: Vehicle[] = [];
 
   constructor(private route: ActivatedRoute) {}

@@ -5,13 +5,18 @@ import { MenuPage } from './menu.page';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/members/vehicles',
+    redirectTo: '/members/home',
     pathMatch: 'full',
   },
   {
     path: '',
     component: MenuPage,
     children: [
+      {
+        path: 'home',
+        loadChildren: () =>
+          import('../home/home.module').then((m) => m.HomePageModule),
+      },
       {
         path: 'vehicles',
         loadChildren: () =>

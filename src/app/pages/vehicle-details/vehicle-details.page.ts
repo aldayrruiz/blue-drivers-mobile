@@ -18,7 +18,9 @@ import {
 })
 export class VehicleDetailsPage implements OnInit {
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
+
   vehicle: VehicleDetails;
+  toolbarTitle = '';
 
   userId: string;
   eventSource = [];
@@ -44,6 +46,7 @@ export class VehicleDetailsPage implements OnInit {
 
   async ngOnInit() {
     await this.resolveData();
+    this.loadToolbarTitle();
     this.userId = (await this.storage.getParsed(Key.user)).id;
     this.loadReservations(this.reservations);
   }
@@ -176,5 +179,9 @@ export class VehicleDetailsPage implements OnInit {
       this.reservations = reservations;
       this.vehicle = vehicle;
     });
+  }
+
+  private loadToolbarTitle() {
+    this.toolbarTitle = `${this.vehicle.brand} ${this.vehicle.model}`;
   }
 }

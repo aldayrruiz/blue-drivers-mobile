@@ -21,6 +21,7 @@ import {
   styleUrls: ['./create-ticket.page.scss'],
 })
 export class CreateTicketPage implements OnInit {
+  toolbarTitle = 'Solicitar cancelación';
   vehicle: Vehicle;
   form: FormGroup;
   reservationId: string;

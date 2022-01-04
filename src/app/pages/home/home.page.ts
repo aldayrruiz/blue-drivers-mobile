@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ROUTE } from 'src/app/shared/utils/routing/menu';
 
 @Component({
   selector: 'app-home',
@@ -6,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  toolbarTitle = 'Home';
+  buttons = [
+    { title: 'Vehículos', url: ROUTE.VEHICLES },
+    { title: 'Mis Reservas', url: ROUTE.MY_RESERVATIONS },
+    { title: 'Mis Tickets', url: ROUTE.MY_TICKETS },
+    { title: 'Mis Incidencias', url: ROUTE.MY_INCIDENTS },
+    { title: 'Cuenta', url: ROUTE.ACCOUNT },
+  ];
 
-  constructor() {}
+  toolbarTitle = 'Home';
 
   ngOnInit() {}
 }

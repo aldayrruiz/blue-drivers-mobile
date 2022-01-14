@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from 'src/app/shared/shared-module.module';
-import { ReservationDetailsPageRoutingModule } from './reservation-details-routing.module';
-import { ReservationDetailsPage } from './reservation-details.page';
+import { HomePageRoutingModule } from './home-routing.module';
+import { HomePage } from './home.page';
 
 @NgModule({
   imports: [
@@ -12,8 +12,8 @@ import { ReservationDetailsPage } from './reservation-details.page';
     FormsModule,
     IonicModule,
     SharedModule,
-    ReservationDetailsPageRoutingModule,
+    HomePageRoutingModule,
   ],
-  declarations: [ReservationDetailsPage],
+  declarations: [HomePage],
 })
-export class ReservationDetailsPageModule {}
+export class HomePageModule {}

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CalendarComponent } from 'ionic2-calendar';
 import { Reservation } from 'src/app/core/models/reservation.model';
-import { GhostService, MyReservationsTabStorage } from 'src/app/core/services';
+import { Ghost, MyReservationsTabStorage } from 'src/app/core/services';
 import { MyDateService } from 'src/app/core/services/my-date.service';
 import { alreadyStarted } from 'src/app/shared/utils/dates/dates';
 
@@ -14,23 +14,24 @@ import { alreadyStarted } from 'src/app/shared/utils/dates/dates';
 export class MyReservationsPage implements OnInit {
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
   segmentValue = 'calendar';
-  private reservationAlreadyStarted = alreadyStarted;
-  private getTimeReserved = this.dateSrv.getTimeReserved;
-  private reservationsCalendarMode: Reservation[] = [];
-  private reservationsListMode: Reservation[] = [];
-
-  private calendar = {
+  viewTitle: string;
+  calendar = {
     mode: 'month',
     currentDate: new Date(),
     noEventsLabel: 'No tienes reservas',
   };
+
+  private reservationAlreadyStarted = alreadyStarted;
+  private getTimeReserved = this.dateSrv.getTimeReserved;
+  private reservationsCalendarMode: Reservation[] = [];
+  private reservationsListMode: Reservation[] = [];
   private eventSource = [];
 
   constructor(
     private tabStorage: MyReservationsTabStorage,
     private dateSrv: MyDateService,
     private route: ActivatedRoute,
-    private ghost: GhostService
+    private ghost: Ghost
   ) {}
 
   ngOnInit(): void {
@@ -38,6 +39,10 @@ export class MyReservationsPage implements OnInit {
   }
 
   segmentChanged = (e) => (this.segmentValue = e.detail.value);
+
+  onViewTitleChanged(title: string): void {
+    this.viewTitle = title;
+  }
 
   private refreshComponentData(): void {
     this.route.data.subscribe((response) => {

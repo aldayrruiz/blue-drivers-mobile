@@ -1,19 +1,8 @@
 <ion-header [translucent]="true">
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title> Tu cuenta </ion-title>
-  </ion-toolbar>
+  <app-toolbar [title]="toolbarTitle"></app-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tu cuenta</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
   <ion-button expand="full" routerLink="edit-user">Editar perfil</ion-button>
   <ion-button expand="full" (click)="logout()">Cerrar sesión</ion-button>
 

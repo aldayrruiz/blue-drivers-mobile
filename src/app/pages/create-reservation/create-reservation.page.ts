@@ -7,7 +7,7 @@ import { CreateReservation, Vehicle } from 'src/app/core/models';
 import {
   CalModalService,
   ErrorMessageService,
-  GhostService,
+  Ghost,
   LoadingService,
   ReservationService,
   SnackerService,
@@ -30,6 +30,8 @@ import { CalModalPage } from '../cal-modal/cal-modal.page';
   styleUrls: ['./create-reservation.page.scss', '../../../styles.css'],
 })
 export class CreateReservationPage implements OnInit {
+  toolbarTitle = 'Crear reserva';
+
   form: FormGroup;
   vehicle: Vehicle;
   startDate: Date;
@@ -46,7 +48,7 @@ export class CreateReservationPage implements OnInit {
     private modalCtrl: ModalController,
     private snacker: SnackerService,
     private route: ActivatedRoute,
-    private ghost: GhostService,
+    private ghost: Ghost,
     private fb: FormBuilder
   ) {}
 

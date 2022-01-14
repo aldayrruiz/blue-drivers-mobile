@@ -5,7 +5,7 @@ import { finalize } from 'rxjs/operators';
 import { CreateIncident, Reservation } from 'src/app/core/models';
 import {
   ErrorMessageService,
-  GhostService,
+  Ghost,
   IncidentService,
   LoadingService,
   MyReservationsTabStorage,
@@ -23,6 +23,7 @@ import {
   styleUrls: ['./create-incident.page.scss', '../../../styles.css'],
 })
 export class CreateIncidentPage implements OnInit {
+  toolbarTitle = 'Crear incidencia';
   form: FormGroup;
   reservation: Reservation;
   photoBase64: string;
@@ -33,7 +34,7 @@ export class CreateIncidentPage implements OnInit {
     private incidentService: IncidentService,
     private loadingSrv: LoadingService,
     private snacker: SnackerService,
-    private ghost: GhostService,
+    private ghost: Ghost,
     private fb: FormBuilder
   ) {}
 

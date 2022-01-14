@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  GhostService,
+  Ghost,
   Key,
   LoginService,
   StorageService,
 } from 'src/app/core/services';
+import { ROUTE } from 'src/app/shared/utils/routing/menu';
 
 @Component({
   selector: 'app-menu',
@@ -16,21 +17,18 @@ export class MenuPage implements OnInit {
   email: string;
 
   pages = [
-    { title: 'Vehículos', url: '/members/vehicles', icon: 'car' },
-    {
-      title: 'Mis Reservas',
-      url: '/members/my-reservations',
-      icon: 'calendar',
-    },
-    { title: 'Mis Tickets', url: '/members/my-tickets', icon: 'ticket' },
-    { title: 'Mis Incidencias', url: '/members/my-incidents', icon: 'warning' },
-    { title: 'Cuenta', url: '/members/account', icon: 'person' },
+    { title: 'Home', url: ROUTE.HOME, icon: 'home' },
+    { title: 'Vehículos', url: ROUTE.VEHICLES, icon: 'car' },
+    { title: 'Mis Reservas', url: ROUTE.MY_RESERVATIONS, icon: 'calendar' },
+    { title: 'Mis Tickets', url: ROUTE.MY_TICKETS, icon: 'ticket' },
+    { title: 'Mis Incidencias', url: ROUTE.MY_INCIDENTS, icon: 'warning' },
+    { title: 'Cuenta', url: ROUTE.ACCOUNT, icon: 'person' },
   ];
 
   constructor(
     private loginService: LoginService,
     private storage: StorageService,
-    private ghost: GhostService
+    private ghost: Ghost
   ) {}
 
   async ngOnInit() {

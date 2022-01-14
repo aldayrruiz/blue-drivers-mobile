@@ -4,6 +4,7 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { NgCalendarModule } from 'ionic2-calendar';
+import { SharedModule } from 'src/app/shared/shared-module.module';
 import { CalModalPageModule } from '../cal-modal/cal-modal.module';
 import { MyReservationsPageRoutingModule } from './my-reservations-routing.module';
 import { MyReservationsPage } from './my-reservations.page';
@@ -14,6 +15,7 @@ registerLocaleData(localeEs);
     IonicModule,
     CommonModule,
     FormsModule,
+    SharedModule,
     MyReservationsPageRoutingModule,
     NgCalendarModule,
     CalModalPageModule,

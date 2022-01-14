@@ -11,9 +11,9 @@ import { EditUserPage } from './edit-user.page';
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedModule,
     EditUserPageRoutingModule,
     ReactiveFormsModule,
-    SharedModule,
   ],
   declarations: [EditUserPage],
 })

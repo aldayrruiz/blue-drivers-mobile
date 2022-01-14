@@ -6,7 +6,7 @@ import { finalize } from 'rxjs/operators';
 import { User } from 'src/app/core/models';
 import { EditUser } from 'src/app/core/models/edit/edit.user.models';
 import {
-  GhostService,
+  Ghost,
   Key,
   LoadingService,
   SnackerService,
@@ -25,6 +25,7 @@ import {
   styleUrls: ['./edit-user.page.scss', '../../../styles.css'],
 })
 export class EditUserPage implements OnInit {
+  toolbarTitle = 'Editar perfil';
   profile: FormGroup;
   user: User;
 
@@ -33,7 +34,7 @@ export class EditUserPage implements OnInit {
     private alertCtrl: AlertController,
     private snacker: SnackerService,
     private storage: StorageService,
-    private ghost: GhostService,
+    private ghost: Ghost,
     private route: ActivatedRoute,
     private userSrv: UserService,
     private fb: FormBuilder,

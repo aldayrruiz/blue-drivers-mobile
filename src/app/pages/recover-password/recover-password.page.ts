@@ -9,7 +9,7 @@ import { finalize } from 'rxjs/operators';
 import { CreateRecoverPasswordResponse } from 'src/app/core/models/responses/create-recover-password-response.model';
 import {
   ErrorMessageService,
-  GhostService,
+  Ghost,
   LoadingService,
   LoginService,
   PasswordRecover,
@@ -36,7 +36,7 @@ export class RecoverPasswordPage implements OnInit {
     private loadingSrv: LoadingService,
     private snacker: SnackerService,
     private fb: FormBuilder,
-    private ghost: GhostService
+    private ghost: Ghost
   ) {}
 
   ngOnInit() {

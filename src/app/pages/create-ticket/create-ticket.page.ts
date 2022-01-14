@@ -5,7 +5,7 @@ import { finalize } from 'rxjs/operators';
 import { CreateTicket, Vehicle } from 'src/app/core/models';
 import {
   ErrorMessageService,
-  GhostService,
+  Ghost,
   LoadingService,
   SnackerService,
   TicketService,
@@ -21,6 +21,7 @@ import {
   styleUrls: ['./create-ticket.page.scss'],
 })
 export class CreateTicketPage implements OnInit {
+  toolbarTitle = 'Solicitar cancelación';
   vehicle: Vehicle;
   form: FormGroup;
   reservationId: string;
@@ -31,7 +32,7 @@ export class CreateTicketPage implements OnInit {
     private loadingSrv: LoadingService,
     private snacker: SnackerService,
     private route: ActivatedRoute,
-    private ghost: GhostService,
+    private ghost: Ghost,
     private fb: FormBuilder,
     private router: Router
   ) {}

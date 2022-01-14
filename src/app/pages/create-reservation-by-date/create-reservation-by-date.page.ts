@@ -14,7 +14,7 @@ import { CreateReservationByDate } from 'src/app/core/models/create/create-reser
 import {
   CalModalService,
   ErrorMessageService,
-  GhostService,
+  Ghost,
   LoadingService,
   MyReservationsTabStorage,
   ReservationService,
@@ -46,6 +46,8 @@ import { CalModalPage } from '../cal-modal/cal-modal.page';
   styleUrls: ['./create-reservation-by-date.page.scss'],
 })
 export class CreateReservationByDatePage implements OnInit {
+  toolbarTitle = 'Crear reserva';
+
   form: FormGroup;
   startDate: Date;
   endDate: Date;
@@ -67,7 +69,7 @@ export class CreateReservationByDatePage implements OnInit {
     private modalCtrl: ModalController,
     private snacker: SnackerService,
     private route: ActivatedRoute,
-    private ghost: GhostService,
+    private ghost: Ghost,
     private fb: FormBuilder
   ) {}
 

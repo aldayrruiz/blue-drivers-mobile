@@ -1,0 +1,20 @@
+<ion-header>
+  <app-toolbar [title]="toolbarTitle"></app-toolbar>
+</ion-header>
+
+<ion-content class="relative">
+  <ion-grid class="center">
+    <ion-row class="ion-padding-vertical">
+      <ion-col class="ion-margin-horizontal">
+        <ion-button
+          class="ion-margin-vertical"
+          expand="block"
+          [routerLink]="[button.url]"
+          *ngFor="let button of buttons"
+        >
+          {{ button.title }}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

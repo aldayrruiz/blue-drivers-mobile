@@ -369,8 +369,8 @@ export class CreateReservationByDatePage implements OnInit {
   }
 
   private async showSuccessfulMessage(recurrent: boolean) {
-    const normalMsg = 'Reserva creada con exito';
-    const recurrentMsg = 'Reservas creadas con exito';
+    const normalMsg = 'Reserva creada con éxito';
+    const recurrentMsg = 'Reservas creadas con éxito';
     const msg = recurrent ? recurrentMsg : normalMsg;
     await this.snacker.showSuccessful(msg);
   }

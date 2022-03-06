@@ -83,7 +83,7 @@ export class EditUserPage implements OnInit {
       .subscribe(
         async () => {
           await this.ghost.goBack(this.route);
-          const msg = 'Se ha editado con exito.';
+          const msg = 'Se ha editado con éxito.';
           await this.snacker.showSuccessful(msg);
         },
         async () => {

@@ -116,7 +116,7 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
       .subscribe(
         async () => {
           this.router.navigate(['..'], { relativeTo: this.route });
-          const message = 'Operación realizada con exito';
+          const message = 'Operación realizada con éxito';
           this.snacker.showSuccessful(message);
         },
         async (error) => {

@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { finalize } from 'rxjs/operators';
-import { CreateIncident, Reservation } from 'src/app/core/models';
+import { CreateIncident, IncidentType, Reservation } from 'src/app/core/models';
 import {
   ErrorMessageService,
   Ghost,
@@ -11,11 +16,7 @@ import {
   MyReservationsTabStorage,
   SnackerService,
 } from 'src/app/core/services';
-import {
-  descriptionValidators,
-  incidentTypeValidators,
-  titleValidators,
-} from 'src/app/shared/utils/validators';
+import { incidentTypeValidators } from 'src/app/shared/utils/validators';
 
 @Component({
   selector: 'app-create-incident',
@@ -52,7 +53,7 @@ export class CreateIncidentPage implements OnInit {
       .subscribe(
         async (incident) => {
           await this.ghost.goToIncidentDetails(incident.id);
-          const msg = 'Incidencia creado con exito';
+          const msg = 'Incidencia creado con éxito';
           await this.snacker.showSuccessful(msg);
         },
         // error is the message from the server - executes if response was not ok
@@ -73,10 +74,6 @@ export class CreateIncidentPage implements OnInit {
     this.photoBase64 = image.dataUrl;
   }
 
-  get title(): AbstractControl {
-    return this.form.get('title');
-  }
-
   get description(): AbstractControl {
     return this.form.get('description');
   }
@@ -87,15 +84,13 @@ export class CreateIncidentPage implements OnInit {
 
   private initFormGroup(): FormGroup {
     return this.fb.group({
-      title: ['', titleValidators],
-      description: ['', descriptionValidators],
-      incidentType: ['OTHERS', incidentTypeValidators],
+      description: ['', [Validators.maxLength(50)]],
+      incidentType: [IncidentType.OTHERS, incidentTypeValidators],
     });
   }
 
   private getIncident() {
     const incident: CreateIncident = {
-      title: this.form.value.title,
       description: this.form.value.description,
       type: this.form.value.incidentType,
       reservation: this.reservation.id,

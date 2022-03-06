@@ -51,7 +51,7 @@ export class CreateTicketPage implements OnInit {
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
         async (ticket) => {
-          const msg = 'Ticket creado con exito';
+          const msg = 'Ticket creado con éxito';
           await this.ghost.goToTicketDetails(ticket.id);
           await this.snacker.showSuccessful(msg);
         },

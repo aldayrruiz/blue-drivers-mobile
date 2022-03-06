@@ -34,7 +34,7 @@ export class TicketDetailsPage implements OnInit {
     this.ticketService.delete(this.ticket.id).subscribe(
       async () => {
         await this.ghost.goBack(this.route);
-        const msg = 'Ticket cancelado con exito';
+        const msg = 'Ticket cancelado con éxito';
         this.snacker.showSuccessful(msg);
       },
       async (errors) => {

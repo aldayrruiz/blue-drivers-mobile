@@ -157,7 +157,7 @@ export class CreateReservationPage implements OnInit {
   }
 
   private async showSuccessfulMsg() {
-    const msg = 'Reserva creada con exito';
+    const msg = 'Reserva creada con éxito';
     await this.snacker.showSuccessful(msg);
   }
 

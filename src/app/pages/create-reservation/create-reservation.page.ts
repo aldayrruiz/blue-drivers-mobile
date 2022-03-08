@@ -17,11 +17,11 @@ import {
   combineAndSerialize,
   initDates,
   validate,
-} from 'src/app/shared/utils/dates/dates';
+} from 'src/app/core/utils/dates/dates';
 import {
   descriptionValidators,
   titleValidators,
-} from 'src/app/shared/utils/validators';
+} from 'src/app/core/utils/validators';
 import { CalModalPage } from '../cal-modal/cal-modal.page';
 
 @Component({

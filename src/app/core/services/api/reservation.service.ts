@@ -9,8 +9,7 @@ import {
   Recurrent,
   Reservation,
 } from '../../models';
-import { CreateRecurrent } from '../../models/create/create-recurrent.model';
-import { CreateReservationByDate } from '../../models/create/create-reservation-by-date.model';
+import { CreateReservationByDate } from '../../models/reservations/by-date/create-reservation-by-date.model';
 
 @Injectable({
   providedIn: 'root',
@@ -49,7 +48,7 @@ export class ReservationService {
     return this.http.post<CreateReservation>(path, reservation);
   }
 
-  createRecurrent(recurrent: CreateRecurrent) {
+  createRecurrent(recurrent: Recurrent) {
     const reservationUrl = this.urlSrv.getReservations();
     const path = `${reservationUrl}/create_recurrent/`;
     return this.http.post<Recurrent>(path, recurrent);

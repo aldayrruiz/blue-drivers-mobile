@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Reservation, Ticket, Vehicle } from 'src/app/core/models';
-import { Ghost, TicketService } from 'src/app/core/services';
-import { SnackerService } from 'src/app/core/services/snacker.service';
+import { Ghost, SnackerService, TicketService } from 'src/app/core/services';
 
 @Component({
   selector: 'app-ticket-details',
@@ -16,10 +15,10 @@ export class TicketDetailsPage implements OnInit {
   ticket: Ticket;
 
   constructor(
-    private ticketService: TicketService,
-    private snacker: SnackerService,
-    private route: ActivatedRoute,
-    private ghost: Ghost
+    private readonly ticketService: TicketService,
+    private readonly snacker: SnackerService,
+    private readonly route: ActivatedRoute,
+    private readonly ghost: Ghost
   ) {}
 
   ngOnInit(): void {

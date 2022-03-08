@@ -13,7 +13,7 @@ import {
 import {
   emailValidators,
   passwordValidators,
-} from 'src/app/shared/utils/validators';
+} from 'src/app/core/utils/validators';
 
 @Component({
   selector: 'app-login',

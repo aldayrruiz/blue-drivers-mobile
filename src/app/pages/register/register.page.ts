@@ -16,7 +16,7 @@ import {
   emailValidators,
   fullnameValidators,
   passwordValidators,
-} from 'src/app/shared/utils/validators';
+} from 'src/app/core/utils/validators';
 
 @Component({
   selector: 'app-register',

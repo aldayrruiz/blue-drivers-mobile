@@ -24,10 +24,10 @@ export class MyDateService {
     'Domingo',
     'Lunes',
     'Martes',
-    'Miercoles',
+    'Miércoles',
     'Jueves',
     'Viernes',
-    'Sabado',
+    'Sábado',
   ];
 
   constructor() {}

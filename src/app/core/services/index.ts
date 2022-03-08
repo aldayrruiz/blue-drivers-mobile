@@ -1,12 +1,26 @@
-export * from './api';
-export * from './assets.service';
-export * from './auth';
+// API
+export * from './api/incident.service';
+export * from './api/position.service';
+export * from './api/reservation.service';
+export * from './api/ticket.service';
+export * from './api/user.service';
+export * from './api/vehicle.service';
+// Auth
+export * from './auth/login.service';
+export * from './auth/password-recover.service';
+export * from './auth/register.service';
 export * from './cal-modal.service';
-export * from './error-message.service';
-export * from './ghost.service';
-export * from './loading.service';
+// Error
+export * from './error/error-message.service';
 export * from './my-date.service';
-export * from './server-url.service';
-export * from './snacker.service';
+// Router
+export * from './router/assets.service';
+export * from './router/ghost.service';
+export * from './router/server-url.service';
+// Storage
 export * from './storage';
+//View
+export * from './view/loading.service';
+export * from './view/snacker.service';
+// None
 export * from './weekdays.service';

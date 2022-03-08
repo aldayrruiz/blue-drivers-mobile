@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MyTicketsResolver } from '../../core/resolvers/my-tickets.resolver';
+import { MyTicketsResolver } from 'src/app/core/resolvers';
 import { MyTicketsPage } from './my-tickets.page';
 
 const routes: Routes = [

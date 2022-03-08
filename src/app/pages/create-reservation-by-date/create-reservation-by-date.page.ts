@@ -9,8 +9,7 @@ import {
   Recurrent,
   Vehicle,
 } from 'src/app/core/models';
-import { CreateRecurrent } from 'src/app/core/models/create/create-recurrent.model';
-import { CreateReservationByDate } from 'src/app/core/models/create/create-reservation-by-date.model';
+import { CreateReservationByDate } from 'src/app/core/models/reservations/by-date/create-reservation-by-date.model';
 import {
   CalModalService,
   ErrorMessageService,
@@ -31,13 +30,13 @@ import {
   serializeDate,
   toDateString,
   validate,
-} from 'src/app/shared/utils/dates/dates';
+} from 'src/app/core/utils/dates/dates';
 import {
   descriptionValidators,
   isRecurrentValidators,
   titleValidators,
   weekdaysValidators,
-} from 'src/app/shared/utils/validators';
+} from 'src/app/core/utils/validators';
 import { CalModalPage } from '../cal-modal/cal-modal.page';
 
 @Component({
@@ -256,7 +255,7 @@ export class CreateReservationByDatePage implements OnInit {
     };
   }
 
-  private getRecurrent(): CreateRecurrent {
+  private getRecurrent(): Recurrent {
     const since = serializeDate(new Date()); // Reservations will be created since now
     const until = serializeDate(this.untilDate); // Until
     const weekdays = this.weekdaySrv.getValuesFromCheckBoxes(this.weekdays);

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ServerUrlService } from '..';
 import { User } from '../../models';
-import { EditUser } from '../../models/edit/edit.user.models';
+import { EditUser } from '../../models/users/edit.models';
 
 @Injectable({
   providedIn: 'root',

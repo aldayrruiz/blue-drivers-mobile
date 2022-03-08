@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { finalize } from 'rxjs/operators';
 import { User } from 'src/app/core/models';
-import { EditUser } from 'src/app/core/models/edit/edit.user.models';
+import { EditUser } from 'src/app/core/models/users/edit.models';
 import {
   Ghost,
   Key,
@@ -17,7 +17,7 @@ import {
   emailValidators,
   fullnameValidators,
   passwordValidators,
-} from 'src/app/shared/utils/validators';
+} from 'src/app/core/utils/validators';
 
 @Component({
   selector: 'app-edit-user',

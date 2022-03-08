@@ -29,7 +29,7 @@ export class WeekdaysService {
       case 1:
         return 'Martes';
       case 2:
-        return 'Miercoles';
+        return 'Miércoles';
       case 3:
         return 'Jueves';
       case 4:

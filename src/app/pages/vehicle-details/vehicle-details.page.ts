@@ -36,12 +36,12 @@ export class VehicleDetailsPage implements OnInit {
   selectedDate: Date;
   reservations: Reservation[] = [];
   constructor(
-    private vehiclesTabStorage: VehiclesTabStorage,
-    private reservationSrv: ReservationService,
-    private alertCtrl: AlertController,
-    private storage: StorageService,
-    private route: ActivatedRoute,
-    private router: Router
+    private readonly vehiclesTabStorage: VehiclesTabStorage,
+    private readonly reservationSrv: ReservationService,
+    private readonly alertCtrl: AlertController,
+    private readonly storage: StorageService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
   ) {}
 
   async ngOnInit() {
@@ -57,6 +57,10 @@ export class VehicleDetailsPage implements OnInit {
       title: 'Reservado',
       startTime: new Date(reservation.start),
       endTime: new Date(reservation.end),
+      owner: {
+        email: reservation.owner.email,
+        fullname: reservation.owner.fullname,
+      },
     }));
 
     this.reservations = reservations;
@@ -175,8 +179,8 @@ export class VehicleDetailsPage implements OnInit {
 
   private async resolveData() {
     this.route.data.subscribe((response) => {
-      const { reservations, vehicle } = response.vehicleDetails;
-      this.reservations = reservations;
+      const { vehicle } = response.vehicleDetails;
+      this.reservations = vehicle.reservations;
       this.vehicle = vehicle;
     });
   }

@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PositionsResolver } from 'src/app/core/resolvers/positions.resolver';
-import { ReservationDetailsResolver } from '../../core/resolvers/reservation-details.resolver';
+import {
+  PositionsResolver,
+  ReservationDetailsResolver,
+} from 'src/app/core/resolvers';
 import { ReservationDetailsPage } from './reservation-details.page';
 
 const routes: Routes = [

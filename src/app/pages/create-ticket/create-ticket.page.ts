@@ -13,7 +13,7 @@ import {
 import {
   descriptionValidators,
   titleValidators,
-} from 'src/app/shared/utils/validators';
+} from 'src/app/core/utils/validators';
 
 @Component({
   selector: 'app-create-ticket',

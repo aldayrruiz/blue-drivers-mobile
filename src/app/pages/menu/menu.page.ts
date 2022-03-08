@@ -5,7 +5,7 @@ import {
   LoginService,
   StorageService,
 } from 'src/app/core/services';
-import { ROUTE } from 'src/app/shared/utils/routing/menu';
+import { ROUTE } from 'src/app/core/utils/routing/menu';
 
 @Component({
   selector: 'app-menu',

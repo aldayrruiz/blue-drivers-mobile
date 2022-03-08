@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
-import { CreateRecoverPasswordResponse } from 'src/app/core/models/responses/create-recover-password-response.model';
+import { CreateRecoverPasswordResponse } from 'src/app/core/models/auth/create-recover-password-response.model';
 import {
   ErrorMessageService,
   Ghost,
@@ -15,7 +15,7 @@ import {
   PasswordRecover,
   SnackerService,
 } from 'src/app/core/services';
-import { emailValidators } from 'src/app/shared/utils/validators';
+import { emailValidators } from 'src/app/core/utils/validators';
 
 @Component({
   selector: 'app-recover-password',

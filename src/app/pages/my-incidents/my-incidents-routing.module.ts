@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MyIncidentsResolver } from '../../core/resolvers/my-incidents.resolver';
+import { MyIncidentsResolver } from '../../core/resolvers/incidents/my-incidents.resolver';
 import { MyIncidentsPage } from './my-incidents.page';
 
 const routes: Routes = [

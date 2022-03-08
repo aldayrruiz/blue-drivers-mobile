@@ -60,15 +60,21 @@
 
       <ion-item *ngFor="let event of selectedDate.events">
         <ion-label *ngIf="differentDay(event); else sameDay">
-          De {{ event.startTime | date: 'dd/MM/YYYY, HH:mm' }}
-          <br />
-          A {{ event.endTime | date: 'dd/MM/YYYY, HH:mm' }}
+          <ion-text>
+            De {{ event.startTime | date: 'dd/MM/YYYY, HH:mm' }}
+            <br />
+            A {{ event.endTime | date: 'dd/MM/YYYY, HH:mm' }}
+          </ion-text>
+          <p>{{ event.owner.fullname }} - {{ event.owner.email }}</p>
         </ion-label>
         <ng-template #sameDay>
-          <ion-label
-            >De {{ event.startTime | date: 'HH:mm' }} a
-            {{ event.endTime | date: 'HH:mm' }}</ion-label
-          >
+          <ion-label class="ion-text-wrap">
+            <ion-text>
+              De {{ event.startTime | date: 'HH:mm' }} a
+              {{ event.endTime | date: 'HH:mm' }}
+            </ion-text>
+            <p>{{ event.owner.fullname }} - {{ event.owner.email }}</p>
+          </ion-label>
         </ng-template>
         <ion-icon
           *ngIf="isMine(event.id); else notMine"

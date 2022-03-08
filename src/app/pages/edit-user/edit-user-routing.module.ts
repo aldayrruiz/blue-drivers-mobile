@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserResolver } from '../../core/resolvers/user.resolver';
+import { UserResolver } from 'src/app/core/resolvers';
 import { EditUserPage } from './edit-user.page';
 
 const routes: Routes = [

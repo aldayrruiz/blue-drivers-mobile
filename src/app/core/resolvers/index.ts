@@ -1,12 +1,18 @@
-export * from './incident-details.resolver';
-export * from './my-incidents.resolver';
-export * from './my-reservations.resolver';
-export * from './my-tickets.resolver';
-export * from './positions.resolver';
-export * from './reservation-details.resolver';
-export * from './reservations.resolver';
-export * from './ticket-details.resolver';
-export * from './user.resolver';
-export * from './vehicle-details.resolver';
-export * from './vehicle-simple.resolver';
-export * from './vehicles.resolver';
+// Incidents
+export * from './incidents/incident-details.resolver';
+export * from './incidents/my-incidents.resolver';
+// Positions
+export * from './positions/positions.resolver';
+// Reservations
+export * from './reservations/my-reservations.resolver';
+export * from './reservations/reservation-details.resolver';
+export * from './reservations/reservations.resolver';
+// Tickets
+export * from './tickets/my-tickets.resolver';
+export * from './tickets/ticket-details.resolver';
+// Users
+export * from './users/user.resolver';
+// Vehicles
+export * from './vehicles/vehicle-details.resolver';
+export * from './vehicles/vehicle-simple.resolver';
+export * from './vehicles/vehicles.resolver';

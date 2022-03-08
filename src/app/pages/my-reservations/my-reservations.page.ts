@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CalendarComponent } from 'ionic2-calendar';
-import { Reservation } from 'src/app/core/models/reservation.model';
+import { Reservation } from 'src/app/core/models';
 import { Ghost, MyReservationsTabStorage } from 'src/app/core/services';
 import { MyDateService } from 'src/app/core/services/my-date.service';
-import { alreadyStarted } from 'src/app/shared/utils/dates/dates';
+import { alreadyStarted } from 'src/app/core/utils/dates/dates';
 
 @Component({
   selector: 'app-my-reservations',

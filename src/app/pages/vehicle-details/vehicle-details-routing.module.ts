@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { VehicleDetailsResolver } from '../../core/resolvers/vehicle-details.resolver';
+import { VehicleDetailsResolver } from 'src/app/core/resolvers';
 import { VehicleDetailsPage } from './vehicle-details.page';
 
 const routes: Routes = [

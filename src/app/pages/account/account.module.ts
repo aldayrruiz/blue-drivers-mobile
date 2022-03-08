@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import { SharedModule } from 'src/app/shared/shared-module.module';
+import { SharedModule } from 'src/app/components/shared-module.module';
 import { AccountPageRoutingModule } from './account-routing.module';
 import { AccountPage } from './account.page';
 

@@ -16,7 +16,7 @@ import {
   MyReservationsTabStorage,
   SnackerService,
 } from 'src/app/core/services';
-import { incidentTypeValidators } from 'src/app/shared/utils/validators';
+import { incidentTypeValidators } from 'src/app/core/utils/validators';
 
 @Component({
   selector: 'app-create-incident',

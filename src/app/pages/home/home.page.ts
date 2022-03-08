@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ROUTE } from 'src/app/shared/utils/routing/menu';
+import { ROUTE } from 'src/app/core/utils/routing/menu';
 
 @Component({
   selector: 'app-home',

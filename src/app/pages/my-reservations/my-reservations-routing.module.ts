@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MyReservationsResolver } from '../../core/resolvers/my-reservations.resolver';
+import { MyReservationsResolver } from 'src/app/core/resolvers';
 import { MyReservationsPage } from './my-reservations.page';
 
 const routes: Routes = [

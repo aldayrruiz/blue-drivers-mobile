@@ -21,8 +21,8 @@ import {
   SnackerService,
   WeekdaysService,
 } from 'src/app/core/services';
-import { MapConfiguration } from 'src/app/shared/utils/leaflet/map-configuration';
-import { MapCreator } from 'src/app/shared/utils/leaflet/map-creator';
+import { MapConfiguration } from 'src/app/core/utils/leaflet/map-configuration';
+import { MapCreator } from 'src/app/core/utils/leaflet/map-creator';
 
 const REFRESH_LOCATION_TIME = 10_000; // 10 sec.
 const vehicleIcon = 'img/icon/vehicle.png';

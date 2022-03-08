@@ -4,12 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { CalendarComponent } from 'ionic2-calendar';
 import { Reservation, VehicleDetails } from 'src/app/core/models';
-import {
-  Key,
-  ReservationService,
-  StorageService,
-  VehiclesTabStorage,
-} from 'src/app/core/services';
+import { Key, ReservationService, StorageService, VehiclesTabStorage } from 'src/app/core/services';
 
 @Component({
   selector: 'app-vehicle-details',
@@ -85,9 +80,7 @@ export class VehicleDetailsPage implements OnInit {
   }
 
   gotToCreateReservationPage(): void {
-    this.router.navigateByUrl(
-      `members/vehicles/${this.vehicle.id}/create-reservation`
-    );
+    this.router.navigateByUrl(`members/vehicles/${this.vehicle.id}/create-reservation`);
   }
 
   getFormattedHoursAndMinutes(date: Date): string {
@@ -118,9 +111,7 @@ export class VehicleDetailsPage implements OnInit {
   }
 
   isMine(reservationId: string): boolean {
-    const reservation = this.vehicle.reservations.find(
-      (r) => r.id === reservationId
-    );
+    const reservation = this.vehicle.reservations.find((r) => r.id === reservationId);
     return reservation.owner.id === this.userId;
   }
 

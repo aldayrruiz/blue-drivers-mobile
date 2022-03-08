@@ -13,15 +13,8 @@ import {
   SnackerService,
   VehiclesTabStorage,
 } from 'src/app/core/services';
-import {
-  combineAndSerialize,
-  initDates,
-  validate,
-} from 'src/app/core/utils/dates/dates';
-import {
-  descriptionValidators,
-  titleValidators,
-} from 'src/app/core/utils/validators';
+import { combineAndSerialize, initDates, validate } from 'src/app/core/utils/dates/dates';
+import { descriptionValidators, titleValidators } from 'src/app/core/utils/validators';
 import { CalModalPage } from '../cal-modal/cal-modal.page';
 
 @Component({

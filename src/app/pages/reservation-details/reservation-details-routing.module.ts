@@ -1,9 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {
-  PositionsResolver,
-  ReservationDetailsResolver,
-} from 'src/app/core/resolvers';
+import { PositionsResolver, ReservationDetailsResolver } from 'src/app/core/resolvers';
 import { ReservationDetailsPage } from './reservation-details.page';
 
 const routes: Routes = [
@@ -18,9 +15,7 @@ const routes: Routes = [
   {
     path: 'create-incident',
     loadChildren: () =>
-      import('../create-incident/create-incident.module').then(
-        (m) => m.CreateIncidentPageModule
-      ),
+      import('../create-incident/create-incident.module').then((m) => m.CreateIncidentPageModule),
   },
 ];
 

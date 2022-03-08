@@ -9,10 +9,7 @@ import { LoadingService } from '../../services/view/loading.service';
   providedIn: 'root',
 })
 export class TicketDetailsResolver implements Resolve<Ticket> {
-  constructor(
-    private service: TicketService,
-    private loadingSrv: LoadingService
-  ) {}
+  constructor(private service: TicketService, private loadingSrv: LoadingService) {}
 
   async resolve(route: ActivatedRouteSnapshot): Promise<Ticket> {
     await this.loadingSrv.present();

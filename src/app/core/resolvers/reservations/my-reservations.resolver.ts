@@ -7,10 +7,7 @@ import { LoadingService, ReservationService } from '../../services';
 
 @Injectable({ providedIn: 'root' })
 export class MyReservationsResolver implements Resolve<Reservation[]> {
-  constructor(
-    private service: ReservationService,
-    private loadingSrv: LoadingService
-  ) {}
+  constructor(private service: ReservationService, private loadingSrv: LoadingService) {}
 
   async resolve(): Promise<Reservation[]> {
     await this.loadingSrv.present();

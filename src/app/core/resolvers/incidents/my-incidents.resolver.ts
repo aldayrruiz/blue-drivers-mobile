@@ -8,10 +8,7 @@ import { IncidentService, LoadingService } from '../../services';
   providedIn: 'root',
 })
 export class MyIncidentsResolver implements Resolve<Incident[]> {
-  constructor(
-    private service: IncidentService,
-    private loadingSrv: LoadingService
-  ) {}
+  constructor(private service: IncidentService, private loadingSrv: LoadingService) {}
 
   async resolve(): Promise<Incident[]> {
     await this.loadingSrv.present();

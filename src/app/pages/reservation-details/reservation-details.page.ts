@@ -1,9 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Geolocation } from '@capacitor/geolocation';
 import { AlertController } from '@ionic/angular';
@@ -49,19 +44,24 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
   private vehicleIcon: L.Icon<L.IconOptions>;
 
   constructor(
-    private reservationService: ReservationService,
-    private tabStorage: MyReservationsTabStorage,
-    private errorMessage: ErrorMessageService,
-    private positionSrv: PositionService,
-    private weekdaysSrv: WeekdaysService,
-    private alertCtrl: AlertController,
-    private loadingSrv: LoadingService,
-    private assetsSrv: AssetsService,
-    private snacker: SnackerService,
-    private dateSrv: MyDateService,
-    private route: ActivatedRoute,
-    private router: Router
+    private readonly reservationService: ReservationService,
+    private readonly tabStorage: MyReservationsTabStorage,
+    private readonly errorMessage: ErrorMessageService,
+    private readonly positionSrv: PositionService,
+    private readonly weekdaysSrv: WeekdaysService,
+    private readonly alertCtrl: AlertController,
+    private readonly loadingSrv: LoadingService,
+    private readonly assetsSrv: AssetsService,
+    private readonly snacker: SnackerService,
+    private readonly dateSrv: MyDateService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
   ) {}
+
+  ngOnInit(): void {
+    this.initIcons();
+    this.resolveData();
+  }
 
   ngAfterViewInit(): void {
     if (this.isReservationOccurringNow()) {
@@ -73,9 +73,12 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
     }
   }
 
-  ngOnInit(): void {
-    this.initIcons();
-    this.resolveData();
+  isReservationOccurringNow() {
+    const start = new Date(this.reservation.start);
+    const end = new Date(this.reservation.end);
+    const now = new Date();
+    start.setMinutes(start.getMinutes() - 60);
+    return start < now && now < end;
   }
 
   alreadyStarted(reservation: Reservation): boolean {
@@ -85,7 +88,7 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
     return start <= now;
   }
 
-  async showCancelReservationAlert() {
+  async showCancelAlert() {
     const buttons = this.getAlertButtons();
     const alertElement = await this.alertCtrl.create({
       message: '¿Esta seguro?',
@@ -95,35 +98,8 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
     await alertElement.present(); // Mostrar al usuario
   }
 
-  isReservationOccurringNow() {
-    const start = new Date(this.reservation.start);
-    const end = new Date(this.reservation.end);
-    const now = new Date();
-    start.setMinutes(start.getMinutes() - 60);
-    return start < now && now < end;
-  }
-
   private storeReservationInTab() {
     this.tabStorage.setCurrentReservation(this.reservation);
-  }
-
-  private async cancelReservation(subsequentReservations: boolean) {
-    await this.loadingSrv.present();
-
-    this.reservationService
-      .delete(this.reservation.id, subsequentReservations)
-      .pipe(finalize(async () => await this.loadingSrv.dismiss()))
-      .subscribe(
-        async () => {
-          this.router.navigate(['..'], { relativeTo: this.route });
-          const message = 'Operación realizada con éxito';
-          this.snacker.showSuccessful(message);
-        },
-        async (error) => {
-          const message = this.errorMessage.get(error);
-          this.snacker.showFailed(message);
-        }
-      );
   }
 
   private getAlertButtons() {
@@ -150,6 +126,25 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
     return buttons;
   }
 
+  private async cancelReservation(subsequentReservations: boolean) {
+    await this.loadingSrv.present();
+
+    this.reservationService
+      .delete(this.reservation.id, subsequentReservations)
+      .pipe(finalize(async () => await this.loadingSrv.dismiss()))
+      .subscribe(
+        async () => {
+          this.router.navigate(['..'], { relativeTo: this.route });
+          const message = 'Operación realizada con éxito';
+          this.snacker.showSuccessful(message);
+        },
+        async (error) => {
+          const message = this.errorMessage.get(error);
+          this.snacker.showFailed(message);
+        }
+      );
+  }
+
   private resolveData() {
     this.route.data.subscribe((response) => {
       this.reservation = response.reservation;
@@ -170,9 +165,7 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
       }, REFRESH_LOCATION_TIME);
     } else {
       const latLng = this.latLng(position);
-      const { tiles, map } = MapCreator.create(
-        new MapConfiguration('map', latLng, 15)
-      );
+      const { map } = MapCreator.create(new MapConfiguration('map', latLng, 15));
       this.map = map;
     }
   }
@@ -202,14 +195,16 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
         console.assert(Boolean(position), 'Vehicle position not received.');
         if (position) {
           const { latitude, longitude } = position;
-          this.vehicleMarker = this.addMarkerToMap(
-            [latitude, longitude],
-            this.vehicleIcon
-          );
+          this.vehicleMarker = this.addMarkerToMap([latitude, longitude], this.vehicleIcon);
         }
       });
       this.keepVehicleMarkerUpdating();
     }, REFRESH_LOCATION_TIME);
+  }
+
+  private isThisPageActive() {
+    const url = `/members/my-reservations/${this.reservation.id}`;
+    return this.router.url === url;
   }
 
   private addMarkerToMap([lat, lng]: [number, number], icon: any) {
@@ -238,11 +233,6 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
     }, REFRESH_LOCATION_TIME);
   }
 
-  private isThisPageActive() {
-    const url = `/members/my-reservations/${this.reservation.id}`;
-    return this.router.url === url;
-  }
-
   private async updateUserMarker() {
     this.userMarker?.removeFrom(this.map);
     const { latitude, longitude } = await this.getUserPosition();
@@ -251,8 +241,7 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
   }
 
   private async getUserPosition() {
-    const { latitude, longitude } = (await Geolocation.getCurrentPosition())
-      .coords;
+    const { latitude, longitude } = (await Geolocation.getCurrentPosition()).coords;
     return { latitude, longitude };
   }
 

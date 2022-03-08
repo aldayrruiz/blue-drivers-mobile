@@ -1,8 +1,7 @@
 import * as L from 'leaflet';
 import { MapConfiguration } from './map-configuration';
 
-const attribution =
-  '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+const attribution = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 const urlTemplate = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
 export class MapCreator {

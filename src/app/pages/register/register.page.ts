@@ -151,9 +151,7 @@ export class RegisterPage implements OnInit {
     const { password1, password2 } = this.credentials.value;
     const matchPasswords = this.matchPasswords(password1, password2);
     if (!matchPasswords) {
-      const toast = await this.snacker.createFailed(
-        'Las contraseñas NO son iguales'
-      );
+      const toast = await this.snacker.createFailed('Las contraseñas NO son iguales');
       await toast.present();
       return false;
     }

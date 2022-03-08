@@ -60,19 +60,12 @@ export class ReservationService {
     return this.http.post<Reservation>(path, reservation);
   }
 
-  createRecurrentReservations(
-    recReservation: CreateRecurrentReservation,
-    force: boolean
-  ) {
+  createRecurrentReservations(recReservation: CreateRecurrentReservation, force: boolean) {
     const options = { params: new HttpParams().set('force', force) };
 
     const reservationUrl = this.urlSrv.getReservations();
     const path = `${reservationUrl}/create_repetitive/`;
-    return this.http.post<CreateRecurrentResponse>(
-      path,
-      recReservation,
-      options
-    );
+    return this.http.post<CreateRecurrentResponse>(path, recReservation, options);
   }
 
   /**

@@ -37,6 +37,7 @@
     "@capacitor/storage": "^1.0.3",
     "@ionic/angular": "^5.5.2",
     "@ionic/pwa-elements": "^3.0.2",
+    "date-fns": "^2.28.0",
     "ionic2-calendar": "^0.6.9",
     "leaflet": "^1.7.1",
     "rxjs": "~6.6.0",

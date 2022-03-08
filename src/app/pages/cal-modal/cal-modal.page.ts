@@ -26,10 +26,7 @@ export class CalModalPage implements AfterViewInit {
 
   modalReady = false;
 
-  constructor(
-    private modalCtrl: ModalController,
-    private calModalService: CalModalService
-  ) {}
+  constructor(private modalCtrl: ModalController, private calModalService: CalModalService) {}
 
   ngAfterViewInit(): void {
     setTimeout(() => {

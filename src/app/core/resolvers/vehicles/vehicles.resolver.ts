@@ -8,10 +8,7 @@ import { LoadingService, VehicleService } from '../../services';
   providedIn: 'root',
 })
 export class VehiclesResolver implements Resolve<Vehicle[]> {
-  constructor(
-    private service: VehicleService,
-    private loadingSrv: LoadingService
-  ) {}
+  constructor(private service: VehicleService, private loadingSrv: LoadingService) {}
 
   async resolve(): Promise<Vehicle[]> {
     await this.loadingSrv.present();

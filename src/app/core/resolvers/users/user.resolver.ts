@@ -2,12 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { User } from 'src/app/core/models';
-import {
-  Key,
-  LoadingService,
-  StorageService,
-  UserService,
-} from '../../services';
+import { Key, LoadingService, StorageService, UserService } from '../../services';
 
 @Injectable({
   providedIn: 'root',

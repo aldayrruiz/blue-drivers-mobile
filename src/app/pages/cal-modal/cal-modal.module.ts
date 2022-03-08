@@ -7,13 +7,7 @@ import { CalModalPageRoutingModule } from './cal-modal-routing.module';
 import { CalModalPage } from './cal-modal.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    CalModalPageRoutingModule,
-    NgCalendarModule,
-  ],
+  imports: [CommonModule, FormsModule, IonicModule, CalModalPageRoutingModule, NgCalendarModule],
   declarations: [CalModalPage],
 })
 export class CalModalPageModule {}

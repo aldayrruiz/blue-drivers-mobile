@@ -10,10 +10,7 @@ import {
   LoginService,
   PasswordRecover,
 } from 'src/app/core/services';
-import {
-  emailValidators,
-  passwordValidators,
-} from 'src/app/core/utils/validators';
+import { emailValidators, passwordValidators } from 'src/app/core/utils/validators';
 
 @Component({
   selector: 'app-login',

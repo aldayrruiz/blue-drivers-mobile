@@ -96,10 +96,7 @@ export class MyReservationsPage implements OnInit {
     return this.orderReservationsByStart(result).reverse();
   }
 
-  private isRecurrentIdInto(
-    reservations: Reservation[],
-    recurrentReservation: Reservation
-  ) {
+  private isRecurrentIdInto(reservations: Reservation[], recurrentReservation: Reservation) {
     const recurrentId = recurrentReservation.recurrent.id;
     const index = reservations.findIndex(
       (reservation) => reservation.recurrent?.id === recurrentId
@@ -108,9 +105,7 @@ export class MyReservationsPage implements OnInit {
   }
 
   private orderReservationsByStart(reservations: Reservation[]) {
-    return reservations.sort((a, b) =>
-      new Date(a.start) < new Date(b.start) ? -1 : 1
-    );
+    return reservations.sort((a, b) => (new Date(a.start) < new Date(b.start) ? -1 : 1));
   }
 
   // Html Helper functions

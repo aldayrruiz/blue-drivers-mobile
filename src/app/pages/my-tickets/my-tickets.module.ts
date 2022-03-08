@@ -7,13 +7,7 @@ import { MyTicketsPageRoutingModule } from './my-tickets-routing.module';
 import { MyTicketsPage } from './my-tickets.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    MyTicketsPageRoutingModule,
-    SharedModule,
-  ],
+  imports: [CommonModule, FormsModule, IonicModule, MyTicketsPageRoutingModule, SharedModule],
   declarations: [MyTicketsPage],
 })
 export class MyTicketsPageModule {}

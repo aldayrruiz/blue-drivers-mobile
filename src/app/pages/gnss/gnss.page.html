@@ -1,0 +1,63 @@
+<ion-header>
+  <app-toolbar [title]="toolbarTitle"></app-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" class="ion-no-padding">
+        <ion-card>
+          <div id="map" style="height: 300px"></div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" class="ion-no-padding">
+        <ion-card>
+          <ion-card-content>
+            <ion-item>
+              <ion-label>Vehículo</ion-label>
+              <img *ngIf="vehicleSelected" class="car-icon" [src]="iconSrcSelected" />
+              <ion-select
+                [(ngModel)]="vehicleSelected"
+                (ionChange)="onVehicleSelectedChanged()"
+                interface="popover"
+              >
+                <span *ngFor="let positionMarker of positionMarkers$ | async">
+                  <ion-select-option [value]="positionMarker.vehicle">
+                    {{ positionMarker.vehicle.brand }} {{ positionMarker.vehicle.model }}
+                  </ion-select-option>
+                </span>
+              </ion-select>
+            </ion-item>
+            <!--  -->
+            <ion-list *ngIf="vehicleSelected">
+              <ion-item>
+                <ion-label>Timestamp: {{ positionUI?.deviceTime | essential }}</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>Velocidad: {{ positionUI?.speed }}</ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" class="ion-no-padding">
+        <ion-card>
+          <ion-card-content>
+            <ion-list>
+              <ion-item *ngFor="let positionMarker of positionMarkers$ | async">
+                <ion-label>
+                  {{ positionMarker.vehicle.brand }} {{ positionMarker.vehicle.model }}
+                </ion-label>
+                <img class="car-icon" [src]="positionMarker.marker._icon.src" />
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

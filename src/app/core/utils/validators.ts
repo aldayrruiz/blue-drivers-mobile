@@ -1,9 +1,5 @@
 import { Validators } from '@angular/forms';
-import {
-  DESCRIPTION_MAX_LENGTH,
-  PASSWORD_MIN_LENGTH,
-  TITLE_MAX_LENGTH,
-} from './fields-config';
+import { DESCRIPTION_MAX_LENGTH, PASSWORD_MIN_LENGTH, TITLE_MAX_LENGTH } from './fields-config';
 
 // Utils
 const required = Validators.required;

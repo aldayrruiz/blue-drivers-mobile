@@ -4,11 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
 import { ItemReorderEventDetail } from '@ionic/core';
 import { finalize } from 'rxjs/operators';
-import {
-  CreateRecurrentReservation,
-  Recurrent,
-  Vehicle,
-} from 'src/app/core/models';
+import { CreateRecurrentReservation, Recurrent, Vehicle } from 'src/app/core/models';
 import { CreateReservationByDate } from 'src/app/core/models/reservations/by-date/create-reservation-by-date.model';
 import {
   CalModalService,
@@ -242,9 +238,7 @@ export class CreateReservationByDatePage implements OnInit {
     return newReservation;
   }
 
-  private getRecurrentReservation(
-    recurrentId: string
-  ): CreateRecurrentReservation {
+  private getRecurrentReservation(recurrentId: string): CreateRecurrentReservation {
     return {
       title: this.form.value.title,
       description: this.form.value.description,

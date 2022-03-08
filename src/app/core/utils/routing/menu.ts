@@ -5,5 +5,6 @@ export enum ROUTE {
   MY_RESERVATIONS = '/members/my-reservations',
   MY_TICKETS = '/members/my-tickets',
   MY_INCIDENTS = '/members/my-incidents',
+  GNSS = '/members/gnss',
   ACCOUNT = '/members/account',
 }

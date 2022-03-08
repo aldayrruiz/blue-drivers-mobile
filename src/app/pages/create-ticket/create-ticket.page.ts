@@ -10,10 +10,7 @@ import {
   SnackerService,
   TicketService,
 } from 'src/app/core/services';
-import {
-  descriptionValidators,
-  titleValidators,
-} from 'src/app/core/utils/validators';
+import { descriptionValidators, titleValidators } from 'src/app/core/utils/validators';
 
 @Component({
   selector: 'app-create-ticket',

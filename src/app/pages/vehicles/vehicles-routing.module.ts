@@ -14,9 +14,7 @@ const routes: Routes = [
   {
     path: ':vehicleId',
     loadChildren: () =>
-      import('../vehicle-details/vehicle-details.module').then(
-        (m) => m.VehicleDetailsPageModule
-      ),
+      import('../vehicle-details/vehicle-details.module').then((m) => m.VehicleDetailsPageModule),
   },
 ];
 

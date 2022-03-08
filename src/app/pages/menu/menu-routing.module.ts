@@ -14,15 +14,11 @@ const routes: Routes = [
     children: [
       {
         path: 'home',
-        loadChildren: () =>
-          import('../home/home.module').then((m) => m.HomePageModule),
+        loadChildren: () => import('../home/home.module').then((m) => m.HomePageModule),
       },
       {
         path: 'vehicles',
-        loadChildren: () =>
-          import('../vehicles/vehicles.module').then(
-            (m) => m.VehiclesPageModule
-          ),
+        loadChildren: () => import('../vehicles/vehicles.module').then((m) => m.VehiclesPageModule),
       },
       {
         path: 'my-reservations',
@@ -33,22 +29,21 @@ const routes: Routes = [
       },
       {
         path: 'account',
-        loadChildren: () =>
-          import('../account/account.module').then((m) => m.AccountPageModule),
+        loadChildren: () => import('../account/account.module').then((m) => m.AccountPageModule),
       },
       {
         path: 'my-tickets',
         loadChildren: () =>
-          import('../my-tickets/my-tickets.module').then(
-            (m) => m.MyTicketsPageModule
-          ),
+          import('../my-tickets/my-tickets.module').then((m) => m.MyTicketsPageModule),
       },
       {
         path: 'my-incidents',
         loadChildren: () =>
-          import('../my-incidents/my-incidents.module').then(
-            (m) => m.MyIncidentsPageModule
-          ),
+          import('../my-incidents/my-incidents.module').then((m) => m.MyIncidentsPageModule),
+      },
+      {
+        path: 'gnss',
+        loadChildren: () => import('../gnss/gnss.module').then((m) => m.GnssPageModule),
       },
     ],
   },

@@ -7,13 +7,7 @@ import { VehiclesPageRoutingModule } from './vehicles-routing.module';
 import { VehiclesPage } from './vehicles.page';
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    SharedModule,
-    VehiclesPageRoutingModule,
-  ],
+  imports: [IonicModule, CommonModule, FormsModule, SharedModule, VehiclesPageRoutingModule],
   declarations: [VehiclesPage],
 })
 export class VehiclesPageModule {}

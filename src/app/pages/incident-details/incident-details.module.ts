@@ -7,13 +7,7 @@ import { IncidentDetailsPageRoutingModule } from './incident-details-routing.mod
 import { IncidentDetailsPage } from './incident-details.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    IncidentDetailsPageRoutingModule,
-    SharedModule,
-  ],
+  imports: [CommonModule, FormsModule, IonicModule, IncidentDetailsPageRoutingModule, SharedModule],
   declarations: [IncidentDetailsPage],
 })
 export class IncidentDetailsPageModule {}

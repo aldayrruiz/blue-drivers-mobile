@@ -21,9 +21,7 @@ const routes: Routes = [
   {
     path: 'create-ticket/:reservationId',
     loadChildren: () =>
-      import('../create-ticket/create-ticket.module').then(
-        (m) => m.CreateTicketPageModule
-      ),
+      import('../create-ticket/create-ticket.module').then((m) => m.CreateTicketPageModule),
   },
 ];
 

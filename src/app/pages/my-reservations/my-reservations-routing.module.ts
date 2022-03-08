@@ -14,9 +14,9 @@ const routes: Routes = [
   {
     path: 'create-by-date',
     loadChildren: () =>
-      import(
-        '../create-reservation-by-date/create-reservation-by-date.module'
-      ).then((m) => m.CreateReservationByDatePageModule),
+      import('../create-reservation-by-date/create-reservation-by-date.module').then(
+        (m) => m.CreateReservationByDatePageModule
+      ),
   },
   {
     path: ':reservationId',

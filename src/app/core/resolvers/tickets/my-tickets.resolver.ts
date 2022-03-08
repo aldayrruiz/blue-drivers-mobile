@@ -8,10 +8,7 @@ import { LoadingService, TicketService } from '../../services';
   providedIn: 'root',
 })
 export class MyTicketsResolver implements Resolve<Ticket[]> {
-  constructor(
-    private service: TicketService,
-    private loadingSrv: LoadingService
-  ) {}
+  constructor(private service: TicketService, private loadingSrv: LoadingService) {}
 
   async resolve(): Promise<Ticket[]> {
     await this.loadingSrv.present();

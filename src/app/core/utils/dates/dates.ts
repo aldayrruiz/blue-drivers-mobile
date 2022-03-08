@@ -37,10 +37,7 @@ export const combine = (date: StringOrDate, time: StringOrDate): Date => {
  * @param time
  * @returns
  */
-export const combineAndSerialize = (
-  date: StringOrDate,
-  time: StringOrDate
-): string => {
+export const combineAndSerialize = (date: StringOrDate, time: StringOrDate): string => {
   const result = combine(date, time);
   return serializeDate(result);
 };
@@ -122,10 +119,7 @@ export const initDates = (from?: StringOrDate) => {
 
 export const now = (): Date => new Date();
 
-export const validate = (
-  s: StringOrDate,
-  e: StringOrDate
-): [string, boolean] => {
+export const validate = (s: StringOrDate, e: StringOrDate): [string, boolean] => {
   const start = new Date(s);
   const end = new Date(e);
 

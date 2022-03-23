@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { CalendarComponent } from 'ionic2-calendar';
-import { Reservation, VehicleDetails } from 'src/app/core/models';
+import { fuelLabel, Reservation, VehicleDetails } from 'src/app/core/models';
 import { Key, ReservationService, StorageService, VehiclesTabStorage } from 'src/app/core/services';
 
 @Component({
@@ -13,8 +13,10 @@ import { Key, ReservationService, StorageService, VehiclesTabStorage } from 'src
 })
 export class VehicleDetailsPage implements OnInit {
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
+  segmentValue = 'reserve';
 
   vehicle: VehicleDetails;
+  fuel: string;
   toolbarTitle = '';
 
   userId: string;
@@ -45,6 +47,8 @@ export class VehicleDetailsPage implements OnInit {
     this.userId = (await this.storage.getParsed(Key.user)).id;
     this.loadReservations(this.reservations);
   }
+
+  segmentChanged = (e) => (this.segmentValue = e.detail.value);
 
   loadReservations(reservations: Reservation[]): void {
     this.eventSource = reservations.map((reservation) => ({
@@ -132,7 +136,6 @@ export class VehicleDetailsPage implements OnInit {
 
   markDisabled = (date: Date) => {
     const current = new Date();
-    current.setDate(current.getDate() - 1);
     return date < current;
   };
 
@@ -173,6 +176,7 @@ export class VehicleDetailsPage implements OnInit {
       const { vehicle } = response.vehicleDetails;
       this.reservations = vehicle.reservations;
       this.vehicle = vehicle;
+      this.fuel = fuelLabel(vehicle.fuel);
     });
   }
 

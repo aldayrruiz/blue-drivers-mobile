@@ -22,5 +22,6 @@ export * from './users/edit.models';
 export * from './users/user.model';
 // Vehicles
 export * from './vehicles/device.model';
+export * from './vehicles/fuel.model';
 export * from './vehicles/vehicle-details.model';
 export * from './vehicles/vehicle.model';

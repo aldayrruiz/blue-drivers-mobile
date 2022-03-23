@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Device, Reservation } from '..';
+import { Device, Reservation, VehicleFuel } from '..';
 
 /**
  * This interface is used to charge the vehicle details page.
@@ -14,4 +14,6 @@ export interface VehicleDetails {
   date_stored: string;
   reservations: Reservation[];
   gps_device: Device;
+  fuel: VehicleFuel;
+  policy_number: string;
 }

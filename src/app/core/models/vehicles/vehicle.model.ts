@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import { Device } from '..';
+import { Device, VehicleFuel } from '..';
 
 /**
  * This interface is used to charge a list of vehicles.
@@ -14,4 +14,6 @@ export interface Vehicle {
   model: string;
   gps_device: Device;
   number_plate: string;
+  fuel: VehicleFuel;
+  policy_number: string;
 }

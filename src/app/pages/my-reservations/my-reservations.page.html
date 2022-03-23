@@ -17,6 +17,7 @@
     </ion-segment-button>
   </ion-segment>
 
+  <!-- My reservations CALENDAR MODE -->
   <div *ngIf="segmentValue === 'calendar'; else list">
     <ion-row>
       <ion-col size="2">
@@ -52,10 +53,7 @@
       <div [class.with-event]="view.dates[row * 7 + col].events.length">
         {{ view.dates[row * 7 + col].label }}
       </div>
-      <div
-        class="event-indicator"
-        *ngFor="let e of view.dates[row * 7 + col].events"
-      ></div>
+      <div class="event-indicator" *ngFor="let e of view.dates[row * 7 + col].events"></div>
     </ng-template>
 
     <ng-template
@@ -99,6 +97,7 @@
     </ng-template>
   </div>
 
+  <!-- My reservation LIST MODE -->
   <ng-template #list>
     <ion-list fullscreen>
       <span *ngFor="let reservation of reservationsListMode">
@@ -112,24 +111,15 @@
         >
           <ion-item lines="none">
             <ion-badge slot="start"
-              >{{ reservation.vehicle.brand }}
-              {{ reservation.vehicle.model }}</ion-badge
+              >{{ reservation.vehicle.brand }} {{ reservation.vehicle.model }}</ion-badge
             >
-            <ion-badge
-              color="warning"
-              *ngIf="reservation.is_recurrent"
-              slot="end"
+            <ion-badge color="warning" *ngIf="reservation.is_recurrent" slot="end"
               >Recurrente</ion-badge
             >
           </ion-item>
           <ion-card-content>
             <h1
-              class="
-                text-size-lg
-                font-regular
-                text-color-primary
-                ion-text-wrap ion-padding-bottom
-              "
+              class="text-size-lg font-regular text-color-primary ion-text-wrap ion-padding-bottom"
             >
               {{ reservation.title }}
             </h1>

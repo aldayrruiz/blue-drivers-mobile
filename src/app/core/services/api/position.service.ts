@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiPaths } from 'src/app/core/utils/api-paths.enum';
+import { API } from 'src/app/core/utils/api-paths.enum';
 import { environment } from 'src/environments/environment';
 import { Position } from '../../models';
 
@@ -9,7 +9,7 @@ import { Position } from '../../models';
   providedIn: 'root',
 })
 export class PositionService {
-  private positionUrl = `${environment.fleetBaseUrl}${ApiPaths.position}`;
+  private positionUrl = `${environment.fleetBaseUrl}${API.lastPositions}`;
 
   constructor(private http: HttpClient) {}
 

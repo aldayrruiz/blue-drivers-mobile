@@ -4,7 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
 import { ItemReorderEventDetail } from '@ionic/core';
 import { finalize } from 'rxjs/operators';
-import { CreateRecurrentReservation, Recurrent, Vehicle } from 'src/app/core/models';
+import {
+  CreateRecurrentReservation,
+  Recurrent,
+  ReservationTemplate,
+  Vehicle,
+} from 'src/app/core/models';
 import { CreateReservationByDate } from 'src/app/core/models/reservations/by-date/create-reservation-by-date.model';
 import {
   CalModalService,
@@ -42,7 +47,7 @@ import { CalModalPage } from '../cal-modal/cal-modal.page';
 })
 export class CreateReservationByDatePage implements OnInit {
   toolbarTitle = 'Crear reserva';
-
+  reservationTemplates: ReservationTemplate[] = [];
   form: FormGroup;
   startDate: Date;
   endDate: Date;
@@ -287,6 +292,7 @@ export class CreateReservationByDatePage implements OnInit {
   private initData() {
     this.route.data.subscribe((response) => {
       this.vehicles = response.vehicles;
+      this.reservationTemplates = response.reservationTemplates;
     });
   }
 

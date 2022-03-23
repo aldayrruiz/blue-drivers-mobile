@@ -80,20 +80,13 @@
   <form [formGroup]="form">
     <!-- Title Field -->
     <ion-item>
-      <ion-input
-        type="text"
-        placeholder="Título"
-        formControlName="title"
-        required
-      ></ion-input>
-      <ion-label class="asterisk-required"></ion-label>
+      <ion-label>Título</ion-label>
+      <ion-select formControlName="title">
+        <ion-select-option *ngFor="let template of reservationTemplates" [value]="template.title">
+          {{ template.title }}
+        </ion-select-option>
+      </ion-select>
     </ion-item>
-    <div *ngIf="(title.dirty || title.touched) && title.errors" class="errors">
-      <span *ngIf="title.errors?.required">Este campo es obligatorio</span>
-      <span *ngIf="title.errors?.maxlength"
-        >El número de caracteres máximo es 100</span
-      >
-    </div>
 
     <!-- Description Field -->
     <ion-item>
@@ -106,22 +99,13 @@
       </ion-textarea>
       <ion-label class="asterisk-required"></ion-label>
     </ion-item>
-    <div
-      *ngIf="(description.dirty || description.touched) && description.errors"
-      class="errors"
-    >
-      <span *ngIf="description.errors?.required"
-        >Este campo es obligatorio</span
-      >
-      <span *ngIf="description.errors?.maxlength"
-        >El número de caracteres máximo 255</span
-      >
+    <div *ngIf="(description.dirty || description.touched) && description.errors" class="errors">
+      <span *ngIf="description.errors?.required">Este campo es obligatorio</span>
+      <span *ngIf="description.errors?.maxlength">El número de caracteres máximo 255</span>
     </div>
 
     <ion-item>
-      <ion-label>{{
-        isRecurrent.value ? 'Recurrente' : 'No Recurrente'
-      }}</ion-label>
+      <ion-label>{{ isRecurrent.value ? 'Recurrente' : 'No Recurrente' }}</ion-label>
       <ion-toggle formControlName="isRecurrent"></ion-toggle>
     </ion-item>
   </form>
@@ -136,10 +120,7 @@
         <ion-list>
           <ion-item *ngFor="let weekday of weekdays" lines="none">
             <ion-label>{{ weekday.label }}</ion-label>
-            <ion-checkbox
-              slot="end"
-              [(ngModel)]="weekday.isChecked"
-            ></ion-checkbox>
+            <ion-checkbox slot="end" [(ngModel)]="weekday.isChecked"></ion-checkbox>
           </ion-item>
         </ion-list>
       </ion-card-content>
@@ -166,10 +147,7 @@
   <ion-grid>
     <ion-row>
       <ion-col class="ion-text-right">
-        <ion-button
-          expand="block"
-          [disabled]="!form.valid"
-          (click)="create(isRecurrent.value)"
+        <ion-button expand="block" [disabled]="!form.valid" (click)="create(isRecurrent.value)"
           >Reservar</ion-button
         >
       </ion-col>

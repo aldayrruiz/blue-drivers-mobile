@@ -4,10 +4,9 @@
 
 <ion-content>
   <ion-item>
-    <ion-label
-      >Se solicitará el vehículo
-      <b>{{ vehicle.brand }} {{ vehicle.model }}</b></ion-label
-    >
+    <ion-label>
+      Se solicitará el vehículo <b>{{ vehicle.brand }} {{ vehicle.model }}</b>
+    </ion-label>
   </ion-item>
 
   <ion-card>
@@ -28,11 +27,8 @@
           <!-- Start hour and minutes -->
           <ion-col>
             <h2>
-              <ion-datetime
-                displayFormat="HH:mm"
-                minuteValues="0,15,30,45"
-                [(ngModel)]="startTime"
-              ></ion-datetime>
+              <ion-datetime displayFormat="HH:mm" minuteValues="0,15,30,45" [(ngModel)]="startTime">
+              </ion-datetime>
             </h2>
           </ion-col>
         </ion-row>
@@ -58,11 +54,8 @@
           <!-- End hour and minutes -->
           <ion-col>
             <h2>
-              <ion-datetime
-                displayFormat="HH:mm"
-                minuteValues="0,15,30,45"
-                [(ngModel)]="endTime"
-              ></ion-datetime>
+              <ion-datetime displayFormat="HH:mm" minuteValues="0,15,30,45" [(ngModel)]="endTime">
+              </ion-datetime>
             </h2>
           </ion-col>
         </ion-row>
@@ -74,20 +67,13 @@
   <form (ngSubmit)="createReservation()" [formGroup]="form">
     <!-- Title Field -->
     <ion-item>
-      <ion-input
-        type="text"
-        placeholder="Título"
-        formControlName="title"
-        required
-      ></ion-input>
-      <ion-label class="asterisk-required"></ion-label>
+      <ion-label>Título</ion-label>
+      <ion-select formControlName="title">
+        <ion-select-option *ngFor="let template of reservationTemplates" [value]="template.title">
+          {{ template.title }}
+        </ion-select-option>
+      </ion-select>
     </ion-item>
-    <div *ngIf="(title.dirty || title.touched) && title.errors" class="errors">
-      <span *ngIf="title.errors?.required">Este campo es obligatorio</span>
-      <span *ngIf="title.errors?.maxlength"
-        >El número de caracteres máximo es 100</span
-      >
-    </div>
 
     <!-- Description Field -->
     <ion-item>
@@ -98,27 +84,16 @@
         placeholder="¿Por qué necesitas este vehículo?"
       >
       </ion-textarea>
-      <ion-label class="asterisk-required"></ion-label>
     </ion-item>
-    <div
-      *ngIf="(description.dirty || description.touched) && description.errors"
-      class="errors"
-    >
-      <span *ngIf="description.errors?.required"
-        >Este campo es obligatorio</span
-      >
-      <span *ngIf="description.errors?.maxlength"
-        >El número de caracteres máximo 255</span
-      >
+    <div *ngIf="(description.dirty || description.touched) && description.errors" class="errors">
+      <span *ngIf="description.errors?.maxlength">El número de caracteres máximo 255</span>
     </div>
 
     <!-- Button -->
     <ion-grid>
       <ion-row>
         <ion-col class="ion-text-right">
-          <ion-button type="submit" expand="block" [disabled]="!form.valid"
-            >Reservar</ion-button
-          >
+          <ion-button type="submit" expand="block" [disabled]="!form.valid">Reservar</ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>

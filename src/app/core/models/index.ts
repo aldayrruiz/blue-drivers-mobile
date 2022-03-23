@@ -5,6 +5,8 @@ export * from './incidents/incident-type.model';
 export * from './incidents/incident.model';
 // Positions
 export * from './positions/position.model';
+// Reservation templates
+export * from './reservation-templates/reservation-template.model';
 // Reservations
 export * from './reservations/by-date/create-reservation-by-date.model';
 export * from './reservations/create.model';

@@ -1,10 +1,11 @@
-export enum ApiPaths {
-  vehicle = '/api/vehicles',
-  reservation = '/api/reservations',
-  ticket = '/api/tickets',
-  incident = '/api/incidents',
-  user = '/api/users',
+export enum API {
+  vehicles = '/api/vehicles',
+  reservations = '/api/reservations',
+  tickets = '/api/tickets',
+  incidents = '/api/incidents',
+  users = '/api/users',
   login = '/api/login',
   register = '/api/register/create_fake',
-  position = '/api/positions',
+  reservationTemplates = '/api/reservation-templates',
+  lastPositions = '/api/positions',
 }

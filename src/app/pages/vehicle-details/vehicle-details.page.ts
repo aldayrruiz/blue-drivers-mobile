@@ -135,7 +135,9 @@ export class VehicleDetailsPage implements OnInit {
   }
 
   markDisabled = (date: Date) => {
+    // Sometimes, yesterday is not marked as disabled. Zone times GTM+0100 & GTM+0200
     const current = new Date();
+    current.setUTCDate(current.getUTCDate() - 1);
     return date < current;
   };
 

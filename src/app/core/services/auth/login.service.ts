@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
-import { ApiPaths } from 'src/app/core/utils/api-paths.enum';
+import { API } from 'src/app/core/utils/api-paths.enum';
 import { environment } from 'src/environments/environment';
 import { Key, StorageService } from '../storage/storage.service';
 
@@ -39,7 +39,7 @@ export class LoginService {
   }
 
   login(body: { username: string; password: string }) {
-    const path = `${environment.fleetBaseUrl}${ApiPaths.login}/`;
+    const path = `${environment.fleetBaseUrl}${API.login}/`;
     return this.http.post<LoginResponse>(path, body).pipe(
       switchMap(async (response: LoginResponse) => {
         const user = this.transformToUser(response);

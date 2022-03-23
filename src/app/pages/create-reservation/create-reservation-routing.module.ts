@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { VehicleSimpleResolver } from 'src/app/core/resolvers';
+import { ReservationTemplatesResolver, VehicleSimpleResolver } from 'src/app/core/resolvers';
 import { CreateReservationPage } from './create-reservation.page';
 
 const routes: Routes = [
@@ -9,6 +9,7 @@ const routes: Routes = [
     component: CreateReservationPage,
     resolve: {
       vehicle: VehicleSimpleResolver,
+      reservationTemplates: ReservationTemplatesResolver,
     },
   },
 ];

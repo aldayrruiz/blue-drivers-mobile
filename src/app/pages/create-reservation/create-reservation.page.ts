@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { finalize } from 'rxjs/operators';
-import { CreateReservation, Vehicle } from 'src/app/core/models';
+import { CreateReservation, ReservationTemplate, Vehicle } from 'src/app/core/models';
 import {
   CalModalService,
   ErrorMessageService,
@@ -24,9 +24,9 @@ import { CalModalPage } from '../cal-modal/cal-modal.page';
 })
 export class CreateReservationPage implements OnInit {
   toolbarTitle = 'Crear reserva';
-
   form: FormGroup;
   vehicle: Vehicle;
+  reservationTemplates: ReservationTemplate[] = [];
   startDate: Date;
   endDate: Date;
   startTime: string;
@@ -146,6 +146,7 @@ export class CreateReservationPage implements OnInit {
   private resolveData() {
     this.route.data.subscribe((response) => {
       this.vehicle = response.vehicle;
+      this.reservationTemplates = response.reservationTemplates;
     });
   }
 

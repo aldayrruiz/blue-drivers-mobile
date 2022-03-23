@@ -12,7 +12,7 @@ const titleMaxLength = maxLength(TITLE_MAX_LENGTH);
 const passwordMinLength = minLength(PASSWORD_MIN_LENGTH);
 
 export const titleValidators = [required, titleMaxLength];
-export const descriptionValidators = [required, descriptionMaxLength];
+export const descriptionValidators = [descriptionMaxLength];
 export const isRecurrentValidators = [required];
 export const weekdaysValidators = [];
 export const incidentTypeValidators = [required];

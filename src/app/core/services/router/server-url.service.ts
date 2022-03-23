@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiPaths } from 'src/app/core/utils/api-paths.enum';
+import { API } from 'src/app/core/utils/api-paths.enum';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -12,9 +12,9 @@ export class ServerUrlService {
     this.fleetUrl = environment.fleetBaseUrl;
   }
 
-  getVehicles = () => `${this.fleetUrl}${ApiPaths.vehicle}`;
-  getUsers = () => `${this.fleetUrl}${ApiPaths.user}`;
-  getTickets = () => `${this.fleetUrl}${ApiPaths.ticket}`;
-  getIncidents = () => `${this.fleetUrl}${ApiPaths.incident}`;
-  getReservations = () => `${this.fleetUrl}${ApiPaths.reservation}`;
+  getVehicles = () => `${this.fleetUrl}${API.vehicles}`;
+  getUsers = () => `${this.fleetUrl}${API.users}`;
+  getTickets = () => `${this.fleetUrl}${API.tickets}`;
+  getIncidents = () => `${this.fleetUrl}${API.incidents}`;
+  getReservations = () => `${this.fleetUrl}${API.reservations}`;
 }

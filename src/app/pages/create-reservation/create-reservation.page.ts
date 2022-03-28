@@ -33,17 +33,25 @@ export class CreateReservationPage implements OnInit {
   endTime: string;
 
   constructor(
-    private reservationService: ReservationService,
-    private errorMessage: ErrorMessageService,
-    private calModalService: CalModalService,
-    private tabStorage: VehiclesTabStorage,
-    private loadingSrv: LoadingService,
-    private modalCtrl: ModalController,
-    private snacker: SnackerService,
-    private route: ActivatedRoute,
-    private ghost: Ghost,
-    private fb: FormBuilder
+    private readonly reservationService: ReservationService,
+    private readonly errorMessage: ErrorMessageService,
+    private readonly calModalService: CalModalService,
+    private readonly tabStorage: VehiclesTabStorage,
+    private readonly loadingSrv: LoadingService,
+    private readonly modalCtrl: ModalController,
+    private readonly snacker: SnackerService,
+    private readonly route: ActivatedRoute,
+    private readonly fb: FormBuilder,
+    private readonly ghost: Ghost
   ) {}
+
+  get title(): AbstractControl {
+    return this.form.get('title');
+  }
+
+  get description(): AbstractControl {
+    return this.form.get('description');
+  }
 
   ngOnInit(): void {
     this.initFormGroup();
@@ -106,14 +114,6 @@ export class CreateReservationPage implements OnInit {
         }
       }
     });
-  }
-
-  get title(): AbstractControl {
-    return this.form.get('title');
-  }
-
-  get description(): AbstractControl {
-    return this.form.get('description');
   }
 
   private getReservation(): CreateReservation {

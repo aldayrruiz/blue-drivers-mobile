@@ -6,7 +6,6 @@ import {
   ErrorMessageService,
   Ghost,
   LoadingService,
-  LoginService,
   PasswordRecover,
   SnackerService,
 } from 'src/app/core/services';
@@ -27,12 +26,19 @@ export class RecoverPasswordPage implements OnInit {
   constructor(
     private errorMessage: ErrorMessageService,
     private passwordRecover: PasswordRecover,
-    private loginService: LoginService,
     private loadingSrv: LoadingService,
     private snacker: SnackerService,
     private fb: FormBuilder,
     private ghost: Ghost
   ) {}
+
+  get email(): AbstractControl {
+    return this.createRecoverPassword.get('email');
+  }
+
+  get code(): AbstractControl {
+    return this.confirmRecoverPassword.get('code');
+  }
 
   ngOnInit() {
     this.initCreateRecoverPasswordForm();
@@ -73,14 +79,6 @@ export class RecoverPasswordPage implements OnInit {
         await this.snacker.showFailed(msg);
       }
     );
-  }
-
-  get email(): AbstractControl {
-    return this.createRecoverPassword.get('email');
-  }
-
-  get code(): AbstractControl {
-    return this.confirmRecoverPassword.get('code');
   }
 
   private initCreateRecoverPasswordForm() {

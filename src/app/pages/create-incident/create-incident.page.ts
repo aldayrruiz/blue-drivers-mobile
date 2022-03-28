@@ -25,14 +25,22 @@ export class CreateIncidentPage implements OnInit {
   photoBase64: string;
 
   constructor(
-    private tabStorage: MyReservationsTabStorage,
-    private errorMessage: ErrorMessageService,
-    private incidentService: IncidentService,
-    private loadingSrv: LoadingService,
-    private snacker: SnackerService,
-    private ghost: Ghost,
-    private fb: FormBuilder
+    private readonly tabStorage: MyReservationsTabStorage,
+    private readonly errorMessage: ErrorMessageService,
+    private readonly incidentService: IncidentService,
+    private readonly loadingSrv: LoadingService,
+    private readonly snacker: SnackerService,
+    private readonly fb: FormBuilder,
+    private readonly ghost: Ghost
   ) {}
+
+  get description(): AbstractControl {
+    return this.form.get('description');
+  }
+
+  get incidentType(): AbstractControl {
+    return this.form.get('incidentType');
+  }
 
   ngOnInit(): void {
     this.form = this.initFormGroup();
@@ -67,14 +75,6 @@ export class CreateIncidentPage implements OnInit {
     });
 
     this.photoBase64 = image.dataUrl;
-  }
-
-  get description(): AbstractControl {
-    return this.form.get('description');
-  }
-
-  get incidentType(): AbstractControl {
-    return this.form.get('incidentType');
   }
 
   private initFormGroup(): FormGroup {

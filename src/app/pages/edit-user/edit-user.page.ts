@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { finalize } from 'rxjs/operators';
 import { User } from 'src/app/core/models';
@@ -30,16 +30,31 @@ export class EditUserPage implements OnInit {
   user: User;
 
   constructor(
-    private loadingSrv: LoadingService,
-    private alertCtrl: AlertController,
-    private snacker: SnackerService,
-    private storage: StorageService,
-    private ghost: Ghost,
-    private route: ActivatedRoute,
-    private userSrv: UserService,
-    private fb: FormBuilder,
-    private router: Router
+    private readonly alertCtrl: AlertController,
+    private readonly loadingSrv: LoadingService,
+    private readonly storage: StorageService,
+    private readonly snacker: SnackerService,
+    private readonly route: ActivatedRoute,
+    private readonly userSrv: UserService,
+    private readonly fb: FormBuilder,
+    private readonly ghost: Ghost
   ) {}
+
+  get email(): AbstractControl {
+    return this.profile.get('email');
+  }
+
+  get fullname(): AbstractControl {
+    return this.profile.get('fullname');
+  }
+
+  get password(): AbstractControl {
+    return this.profile.get('password');
+  }
+
+  get password2(): AbstractControl {
+    return this.profile.get('password2');
+  }
 
   ngOnInit() {
     this.resolveData();
@@ -91,22 +106,6 @@ export class EditUserPage implements OnInit {
           this.snacker.showFailed(msg);
         }
       );
-  }
-
-  get email(): AbstractControl {
-    return this.profile.get('email');
-  }
-
-  get fullname(): AbstractControl {
-    return this.profile.get('fullname');
-  }
-
-  get password(): AbstractControl {
-    return this.profile.get('password');
-  }
-
-  get password2(): AbstractControl {
-    return this.profile.get('password2');
   }
 
   private passwordsMatch() {

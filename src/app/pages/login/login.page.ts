@@ -31,6 +31,14 @@ export class LoginPage implements OnInit {
     private router: Router
   ) {}
 
+  get username(): AbstractControl {
+    return this.credentials.get('username');
+  }
+
+  get password(): AbstractControl {
+    return this.credentials.get('password');
+  }
+
   ngOnInit() {
     this.initFormGroup();
   }
@@ -68,14 +76,6 @@ export class LoginPage implements OnInit {
 
   async forgotPassword() {
     this.passwordRecover.recover('email.com');
-  }
-
-  get username(): AbstractControl {
-    return this.credentials.get('username');
-  }
-
-  get password(): AbstractControl {
-    return this.credentials.get('password');
   }
 
   /**

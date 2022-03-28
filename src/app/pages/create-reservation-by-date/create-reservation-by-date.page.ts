@@ -59,19 +59,31 @@ export class CreateReservationByDatePage implements OnInit {
   recurrent: Recurrent;
 
   constructor(
-    private reservationSrv: ReservationService,
-    private errorMessage: ErrorMessageService,
-    private calModalService: CalModalService,
-    private tabStorage: MyReservationsTabStorage,
-    private weekdaySrv: WeekdaysService,
-    private alertCtrl: AlertController,
-    private loadingSrv: LoadingService,
-    private modalCtrl: ModalController,
-    private snacker: SnackerService,
-    private route: ActivatedRoute,
-    private ghost: Ghost,
-    private fb: FormBuilder
+    private readonly reservationSrv: ReservationService,
+    private readonly errorMessage: ErrorMessageService,
+    private readonly calModalService: CalModalService,
+    private readonly tabStorage: MyReservationsTabStorage,
+    private readonly weekdaySrv: WeekdaysService,
+    private readonly alertCtrl: AlertController,
+    private readonly loadingSrv: LoadingService,
+    private readonly modalCtrl: ModalController,
+    private readonly snacker: SnackerService,
+    private readonly route: ActivatedRoute,
+    private readonly fb: FormBuilder,
+    private readonly ghost: Ghost
   ) {}
+
+  get title(): AbstractControl {
+    return this.form.get('title');
+  }
+
+  get description(): AbstractControl {
+    return this.form.get('description');
+  }
+
+  get isRecurrent(): AbstractControl {
+    return this.form.get('isRecurrent');
+  }
 
   ngOnInit() {
     this.initData();
@@ -185,18 +197,6 @@ export class CreateReservationByDatePage implements OnInit {
 
   doReorder(ev: CustomEvent<ItemReorderEventDetail>) {
     this.vehicles = ev.detail.complete(this.vehicles);
-  }
-
-  get title(): AbstractControl {
-    return this.form.get('title');
-  }
-
-  get description(): AbstractControl {
-    return this.form.get('description');
-  }
-
-  get isRecurrent(): AbstractControl {
-    return this.form.get('isRecurrent');
   }
 
   private async openCalModal(type: string) {

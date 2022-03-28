@@ -9,45 +9,26 @@
     <div class="input-group">
       <!-- Email -->
       <ion-item>
-        <ion-input
-          type="email"
-          placeholder="Email"
-          formControlName="username"
-        ></ion-input>
+        <ion-input type="email" placeholder="Email" formControlName="username"></ion-input>
       </ion-item>
-      <div
-        *ngIf="(username.dirty || username.touched) && username.errors"
-        class="errors"
-      >
+      <div *ngIf="(username.dirty || username.touched) && username.errors" class="errors">
         <span *ngIf="username.errors?.required">Email is required</span>
         <span *ngIf="username.errors?.email">Email is invalid</span>
       </div>
       <!-- Password -->
       <ion-item>
         <app-show-hide-password>
-          <ion-input
-            type="password"
-            placeholder="Password"
-            formControlName="password"
-          ></ion-input>
+          <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
         </app-show-hide-password>
       </ion-item>
-      <div
-        *ngIf="(password.dirty || password.touched) && password.errors"
-        class="errors"
-      >
+      <div *ngIf="(password.dirty || password.touched) && password.errors" class="errors">
         <span *ngIf="password.errors?.required">Password is required</span>
-        <span *ngIf="password.errors?.minlength"
-          >Password needs to be 6 characters</span
-        >
+        <span *ngIf="password.errors?.minlength">Password needs to be 6 characters</span>
       </div>
     </div>
-    <ion-button type="submit" expand="block" [disabled]="!credentials.valid"
-      >Iniciar sesión</ion-button
-    >
-    <ion-button expand="block" (click)="goToRegisterPage()"
-      >Ir a Registrarse</ion-button
-    >
+    <ion-button type="submit" expand="block" [disabled]="!credentials.valid">
+      Iniciar sesión
+    </ion-button>
   </form>
   <div class="forgot-password-div">
     <button routerLink="../recover-password" class="forgot-password">

@@ -9,7 +9,6 @@ export * from './api/vehicle.service';
 // Auth
 export * from './auth/login.service';
 export * from './auth/password-recover.service';
-export * from './auth/register.service';
 export * from './cal-modal.service';
 // Error
 export * from './error/error-message.service';

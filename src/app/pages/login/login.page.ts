@@ -70,10 +70,6 @@ export class LoginPage implements OnInit {
     this.passwordRecover.recover('email.com');
   }
 
-  goToRegisterPage() {
-    this.router.navigateByUrl(`register`);
-  }
-
   get username(): AbstractControl {
     return this.credentials.get('username');
   }

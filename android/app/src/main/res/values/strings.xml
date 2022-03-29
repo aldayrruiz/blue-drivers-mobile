@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">BlueCe Fleet Management</string>
+    <string name="title_activity_main">BlueCe Fleet Management</string>
+    <string name="package_name">eu.bluece.fleetmanagement</string>
+    <string name="custom_url_scheme">eu.bluece.fleetmanagement</string>
+</resources>

@@ -1,0 +1,6 @@
+{
+	"appId": "eu.bluece.fleetmanagement",
+	"appName": "BlueCe Fleet Management",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

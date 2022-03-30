@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  fleetBaseUrl: 'https://fleetmanagement.bluece.eu',
+  fleetBaseUrl: 'https://drivers.bluece.eu',
 };

@@ -10,21 +10,13 @@
     <ion-card-content>
       <ion-grid>
         <ion-row class="ion-align-items-center">
-          <!-- Date Start -->
-          <ion-col *ngIf="!isRecurrent.value">
-            <ion-text>
-              <h2 (click)="openCalModal('start')">
-                {{ startDate | date: 'dd/MM/yyyy' }}
-              </h2>
-            </ion-text>
-          </ion-col>
           <!-- Time Start -->
           <ion-col>
             <h2>
               <ion-datetime
-                displayFormat="HH:mm"
+                [presentation]="isRecurrent.value ? 'time' : 'date-time'"
                 minuteValues="0,15,30,45"
-                [(ngModel)]="startTime"
+                [(ngModel)]="start"
               ></ion-datetime>
             </h2>
           </ion-col>
@@ -40,21 +32,13 @@
     <ion-card-content>
       <ion-grid>
         <ion-row class="ion-align-items-center">
-          <!-- End date -->
-          <ion-col *ngIf="!isRecurrent.value">
-            <ion-text>
-              <h2 (click)="openCalModal('end')">
-                {{ endDate | date: 'dd/MM/yyyy' }}
-              </h2>
-            </ion-text>
-          </ion-col>
           <!-- End hour and minutes -->
           <ion-col>
             <h2>
               <ion-datetime
-                displayFormat="HH:mm"
+                [presentation]="isRecurrent.value ? 'time' : 'date-time'"
                 minuteValues="0,15,30,45"
-                [(ngModel)]="endTime"
+                [(ngModel)]="end"
               ></ion-datetime>
             </h2>
           </ion-col>
@@ -131,12 +115,14 @@
       </ion-card-header>
       <ion-card-content>
         <ion-grid>
-          <!-- Fecha de comienzo de reserva -->
+          <!-- Until date-->
           <ion-row class="ion-align-items-center">
             <ion-col>
-              <h2 (click)="openCalModal('until')">
-                {{ untilDate | date: 'dd/MM/yyyy' }}
-              </h2>
+              <ion-datetime
+                presentation="date"
+                minuteValues="0,15,30,45"
+                [(ngModel)]="until"
+              ></ion-datetime>
             </ion-col>
           </ion-row>
         </ion-grid>

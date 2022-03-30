@@ -20,6 +20,7 @@ export * from './router/server-url.service';
 // Storage
 export * from './storage';
 //View
+export * from './view/datepicker.service';
 export * from './view/loading.service';
 export * from './view/snacker.service';
 // None

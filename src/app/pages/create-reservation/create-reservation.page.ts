@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ModalController } from '@ionic/angular';
 import { finalize } from 'rxjs/operators';
 import { CreateReservation, ReservationTemplate, Vehicle } from 'src/app/core/models';
 import {
-  CalModalService,
+  DateZonerHelper,
   ErrorMessageService,
   Ghost,
   LoadingService,
@@ -13,9 +12,8 @@ import {
   SnackerService,
   VehiclesTabStorage,
 } from 'src/app/core/services';
-import { combineAndSerialize, initDates, validate } from 'src/app/core/utils/dates/dates';
+import { combine, initDates, validate } from 'src/app/core/utils/dates/dates';
 import { descriptionValidators, titleValidators } from 'src/app/core/utils/validators';
-import { CalModalPage } from '../cal-modal/cal-modal.page';
 
 @Component({
   selector: 'app-create-reservation',
@@ -27,19 +25,16 @@ export class CreateReservationPage implements OnInit {
   form: FormGroup;
   vehicle: Vehicle;
   reservationTemplates: ReservationTemplate[] = [];
-  startDate: Date;
-  endDate: Date;
-  startTime: string;
-  endTime: string;
+  start: string;
+  end: string;
 
   constructor(
     private readonly reservationService: ReservationService,
     private readonly errorMessage: ErrorMessageService,
-    private readonly calModalService: CalModalService,
     private readonly tabStorage: VehiclesTabStorage,
     private readonly loadingSrv: LoadingService,
-    private readonly modalCtrl: ModalController,
     private readonly snacker: SnackerService,
+    private readonly zoner: DateZonerHelper,
     private readonly route: ActivatedRoute,
     private readonly fb: FormBuilder,
     private readonly ghost: Ghost
@@ -88,39 +83,11 @@ export class CreateReservationPage implements OnInit {
       );
   }
 
-  async openCalModal(type: string): Promise<void> {
-    const modal = await this.modalCtrl.create({
-      component: CalModalPage,
-      cssClass: 'cal-modal',
-      backdropDismiss: false,
-    });
-
-    if (type === 'start') {
-      this.calModalService.setDate(this.startDate);
-    } else {
-      this.calModalService.setDate(this.endDate);
-    }
-
-    await modal.present();
-
-    modal.onDidDismiss().then((result) => {
-      if (result.data && result.data.event) {
-        const date = result.data.event.date;
-
-        if (type === 'start') {
-          this.startDate = date;
-        } else {
-          this.endDate = date;
-        }
-      }
-    });
-  }
-
   private getReservation(): CreateReservation {
     return {
       title: this.form.value.title,
-      start: combineAndSerialize(this.startDate, this.startTime),
-      end: combineAndSerialize(this.endDate, this.endTime),
+      start: new Date(this.start).toJSON(),
+      end: new Date(this.end).toJSON(),
       description: this.form.value.description,
       vehicle: this.vehicle.id,
     };
@@ -137,10 +104,11 @@ export class CreateReservationPage implements OnInit {
     // Init dates fields from date selected in vehicles details page.
     const from = this.tabStorage.getSelectedDate();
     const { startDate, startTime, endDate, endTime } = initDates(from);
-    this.startDate = startDate;
-    this.startTime = startTime;
-    this.endDate = endDate;
-    this.endTime = endTime;
+    const start = combine(startDate, startTime);
+    const end = combine(endDate, endTime);
+
+    this.start = this.zoner.toMyZone(start);
+    this.end = this.zoner.toMyZone(end);
   }
 
   private resolveData() {

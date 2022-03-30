@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 import { ItemReorderEventDetail } from '@ionic/core';
 import { finalize } from 'rxjs/operators';
 import {
@@ -12,7 +12,7 @@ import {
 } from 'src/app/core/models';
 import { CreateReservationByDate } from 'src/app/core/models/reservations/by-date/create-reservation-by-date.model';
 import {
-  CalModalService,
+  DateZonerHelper,
   ErrorMessageService,
   Ghost,
   LoadingService,
@@ -24,7 +24,6 @@ import {
 } from 'src/app/core/services';
 import {
   combine,
-  combineAndSerialize,
   initDates,
   nextMonth,
   now,
@@ -38,7 +37,6 @@ import {
   titleValidators,
   weekdaysValidators,
 } from 'src/app/core/utils/validators';
-import { CalModalPage } from '../cal-modal/cal-modal.page';
 
 @Component({
   selector: 'app-create-reservation-by-date',
@@ -49,24 +47,21 @@ export class CreateReservationByDatePage implements OnInit {
   toolbarTitle = 'Crear reserva';
   reservationTemplates: ReservationTemplate[] = [];
   form: FormGroup;
-  startDate: Date;
-  endDate: Date;
-  startTime: string;
-  endTime: string;
+  start: string;
+  end: string;
   vehicles: Vehicle[] = [];
   weekdays: WeekdayCheckbox[];
-  untilDate: Date;
+  until: string;
   recurrent: Recurrent;
 
   constructor(
+    private readonly tabStorage: MyReservationsTabStorage,
     private readonly reservationSrv: ReservationService,
     private readonly errorMessage: ErrorMessageService,
-    private readonly calModalService: CalModalService,
-    private readonly tabStorage: MyReservationsTabStorage,
     private readonly weekdaySrv: WeekdaysService,
     private readonly alertCtrl: AlertController,
     private readonly loadingSrv: LoadingService,
-    private readonly modalCtrl: ModalController,
+    private readonly zoner: DateZonerHelper,
     private readonly snacker: SnackerService,
     private readonly route: ActivatedRoute,
     private readonly fb: FormBuilder,
@@ -95,15 +90,15 @@ export class CreateReservationByDatePage implements OnInit {
   async create(isRecurrent: boolean) {
     if (isRecurrent) {
       // * Create Recurrent reservation
-      if (this.untilDate > now()) {
+      if (new Date(this.until) > now()) {
         await this.createRecurrentReservation();
         return;
       }
       await this.showTryingToCreateRecurrentUntilToday();
     } else {
       // * Create Normal Reservation
-      const start = combine(this.startDate, this.startTime);
-      const end = combine(this.endDate, this.endTime);
+      const start = this.start;
+      const end = this.end;
       const [msg, datesValid] = validate(start, end);
       if (datesValid) {
         await this.createReservation();
@@ -199,44 +194,12 @@ export class CreateReservationByDatePage implements OnInit {
     this.vehicles = ev.detail.complete(this.vehicles);
   }
 
-  private async openCalModal(type: string) {
-    const modal = await this.modalCtrl.create({
-      component: CalModalPage,
-      cssClass: 'cal-modal',
-      backdropDismiss: false,
-    });
-
-    if (type === 'start') {
-      this.calModalService.setDate(this.startDate);
-    } else if (type === 'end') {
-      this.calModalService.setDate(this.endDate);
-    } else {
-      this.calModalService.setDate(this.untilDate);
-    }
-
-    await modal.present();
-
-    modal.onDidDismiss().then((result) => {
-      if (result.data && result.data.event) {
-        const date = result.data.event.date;
-
-        if (type === 'start') {
-          this.startDate = date;
-        } else if (type === 'end') {
-          this.endDate = date;
-        } else {
-          this.untilDate = date;
-        }
-      }
-    });
-  }
-
   private getData() {
     const newReservation: CreateReservationByDate = {
       title: this.form.value.title,
       description: this.form.value.description,
-      start: combineAndSerialize(this.startDate, this.startTime),
-      end: combineAndSerialize(this.endDate, this.endTime),
+      start: serializeDate(this.start),
+      end: serializeDate(this.end),
       weekdays: this.weekdaySrv.getValuesFromCheckBoxes(this.weekdays),
       vehicles: this.vehicles.map((vehicle) => vehicle.id),
     };
@@ -247,8 +210,8 @@ export class CreateReservationByDatePage implements OnInit {
     return {
       title: this.form.value.title,
       description: this.form.value.description,
-      startTime: serializeDate(this.startTime), // Reservation start time HH:mm (only HH:mm will count)
-      endTime: serializeDate(this.endTime), // Reservation end time (only HH:mm will count)
+      startTime: serializeDate(this.start), // Reservation start time HH:mm (only HH:mm will count)
+      endTime: serializeDate(this.end), // Reservation end time (only HH:mm will count)
       recurrent: recurrentId,
       vehicles: this.getVehiclesIds(this.vehicles),
     };
@@ -256,7 +219,7 @@ export class CreateReservationByDatePage implements OnInit {
 
   private getRecurrent(): Recurrent {
     const since = serializeDate(new Date()); // Reservations will be created since now
-    const until = serializeDate(this.untilDate); // Until
+    const until = serializeDate(this.until); // Until
     const weekdays = this.weekdaySrv.getValuesFromCheckBoxes(this.weekdays);
 
     return {
@@ -282,11 +245,12 @@ export class CreateReservationByDatePage implements OnInit {
   private initDates() {
     const from = this.tabStorage.getDate();
     const { startDate, startTime, endDate, endTime } = initDates(from);
-    this.startDate = startDate;
-    this.startTime = startTime;
-    this.endDate = endDate;
-    this.endTime = endTime;
-    this.untilDate = nextMonth(now());
+    const start = combine(startDate, startTime);
+    const end = combine(endDate, endTime);
+
+    this.start = this.zoner.toMyZone(start);
+    this.end = this.zoner.toMyZone(end);
+    this.until = this.zoner.toMyZone(nextMonth(now()));
   }
 
   private initData() {

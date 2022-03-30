@@ -18,16 +18,8 @@
         <ion-row class="ion-align-items-center">
           <!-- Start date -->
           <ion-col>
-            <ion-text>
-              <h2 (click)="openCalModal('start')">
-                {{ startDate | date: 'dd/MM/yyyy' }}
-              </h2>
-            </ion-text>
-          </ion-col>
-          <!-- Start hour and minutes -->
-          <ion-col>
             <h2>
-              <ion-datetime displayFormat="HH:mm" minuteValues="0,15,30,45" [(ngModel)]="startTime">
+              <ion-datetime #popoverDatetime minuteValues="0,15,30,45" [(ngModel)]="start">
               </ion-datetime>
             </h2>
           </ion-col>
@@ -43,19 +35,10 @@
     <ion-card-content>
       <ion-grid>
         <ion-row class="ion-align-items-center">
-          <!-- End date -->
           <ion-col>
-            <ion-text>
-              <h2 (click)="openCalModal('end')">
-                {{ endDate | date: 'dd/MM/yyyy' }}
-              </h2>
-            </ion-text>
-          </ion-col>
-          <!-- End hour and minutes -->
-          <ion-col>
+            <!-- End date -->
             <h2>
-              <ion-datetime displayFormat="HH:mm" minuteValues="0,15,30,45" [(ngModel)]="endTime">
-              </ion-datetime>
+              <ion-datetime minuteValues="0,15,30,45" [(ngModel)]="end"> </ion-datetime>
             </h2>
           </ion-col>
         </ion-row>

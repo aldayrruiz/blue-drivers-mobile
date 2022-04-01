@@ -20,8 +20,8 @@ import { MapConfiguration } from 'src/app/core/utils/leaflet/map-configuration';
 import { MapCreator } from 'src/app/core/utils/leaflet/map-creator';
 
 const REFRESH_LOCATION_TIME = 10_000; // 10 sec.
-const vehicleIcon = 'img/icon/vehicle.png';
-const userIcon = 'img/icon/user.png';
+const vehicleIcon = 'icon/vehicles/vehicle.png';
+const userIcon = 'icon/users/user.png';
 
 @Component({
   selector: 'app-reservation-details',

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Ghost, Key, LoginService, StorageService } from 'src/app/core/services';
 import { ROUTE } from 'src/app/core/utils/routing/menu';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-menu',
@@ -9,6 +10,7 @@ import { ROUTE } from 'src/app/core/utils/routing/menu';
 })
 export class MenuPage implements OnInit {
   fullname: string;
+  version = environment.version;
   email: string;
 
   pages = [

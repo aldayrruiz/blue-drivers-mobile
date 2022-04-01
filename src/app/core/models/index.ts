@@ -14,6 +14,8 @@ export * from './reservations/recurrent.model';
 export * from './reservations/recurrent/request.model';
 export * from './reservations/recurrent/response.model';
 export * from './reservations/reservation.model';
+// Tenants
+export * from './tenants/tenant.model';
 // Tickets
 export * from './tickets/create-ticket.model';
 export * from './tickets/ticket-status.model';
@@ -21,6 +23,7 @@ export * from './tickets/ticket.model';
 // Users
 export * from './users/create.model';
 export * from './users/edit.models';
+export * from './users/role.model';
 export * from './users/user.model';
 // Vehicles
 export * from './vehicles/device.model';

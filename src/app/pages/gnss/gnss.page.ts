@@ -4,6 +4,7 @@ import * as L from 'leaflet';
 import { Observable, Subject } from 'rxjs';
 import { Position, Vehicle } from 'src/app/core/models';
 import { AssetsService, PositionService } from 'src/app/core/services';
+import { GnssIconProvider } from 'src/app/core/services/view/gnss-icon.service';
 import { MapConfiguration } from 'src/app/core/utils/leaflet/map-configuration';
 import { MapCreator } from 'src/app/core/utils/leaflet/map-creator';
 
@@ -28,6 +29,7 @@ export class GnssPage implements OnInit, AfterViewInit {
   positionMarkers$: Observable<MyMarker[]>;
   toolbarTitle = 'GNSS';
 
+  private icons: string[];
   private map: L.Map;
   private vehicles: Vehicle[];
   private positions;
@@ -35,14 +37,16 @@ export class GnssPage implements OnInit, AfterViewInit {
   private positionMarkersSubject = new Subject<MyMarker[]>();
 
   constructor(
-    private readonly route: ActivatedRoute,
+    private readonly gnssIconProvider: GnssIconProvider,
     private readonly positionSrv: PositionService,
-    private readonly assetsSrv: AssetsService
+    private readonly assetsSrv: AssetsService,
+    private readonly route: ActivatedRoute
   ) {
     this.positionMarkers$ = this.positionMarkersSubject.asObservable();
   }
 
   ngOnInit() {
+    this.icons = this.gnssIconProvider.getIconsPaths();
     this.listenForNewPositions();
     this.resolveData();
   }
@@ -152,20 +156,6 @@ export class GnssPage implements OnInit, AfterViewInit {
       this.positionMarkers = data;
     });
   }
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  private icons = [
-    'img/icon/cars/pink-car.png',
-    'img/icon/cars/light-green-car.png',
-    'img/icon/cars/light-blue-car.png',
-    'img/icon/cars/brown-car.png',
-    'img/icon/cars/orange-car.png',
-    'img/icon/cars/yellow-car.png',
-    'img/icon/cars/green-car.png',
-    'img/icon/cars/red-car.png',
-    'img/icon/cars/blue-car.png',
-    'img/icon/cars/black-car.png',
-  ];
 
   private getFakePositions() {
     return [

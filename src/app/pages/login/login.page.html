@@ -5,34 +5,55 @@
 </ion-header>
 
 <ion-content>
-  <form (ngSubmit)="login()" [formGroup]="credentials">
-    <div class="input-group">
-      <!-- Email -->
-      <ion-item>
-        <ion-input type="email" placeholder="Email" formControlName="username"></ion-input>
-      </ion-item>
-      <div *ngIf="(username.dirty || username.touched) && username.errors" class="errors">
-        <span *ngIf="username.errors?.required">Email is required</span>
-        <span *ngIf="username.errors?.email">Email is invalid</span>
+  <span *ngIf="!isSuperAdmin; else superAdminLogin">
+    <form (ngSubmit)="login()" [formGroup]="credentials">
+      <div class="input-group">
+        <!-- Email -->
+        <ion-item>
+          <ion-input type="email" placeholder="Email" formControlName="username"></ion-input>
+        </ion-item>
+        <div *ngIf="(username.dirty || username.touched) && username.errors" class="errors">
+          <span *ngIf="username.errors?.required">Email is required</span>
+          <span *ngIf="username.errors?.email">Email is invalid</span>
+        </div>
+        <!-- Password -->
+        <ion-item>
+          <app-show-hide-password>
+            <ion-input
+              type="password"
+              placeholder="Password"
+              formControlName="password"
+            ></ion-input>
+          </app-show-hide-password>
+        </ion-item>
+        <div *ngIf="(password.dirty || password.touched) && password.errors" class="errors">
+          <span *ngIf="password.errors?.required">Password is required</span>
+          <span *ngIf="password.errors?.minlength">Password needs to be 6 characters</span>
+        </div>
       </div>
-      <!-- Password -->
-      <ion-item>
-        <app-show-hide-password>
-          <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
-        </app-show-hide-password>
-      </ion-item>
-      <div *ngIf="(password.dirty || password.touched) && password.errors" class="errors">
-        <span *ngIf="password.errors?.required">Password is required</span>
-        <span *ngIf="password.errors?.minlength">Password needs to be 6 characters</span>
-      </div>
+      <ion-button type="submit" expand="block" [disabled]="!credentials.valid">
+        Iniciar sesión
+      </ion-button>
+    </form>
+    <div class="forgot-password-div">
+      <button routerLink="../recover-password" class="forgot-password">
+        ¿Has olvidado tu contraseña?
+      </button>
     </div>
-    <ion-button type="submit" expand="block" [disabled]="!credentials.valid">
-      Iniciar sesión
-    </ion-button>
-  </form>
-  <div class="forgot-password-div">
-    <button routerLink="../recover-password" class="forgot-password">
-      ¿Has olvidado tu contraseña?
-    </button>
-  </div>
+  </span>
+
+  <ng-template #superAdminLogin>
+    <!-- Tenant -->
+    <div class="input-group">
+      <ion-item *ngIf="isSuperAdmin">
+        <ion-label>Tenant</ion-label>
+        <ion-select [(ngModel)]="tenantToChange">
+          <ion-select-option *ngFor="let tenant of tenants" [value]="tenant.id">
+            {{ tenant.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </div>
+    <ion-button (click)="changeTenant()" expand="block"> Entrar </ion-button>
+  </ng-template>
 </ion-content>

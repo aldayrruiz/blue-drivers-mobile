@@ -1,4 +1,5 @@
 export enum API {
+  tenants = '/api/tenants',
   vehicles = '/api/vehicles',
   reservations = '/api/reservations',
   tickets = '/api/tickets',

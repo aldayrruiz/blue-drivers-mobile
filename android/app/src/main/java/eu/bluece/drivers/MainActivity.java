@@ -1,4 +1,4 @@
-package eu.bluece.fleetmanagement;
+package eu.bluece.drivers;
 
 import com.getcapacitor.BridgeActivity;
 

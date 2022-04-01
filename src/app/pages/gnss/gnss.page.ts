@@ -92,8 +92,7 @@ export class GnssPage implements OnInit, AfterViewInit {
   private keepUpdatingMarkers(timeReset: number): void {
     setTimeout(() => {
       this.positionSrv.getAll().subscribe((positions) => {
-        this.positions = this.getFakePositions();
-        // this.positions = positions;
+        this.positions = positions;
         const positionMarkers = this.positionMarkers.map((oldCustomMarker) => {
           const vehicle = oldCustomMarker.vehicle;
           const oldMarker = oldCustomMarker.marker;
@@ -128,8 +127,7 @@ export class GnssPage implements OnInit, AfterViewInit {
   private resolveData(): void {
     this.route.data.subscribe((data) => {
       this.vehicles = data.vehicles;
-      // this.positions = data.positions;
-      this.positions = this.getFakePositions();
+      this.positions = data.positions;
     });
   }
 

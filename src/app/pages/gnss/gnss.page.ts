@@ -29,7 +29,7 @@ export class GnssPage implements OnInit, AfterViewInit {
   positionMarkers$: Observable<MyMarker[]>;
   toolbarTitle = 'GNSS';
 
-  private icons: string[];
+  private icons = this.gnssIconProvider.getIconsPaths();
   private map: L.Map;
   private vehicles: Vehicle[];
   private positions;
@@ -46,7 +46,6 @@ export class GnssPage implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.icons = this.gnssIconProvider.getIconsPaths();
     this.listenForNewPositions();
     this.resolveData();
   }
@@ -93,7 +92,8 @@ export class GnssPage implements OnInit, AfterViewInit {
   private keepUpdatingMarkers(timeReset: number): void {
     setTimeout(() => {
       this.positionSrv.getAll().subscribe((positions) => {
-        this.positions = positions;
+        this.positions = this.getFakePositions();
+        // this.positions = positions;
         const positionMarkers = this.positionMarkers.map((oldCustomMarker) => {
           const vehicle = oldCustomMarker.vehicle;
           const oldMarker = oldCustomMarker.marker;
@@ -128,7 +128,8 @@ export class GnssPage implements OnInit, AfterViewInit {
   private resolveData(): void {
     this.route.data.subscribe((data) => {
       this.vehicles = data.vehicles;
-      this.positions = data.positions;
+      // this.positions = data.positions;
+      this.positions = this.getFakePositions();
     });
   }
 

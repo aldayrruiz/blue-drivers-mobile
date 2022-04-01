@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class GnssIconProvider {
-  private basePath = '/icon/vehicles/';
+  private basePath = 'icon/vehicles/';
   private icons = [
     'yellow-vehicle.png',
     'red-vehicle.png',

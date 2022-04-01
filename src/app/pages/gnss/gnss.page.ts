@@ -29,7 +29,7 @@ export class GnssPage implements OnInit, AfterViewInit {
   positionMarkers$: Observable<MyMarker[]>;
   toolbarTitle = 'GNSS';
 
-  private icons = this.gnssIconProvider.getIconsPaths();
+  private icons: string[];
   private map: L.Map;
   private vehicles: Vehicle[];
   private positions;
@@ -46,6 +46,7 @@ export class GnssPage implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.icons = this.gnssIconProvider.getIconsPaths();
     this.listenForNewPositions();
     this.resolveData();
   }

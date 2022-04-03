@@ -8,6 +8,7 @@
     "start": "ng serve",
     "start:wsl": "ionic serve --external --disable-host-check --port=8100",
     "build": "ng build",
+    "build:android": "ionic cap build --prod android",
     "test": "ng test",
     "format": "prettier --write \"src/**/*.ts\"",
     "pretty-quick": "pretty-quick --staged",

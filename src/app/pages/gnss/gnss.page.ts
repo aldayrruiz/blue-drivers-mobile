@@ -25,9 +25,9 @@ const refreshTime = 20000;
 export class GnssPage implements OnInit, AfterViewInit {
   vehicleSelected: Vehicle;
   iconSrcSelected = '';
-  positionUI: any;
   positionMarkers$: Observable<MyMarker[]>;
   toolbarTitle = 'GNSS';
+  expanded: boolean[];
 
   private icons: string[];
   private map: L.Map;
@@ -47,8 +47,13 @@ export class GnssPage implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.icons = this.gnssIconProvider.getIconsPaths();
+    this.expanded = new Array(this.icons.length).fill(false);
     this.listenForNewPositions();
     this.resolveData();
+  }
+
+  toggle(i: number) {
+    this.expanded[i] = !this.expanded[i];
   }
 
   ngAfterViewInit(): void {
@@ -68,17 +73,6 @@ export class GnssPage implements OnInit, AfterViewInit {
     }
   }
 
-  onVehicleSelectedChanged() {
-    const deviceSelected = this.vehicleSelected.gps_device.id;
-    const position = this.positions.find((pos) => pos.deviceId === deviceSelected);
-    this.positionUI = { deviceTime: position.deviceTime, speed: position.speed };
-    const marker = this.positionMarkers.find(
-      (customMarker) => customMarker.vehicle === this.vehicleSelected
-    ).marker;
-    // eslint-disable-next-line @typescript-eslint/dot-notation
-    this.iconSrcSelected = marker['_icon'].src;
-  }
-
   private initMarkers(vehicles: Vehicle[], positions: Position[]) {
     const positionsMarkers = vehicles.map((vehicle) => {
       const icon = this.randomIcon();
@@ -94,6 +88,7 @@ export class GnssPage implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.positionSrv.getAll().subscribe((positions) => {
         this.positions = positions;
+        // this.positions = this.getFakePositions();
         const positionMarkers = this.positionMarkers.map((oldCustomMarker) => {
           const vehicle = oldCustomMarker.vehicle;
           const oldMarker = oldCustomMarker.marker;
@@ -129,6 +124,7 @@ export class GnssPage implements OnInit, AfterViewInit {
     this.route.data.subscribe((data) => {
       this.vehicles = data.vehicles;
       this.positions = data.positions;
+      // this.positions = this.getFakePositions();
     });
   }
 
@@ -163,15 +159,22 @@ export class GnssPage implements OnInit, AfterViewInit {
         latitude: Math.floor(Math.random() * 10),
         longitude: Math.floor(Math.random() * 10),
         deviceId: 20,
-        deviceTime: new Date().toJSON(),
-        speed: 'speed 1',
+        deviceTime: new Date('2022-04-03T18:09:04.067Z').toJSON(),
+        speed: 10,
       },
       {
         latitude: Math.floor(Math.random() * 10),
         longitude: Math.floor(Math.random() * 10),
         deviceId: 24,
-        deviceTime: new Date().toJSON(),
-        speed: 'speed 2',
+        deviceTime: new Date('2022-04-02T18:09:04.067Z').toJSON(),
+        speed: 20,
+      },
+      {
+        latitude: Math.floor(Math.random() * 10),
+        longitude: Math.floor(Math.random() * 10),
+        deviceId: 67,
+        deviceTime: new Date('2022-03-03T18:09:04.067Z').toJSON(),
+        speed: 30,
       },
     ];
   }

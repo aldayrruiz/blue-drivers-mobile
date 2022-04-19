@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, IsActiveMatchOptions, Router } from '@angular/router';
 import * as L from 'leaflet';
 import { Observable, Subject } from 'rxjs';
 import { Position, Vehicle } from 'src/app/core/models';
@@ -12,9 +12,10 @@ interface MyMarker {
   vehicle: Vehicle;
   position: Position;
   marker: L.Marker;
+  iconUrl: string;
 }
 
-const refreshTime = 20000;
+const refreshTime = 5000;
 
 @Component({
   selector: 'app-gnss',
@@ -40,9 +41,16 @@ export class GnssPage implements OnInit, AfterViewInit {
     private readonly gnssIconProvider: GnssIconProvider,
     private readonly positionSrv: PositionService,
     private readonly assetsSrv: AssetsService,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
   ) {
     this.positionMarkers$ = this.positionMarkersSubject.asObservable();
+  }
+
+  getMyMarkerInit(icon: string): MyMarker {
+    const leafIcon = this.getLeafIcon(icon);
+    const iconUrl = leafIcon.options.iconUrl;
+    return { vehicle: null, position: null, marker: null, iconUrl };
   }
 
   ngOnInit() {
@@ -50,6 +58,8 @@ export class GnssPage implements OnInit, AfterViewInit {
     this.expanded = new Array(this.icons.length).fill(false);
     this.listenForNewPositions();
     this.resolveData();
+    const initPositionMarkers = this.icons.map((icon) => this.getMyMarkerInit(icon));
+    this.updateMarkers(initPositionMarkers);
   }
 
   toggle(i: number) {
@@ -74,31 +84,39 @@ export class GnssPage implements OnInit, AfterViewInit {
   }
 
   private initMarkers(vehicles: Vehicle[], positions: Position[]) {
-    const positionsMarkers = vehicles.map((vehicle) => {
-      const icon = this.randomIcon();
+    const positionsMarkers = vehicles.map((vehicle, i) => {
+      const leafIcon = this.getLeafIcon(this.icons[i]);
       const position = this.findPosition(positions, vehicle);
-      const marker = this.addMarkerToMap(position, icon);
-      return { vehicle, position, marker };
+      const marker = this.addMarkerToMap(position, leafIcon);
+      const iconUrl = leafIcon.options.iconUrl;
+      return { vehicle, position, marker, iconUrl, active: true };
     });
     this.updateMarkers(positionsMarkers);
     this.keepUpdatingMarkers(refreshTime);
   }
 
   private keepUpdatingMarkers(timeReset: number): void {
+    if (!this.isThisPageActive()) {
+      // Stop sending request to server to get new positions.
+      return;
+    }
+
     setTimeout(() => {
       this.positionSrv.getAll().subscribe((positions) => {
         this.positions = positions;
         // this.positions = this.getFakePositions();
-        const positionMarkers = this.positionMarkers.map((oldCustomMarker) => {
+        const positionMarkers = this.positionMarkers.map((oldCustomMarker, i) => {
           const vehicle = oldCustomMarker.vehicle;
           const oldMarker = oldCustomMarker.marker;
           // * If marker is on map remove it and get his icon (to put the same). Otherwise do not anything.
           oldMarker?.remove();
-          const icon = oldMarker?.getIcon() as L.Icon<L.IconOptions>;
+          const icon =
+            (oldMarker?.getIcon() as L.Icon<L.IconOptions>) || this.getLeafIcon(this.icons[i]);
           // * Set a new marker on map with previous icon or a new one.
           const position = this.findPosition(this.positions, vehicle);
           const marker = this.addMarkerToMap(position, icon);
-          return { vehicle, position, marker };
+          const iconUrl = icon.options.iconUrl;
+          return { vehicle, position, marker, iconUrl };
         });
         this.updateMarkers(positionMarkers);
       });
@@ -106,13 +124,9 @@ export class GnssPage implements OnInit, AfterViewInit {
     }, timeReset);
   }
 
-  private addMarkerToMap(position: Position, icon?: L.Icon<L.IconOptions>) {
+  private addMarkerToMap(position: Position, icon: L.Icon<L.IconOptions>) {
     if (!position) {
       return undefined;
-    }
-
-    if (!icon) {
-      icon = this.randomIcon();
     }
 
     const latLng = this.latLng(position);
@@ -128,9 +142,10 @@ export class GnssPage implements OnInit, AfterViewInit {
     });
   }
 
-  private randomIcon() {
+  private getLeafIcon(icon: string) {
+    const iconUrl = this.assetsSrv.getUrl(icon);
     return L.icon({
-      iconUrl: this.assetsSrv.getUrl(this.icons.pop()),
+      iconUrl,
       iconSize: [22, 22], // size of the icon
       iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
       popupAnchor: [0, 0], // point from which the popup should open relative to the iconAnchor
@@ -153,12 +168,23 @@ export class GnssPage implements OnInit, AfterViewInit {
     });
   }
 
+  private isThisPageActive() {
+    const options: IsActiveMatchOptions = {
+      matrixParams: 'exact',
+      queryParams: 'ignored',
+      paths: 'exact',
+      fragment: 'exact',
+    };
+    const isActive = this.router.isActive('/members/gnss', options);
+    return isActive;
+  }
+
   private getFakePositions() {
     return [
       {
         latitude: Math.floor(Math.random() * 10),
         longitude: Math.floor(Math.random() * 10),
-        deviceId: 20,
+        deviceId: 1,
         deviceTime: new Date('2022-04-03T18:09:04.067Z').toJSON(),
         speed: 10,
       },

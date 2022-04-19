@@ -23,7 +23,7 @@
                       {{ positionMarker.vehicle.brand }} {{ positionMarker.vehicle.model }}
                     </strong>
                   </ion-label>
-                  <img class="car-icon" [src]="positionMarker.marker._icon.src" />
+                  <img class="car-icon" [src]="positionMarker?.iconUrl" />
                 </ion-item>
                 <!-- Info -->
                 <ion-list *ngIf="expanded[i]">

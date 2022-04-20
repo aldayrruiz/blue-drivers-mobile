@@ -4,6 +4,7 @@
 
 <ion-content>
   <ion-list>
+    <!-- Ticket info -->
     <ion-card
       *ngFor="let ticket of tickets"
       [routerLink]="[ticket.id]"
@@ -17,20 +18,18 @@
         <app-ticket-status [status]="ticket.status"></app-ticket-status>
       </ion-item>
       <ion-card-content>
-        <h1
-          class="
-            text-size-lg
-            font-regular
-            text-color-primary
-            ion-text-wrap ion-padding-bottom
-          "
-        >
+        <h1 class="text-size-lg font-regular text-color-primary ion-text-wrap ion-padding-bottom">
           {{ ticket.title }}
         </h1>
         <span class="text-size-sm font-medium text-color-primary">
           Fecha de creación: {{ ticket.date_stored | date: 'dd/MM/yyyy' }}
         </span>
       </ion-card-content>
+    </ion-card>
+
+    <!-- No tickets -->
+    <ion-card *ngIf="tickets.length === 0">
+      <ion-card-content class="ion-text-center"> Aún no tienes ningún conflicto </ion-card-content>
     </ion-card>
   </ion-list>
 </ion-content>

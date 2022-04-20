@@ -8,7 +8,7 @@ import { Ticket } from 'src/app/core/models';
   styleUrls: ['./my-tickets.page.scss'],
 })
 export class MyTicketsPage implements OnInit {
-  toolbarTitle = 'Tickets';
+  toolbarTitle = 'Mis conflictos';
 
   tickets: Ticket[] = [];
 

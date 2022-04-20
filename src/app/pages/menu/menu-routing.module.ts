@@ -42,8 +42,8 @@ const routes: Routes = [
           import('../my-incidents/my-incidents.module').then((m) => m.MyIncidentsPageModule),
       },
       {
-        path: 'gnss',
-        loadChildren: () => import('../gnss/gnss.module').then((m) => m.GnssPageModule),
+        path: 'map',
+        loadChildren: () => import('../map/map.module').then((m) => m.MapPageModule),
       },
     ],
   },

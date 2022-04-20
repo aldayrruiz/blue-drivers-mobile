@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PositionsResolver, VehiclesResolver } from 'src/app/core/resolvers';
-import { GnssPage } from './gnss.page';
+import { MapPage } from './map.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: GnssPage,
+    component: MapPage,
     resolve: {
       vehicles: VehiclesResolver,
       positions: PositionsResolver,
@@ -18,4 +18,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class GnssPageRoutingModule {}
+export class MapPageRoutingModule {}

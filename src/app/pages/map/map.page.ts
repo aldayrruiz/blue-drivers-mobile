@@ -4,7 +4,7 @@ import * as L from 'leaflet';
 import { Observable, Subject } from 'rxjs';
 import { Position, Vehicle } from 'src/app/core/models';
 import { AssetsService, PositionService } from 'src/app/core/services';
-import { GnssIconProvider } from 'src/app/core/services/view/gnss-icon.service';
+import { MapIconProvider } from 'src/app/core/services/view/map-icon.service';
 import { MapConfiguration } from 'src/app/core/utils/leaflet/map-configuration';
 import { MapCreator } from 'src/app/core/utils/leaflet/map-creator';
 
@@ -18,16 +18,16 @@ interface MyMarker {
 const refreshTime = 5000;
 
 @Component({
-  selector: 'app-gnss',
-  templateUrl: './gnss.page.html',
-  styleUrls: ['./gnss.page.scss'],
+  selector: 'app-map',
+  templateUrl: './map.page.html',
+  styleUrls: ['./map.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GnssPage implements OnInit, AfterViewInit {
+export class MapPage implements OnInit, AfterViewInit {
   vehicleSelected: Vehicle;
   iconSrcSelected = '';
   positionMarkers$: Observable<MyMarker[]>;
-  toolbarTitle = 'GNSS';
+  toolbarTitle = 'Map';
   expanded: boolean[];
 
   private icons: string[];
@@ -38,7 +38,7 @@ export class GnssPage implements OnInit, AfterViewInit {
   private positionMarkersSubject = new Subject<MyMarker[]>();
 
   constructor(
-    private readonly gnssIconProvider: GnssIconProvider,
+    private readonly mapIconProvider: MapIconProvider,
     private readonly positionSrv: PositionService,
     private readonly assetsSrv: AssetsService,
     private readonly route: ActivatedRoute,
@@ -54,7 +54,7 @@ export class GnssPage implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.icons = this.gnssIconProvider.getIconsPaths();
+    this.icons = this.mapIconProvider.getIconsPaths();
     this.expanded = new Array(this.icons.length).fill(false);
     this.listenForNewPositions();
     this.resolveData();
@@ -175,7 +175,7 @@ export class GnssPage implements OnInit, AfterViewInit {
       paths: 'exact',
       fragment: 'exact',
     };
-    const isActive = this.router.isActive('/members/gnss', options);
+    const isActive = this.router.isActive('/members/map', options);
     return isActive;
   }
 

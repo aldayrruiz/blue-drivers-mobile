@@ -19,7 +19,7 @@ export class MenuPage implements OnInit {
     { title: 'Mis Reservas', url: ROUTE.MY_RESERVATIONS, icon: 'calendar' },
     { title: 'Mis Tickets', url: ROUTE.MY_TICKETS, icon: 'ticket' },
     { title: 'Mis Incidencias', url: ROUTE.MY_INCIDENTS, icon: 'warning' },
-    { title: 'GNSS', url: ROUTE.GNSS, icon: 'location' },
+    { title: 'Mapa', url: ROUTE.MAP, icon: 'location' },
     { title: 'Cuenta', url: ROUTE.ACCOUNT, icon: 'person' },
   ];
 

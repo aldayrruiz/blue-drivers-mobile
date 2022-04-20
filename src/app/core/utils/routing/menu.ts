@@ -6,6 +6,6 @@ export enum ROUTE {
   RESERVE_BY_DATE = '/members/my-reservations/create-by-date',
   MY_TICKETS = '/members/my-tickets',
   MY_INCIDENTS = '/members/my-incidents',
-  GNSS = '/members/gnss',
+  MAP = '/members/map',
   ACCOUNT = '/members/account',
 }

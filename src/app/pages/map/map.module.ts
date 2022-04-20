@@ -4,18 +4,18 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from 'src/app/components/shared-module.module';
 import { CustomPipesModule } from 'src/app/core/pipes/custom-pipes.module';
-import { GnssPageRoutingModule } from './gnss-routing.module';
-import { GnssPage } from './gnss.page';
+import { MapPageRoutingModule } from './map-routing.module';
+import { MapPage } from './map.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    GnssPageRoutingModule,
+    MapPageRoutingModule,
     SharedModule,
     CustomPipesModule,
   ],
-  declarations: [GnssPage],
+  declarations: [MapPage],
 })
-export class GnssPageModule {}
+export class MapPageModule {}

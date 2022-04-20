@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar color="danger">
     <ion-title>Login</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -31,7 +31,7 @@
           <span *ngIf="password.errors?.minlength">Password needs to be 6 characters</span>
         </div>
       </div>
-      <ion-button type="submit" expand="block" [disabled]="!credentials.valid">
+      <ion-button color="danger" type="submit" expand="block" [disabled]="!credentials.valid">
         Iniciar sesión
       </ion-button>
     </form>

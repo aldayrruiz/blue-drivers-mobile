@@ -3,7 +3,7 @@
 </ion-header>
 
 <ion-content class="relative">
-  <ion-grid class="center">
+  <!-- <ion-grid class="center">
     <ion-row class="ion-padding-vertical">
       <ion-col class="ion-margin-horizontal">
         <ion-button
@@ -15,6 +15,21 @@
           {{ button.title }}
         </ion-button>
       </ion-col>
+    </ion-row>
+  </ion-grid> -->
+  <ion-grid class="center">
+    <ion-row class="ion-padding-vertical">
+      <ion-col class="ion-margin-horizontal">
+        <app-home-button
+          [title]="'Reserva por vehículo'"
+          [imageHref]="'/assets/icon/vehicles/green-vehicle.png'"
+        ></app-home-button>
+      </ion-col>
+      <ion-col class="ion-margin-horizontal"><ion-card>Reserva por fecha</ion-card></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-margin-horizontal"><ion-card>Mis reservas</ion-card></ion-col>
+      <ion-col class="ion-margin-horizontal"><ion-card>Mis conflictos</ion-card></ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>

@@ -12,7 +12,7 @@ export class HomePage implements OnInit {
     { title: 'Mis Reservas', url: ROUTE.MY_RESERVATIONS },
     { title: 'Mis Tickets', url: ROUTE.MY_TICKETS },
     { title: 'Mis Incidencias', url: ROUTE.MY_INCIDENTS },
-    { title: 'GNSS', url: ROUTE.GNSS },
+    { title: 'Mapa', url: ROUTE.GNSS },
     { title: 'Cuenta', url: ROUTE.ACCOUNT },
   ];
 

@@ -13,6 +13,7 @@ import { alreadyStarted } from 'src/app/core/utils/dates/dates';
 })
 export class MyReservationsPage implements OnInit {
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
+  toolbarTitle = 'Mis Reservas';
   segmentValue = 'calendar';
   viewTitle: string;
   calendar = {

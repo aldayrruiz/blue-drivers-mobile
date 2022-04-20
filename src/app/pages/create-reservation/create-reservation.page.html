@@ -3,12 +3,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-item>
-    <ion-label>
-      Se solicitará el vehículo <b>{{ vehicle.brand }} {{ vehicle.model }}</b>
-    </ion-label>
-  </ion-item>
-
+  <app-vehicle-information [vehicle]="vehicle"></app-vehicle-information>
   <ion-card>
     <ion-card-header>
       <ion-card-title>Fecha de inicio</ion-card-title>

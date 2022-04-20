@@ -3,6 +3,7 @@
 </ion-header>
 
 <ion-content>
+  <app-vehicle-information [vehicle]="vehicle"></app-vehicle-information>
   <ion-segment (ionChange)="segmentChanged($event)" [(value)]="segmentValue">
     <ion-segment-button value="reserve">
       <ion-label>Reservar</ion-label>

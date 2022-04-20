@@ -5,10 +5,10 @@
 <ion-content [fullscreen]="true" padding>
   <!-- List of Text Items -->
   <ion-list>
-    <ion-card *ngFor="let vehicle of vehicles" [routerLink]="[vehicle.id]">
-      <ion-card-header>
-        <ion-card-title>{{ vehicle.brand }} {{ vehicle.model }}</ion-card-title>
-      </ion-card-header>
-    </ion-card>
+    <app-vehicle-information
+      *ngFor="let vehicle of vehicles"
+      [vehicle]="vehicle"
+      [routerLink]="[vehicle.id]"
+    ></app-vehicle-information>
   </ion-list>
 </ion-content>

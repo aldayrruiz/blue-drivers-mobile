@@ -138,9 +138,14 @@
   <ion-grid>
     <ion-row>
       <ion-col class="ion-text-right">
-        <ion-button expand="block" [disabled]="!form.valid" (click)="create(isRecurrent.value)"
-          >Reservar</ion-button
+        <ion-button
+          color="danger"
+          expand="block"
+          [disabled]="!form.valid"
+          (click)="create(isRecurrent.value)"
         >
+          Reservar
+        </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

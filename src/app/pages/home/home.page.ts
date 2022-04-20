@@ -8,12 +8,12 @@ import { ROUTE } from 'src/app/core/utils/routing/menu';
 })
 export class HomePage implements OnInit {
   buttons = [
-    { title: 'Vehículos', url: ROUTE.VEHICLES },
-    { title: 'Mis Reservas', url: ROUTE.MY_RESERVATIONS },
-    { title: 'Mis Tickets', url: ROUTE.MY_TICKETS },
-    { title: 'Mis Incidencias', url: ROUTE.MY_INCIDENTS },
-    { title: 'Mapa', url: ROUTE.GNSS },
-    { title: 'Cuenta', url: ROUTE.ACCOUNT },
+    { title: 'Reserva por vehículo', icon: 'car-sport-outline', url: ROUTE.VEHICLES },
+    { title: 'Reserva por fecha', icon: 'calendar-number-outline', url: ROUTE.RESERVE_BY_DATE },
+    { title: 'Mis reservas', icon: 'document-text-outline', url: ROUTE.MY_RESERVATIONS },
+    { title: 'Mis conflictos', icon: 'hammer-outline', url: ROUTE.MY_TICKETS },
+    { title: 'Mis incidencias', icon: 'warning-outline', url: ROUTE.MY_INCIDENTS },
+    { title: 'Mapa', icon: 'map-outline', url: ROUTE.GNSS },
   ];
 
   toolbarTitle = 'Home';

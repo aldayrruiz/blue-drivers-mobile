@@ -9,6 +9,10 @@ export class Ghost {
 
   constructor(private router: Router) {}
 
+  async goTo(to: string) {
+    return this.router.navigateByUrl(to, this.extras);
+  }
+
   async goToReservationDetails(id: string) {
     const to = `members/my-reservations/${id}`;
     return this.router.navigateByUrl(to, this.extras);

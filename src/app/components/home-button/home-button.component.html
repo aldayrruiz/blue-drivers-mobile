@@ -1,6 +1,9 @@
-<ion-card>
-  <img width="40px" src="/assets/icon/vehicles/green-vehicle.png" />
+<ion-card class="height-card" (click)="goTo(button.url)">
+  <!-- <img src="/assets/icon/vehicles/green-vehicle.png" /> -->
+  <div class="centered">
+    <ion-icon class="icon-size" [name]="button.icon"></ion-icon>
+  </div>
   <ion-card-header>
-    <ion-card-subtitle>Reserva por vehículo</ion-card-subtitle>
+    <ion-card-subtitle class="centered">{{ button.title }}</ion-card-subtitle>
   </ion-card-header>
 </ion-card>

@@ -39,15 +39,17 @@
     <ion-grid>
       <ion-row>
         <ion-col class="ion-text-right">
-          <ion-button (click)="addPhoto()" expand="block">Añadir/Reemplazar foto</ion-button>
+          <ion-button color="danger" (click)="addPhoto()" expand="block">
+            Añadir/Reemplazar foto
+          </ion-button>
           <img *ngIf="photoBase64" [src]="photoBase64" alt="Foto adjunta" />
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col class="ion-text-right">
-          <ion-button type="submit" expand="block" [disabled]="!form.valid"
-            >Crear incidencia</ion-button
-          >
+          <ion-button color="danger" type="submit" expand="block" [disabled]="!form.valid">
+            Crear incidencia
+          </ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>

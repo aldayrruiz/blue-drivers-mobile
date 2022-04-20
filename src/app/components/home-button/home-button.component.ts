@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Ghost } from 'src/app/core/services';
 
 @Component({
   selector: 'app-home-button',
@@ -6,10 +7,11 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./home-button.component.scss'],
 })
 export class HomeButtonComponent implements OnInit {
-  @Input() title: string;
-  @Input() imageHref: string;
-
-  constructor() {}
-
+  @Input() button: any;
+  constructor(private readonly fleetRouter: Ghost) {}
   ngOnInit() {}
+
+  async goTo(url: string) {
+    await this.fleetRouter.goTo(url);
+  }
 }

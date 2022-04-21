@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { finalize } from 'rxjs/operators';
+import { DatetimeModalComponent } from 'src/app/components/datetime-modal/datetime-modal.component';
 import { CreateReservation, ReservationTemplate, Vehicle } from 'src/app/core/models';
 import {
   DateZonerHelper,
@@ -21,12 +22,14 @@ import { descriptionValidators, titleValidators } from 'src/app/core/utils/valid
   styleUrls: ['./create-reservation.page.scss', '../../../styles.css'],
 })
 export class CreateReservationPage implements OnInit {
+  @ViewChild('startModal') startModal: DatetimeModalComponent;
+  @ViewChild('endModal') endModal: DatetimeModalComponent;
   toolbarTitle = 'Crear reserva';
   form: FormGroup;
   vehicle: Vehicle;
   reservationTemplates: ReservationTemplate[] = [];
-  start: string;
-  end: string;
+  initStart: string;
+  initEnd: string;
 
   constructor(
     private readonly reservationService: ReservationService,
@@ -52,6 +55,12 @@ export class CreateReservationPage implements OnInit {
     this.initFormGroup();
     this.resolveData();
     this.initDates();
+  }
+
+  testing() {
+    console.log(this.startModal === this.endModal);
+    console.log('Start:', this.startModal.datetime);
+    console.log('End: ', this.endModal.datetime);
   }
 
   async createReservation() {
@@ -84,10 +93,12 @@ export class CreateReservationPage implements OnInit {
   }
 
   private getReservation(): CreateReservation {
+    const start = this.startModal.datetime;
+    const end = this.endModal.datetime;
     return {
       title: this.form.value.title,
-      start: new Date(this.start).toJSON(),
-      end: new Date(this.end).toJSON(),
+      start: new Date(start).toJSON(),
+      end: new Date(end).toJSON(),
       description: this.form.value.description,
       vehicle: this.vehicle.id,
     };
@@ -107,8 +118,8 @@ export class CreateReservationPage implements OnInit {
     const start = combine(startDate, startTime);
     const end = combine(endDate, endTime);
 
-    this.start = this.zoner.toMyZone(start);
-    this.end = this.zoner.toMyZone(end);
+    this.initStart = this.zoner.toMyZone(start);
+    this.initEnd = this.zoner.toMyZone(end);
   }
 
   private resolveData() {

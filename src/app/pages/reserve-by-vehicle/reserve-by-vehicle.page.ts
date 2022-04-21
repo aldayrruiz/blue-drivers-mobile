@@ -1,4 +1,3 @@
-import { HttpParams } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
@@ -7,17 +6,17 @@ import { fuelLabel, Reservation, VehicleDetails } from 'src/app/core/models';
 import { Key, ReservationService, StorageService, VehiclesTabStorage } from 'src/app/core/services';
 
 @Component({
-  selector: 'app-vehicle-details',
-  templateUrl: './vehicle-details.page.html',
-  styleUrls: ['./vehicle-details.page.scss'],
+  selector: 'app-reserve-by-vehicle',
+  templateUrl: './reserve-by-vehicle.page.html',
+  styleUrls: ['./reserve-by-vehicle.page.scss'],
 })
-export class VehicleDetailsPage implements OnInit {
+export class ReserveByVehiclePage implements OnInit {
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
+  toolbarTitle = 'Reserva por vehículo';
   segmentValue = 'reserve';
 
   vehicle: VehicleDetails;
   fuel: string;
-  toolbarTitle = '';
 
   userId: string;
   eventSource = [];
@@ -43,7 +42,6 @@ export class VehicleDetailsPage implements OnInit {
 
   async ngOnInit() {
     await this.resolveData();
-    this.loadToolbarTitle();
     this.userId = (await this.storage.getParsed(Key.user)).id;
     this.loadReservations(this.reservations);
   }
@@ -75,10 +73,12 @@ export class VehicleDetailsPage implements OnInit {
   }
 
   onViewTitleChanged(title: string): void {
+    console.log('onViewTitleChanged', title);
     this.viewTitle = title;
   }
 
   onTimeSelected(event): void {
+    console.log('onTimeSelected', event);
     const date = new Date(event.selectedTime);
     this.vehiclesTabStorage.setSelectedDate(date);
   }
@@ -148,29 +148,6 @@ export class VehicleDetailsPage implements OnInit {
    */
   onCurrentDateChanged(ev: Date) {
     return;
-
-    if (this.selectedMonth !== ev.getUTCMonth()) {
-      // ! Just get all
-      // const firstDayThisMonth = new Date(
-      //   ev.getFullYear(),
-      //   ev.getMonth() - 1,
-      //   1
-      // );
-      // const firstDayNextMonth = new Date(
-      //   ev.getFullYear(),
-      //   ev.getMonth() + 2,
-      //   1
-      // );
-      const options = {
-        params: new HttpParams().set('vehicleId', this.vehicle.id),
-        // .set('from', firstDayThisMonth.toJSON())
-        // .set('to', firstDayNextMonth.toJSON()),
-      };
-      this.reservationSrv.getAll(options).subscribe((response) => {
-        this.loadReservations(response);
-      });
-      this.selectedMonth = ev.getUTCMonth();
-    }
   }
 
   private async resolveData() {
@@ -180,9 +157,5 @@ export class VehicleDetailsPage implements OnInit {
       this.vehicle = vehicle;
       this.fuel = fuelLabel(vehicle.fuel);
     });
-  }
-
-  private loadToolbarTitle() {
-    this.toolbarTitle = `${this.vehicle.brand} ${this.vehicle.model}`;
   }
 }

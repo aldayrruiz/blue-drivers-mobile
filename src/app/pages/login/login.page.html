@@ -19,11 +19,8 @@
         <!-- Password -->
         <ion-item>
           <app-show-hide-password>
-            <ion-input
-              type="password"
-              placeholder="Password"
-              formControlName="password"
-            ></ion-input>
+            <ion-input type="password" placeholder="Password" formControlName="password">
+            </ion-input>
           </app-show-hide-password>
         </ion-item>
         <div *ngIf="(password.dirty || password.touched) && password.errors" class="errors">

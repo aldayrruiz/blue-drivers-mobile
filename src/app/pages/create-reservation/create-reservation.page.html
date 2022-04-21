@@ -4,42 +4,26 @@
 
 <ion-content>
   <app-vehicle-information [vehicle]="vehicle"></app-vehicle-information>
+  <!-- Start Date -->
   <ion-card>
-    <ion-card-header>
-      <ion-card-title>Fecha de inicio</ion-card-title>
-    </ion-card-header>
     <ion-card-content>
-      <ion-grid>
-        <ion-row class="ion-align-items-center">
-          <!-- Start date -->
-          <ion-col>
-            <h2>
-              <ion-datetime #popoverDatetime minuteValues="0,15,30,45" [(ngModel)]="start">
-              </ion-datetime>
-            </h2>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+      <app-datetime-modal
+        title="Recogida"
+        name="start"
+        [datetime]="initStart"
+        #startModal
+      ></app-datetime-modal>
+      <hr style="background: grey" />
+      <!-- End Date -->
+      <app-datetime-modal
+        title="Entrega"
+        name="end"
+        [datetime]="initEnd"
+        #endModal
+      ></app-datetime-modal>
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Fecha de fin</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-grid>
-        <ion-row class="ion-align-items-center">
-          <ion-col>
-            <!-- End date -->
-            <h2>
-              <ion-datetime minuteValues="0,15,30,45" [(ngModel)]="end"> </ion-datetime>
-            </h2>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-content>
-  </ion-card>
   <br />
 
   <form (ngSubmit)="createReservation()" [formGroup]="form">

@@ -6,8 +6,8 @@ import { IonicModule } from '@ionic/angular';
 import { NgCalendarModule } from 'ionic2-calendar';
 import { SharedModule } from 'src/app/components/shared-module.module';
 import { CalModalPageModule } from '../cal-modal/cal-modal.module';
-import { VehicleDetailsPageRoutingModule } from './vehicle-details-routing.module';
-import { VehicleDetailsPage } from './vehicle-details.page';
+import { ReserveByVehiclePageRoutingModule } from './reserve-by-vehicle-routing.module';
+import { ReserveByVehiclePage } from './reserve-by-vehicle.page';
 registerLocaleData(localeEs);
 
 @NgModule({
@@ -16,11 +16,11 @@ registerLocaleData(localeEs);
     FormsModule,
     IonicModule,
     SharedModule,
-    VehicleDetailsPageRoutingModule,
+    ReserveByVehiclePageRoutingModule,
     NgCalendarModule,
     CalModalPageModule,
   ],
-  declarations: [VehicleDetailsPage],
+  declarations: [ReserveByVehiclePage],
   providers: [{ provide: LOCALE_ID, useValue: 'es-ES' }],
 })
-export class VehicleDetailsPageModule {}
+export class ReserveByVehiclePageModule {}

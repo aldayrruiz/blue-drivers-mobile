@@ -4,8 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { CreateTicket, Vehicle } from 'src/app/core/models';
 import {
+  AppRouter,
   ErrorMessageService,
-  Ghost,
   LoadingService,
   SnackerService,
   TicketService,
@@ -29,7 +29,7 @@ export class CreateTicketPage implements OnInit {
     private readonly loadingSrv: LoadingService,
     private readonly snacker: SnackerService,
     private readonly route: ActivatedRoute,
-    private readonly ghost: Ghost,
+    private readonly ghost: AppRouter,
     private readonly fb: FormBuilder
   ) {}
 

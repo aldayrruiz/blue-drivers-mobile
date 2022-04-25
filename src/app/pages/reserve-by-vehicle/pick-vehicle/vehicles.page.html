@@ -1,0 +1,15 @@
+<ion-header>
+  <app-toolbar [title]="toolbarTitle"></app-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" padding>
+  <!-- List of Text Items -->
+  <ion-list>
+    <app-vehicle-information
+      *ngFor="let vehicle of vehicles; let i = index"
+      [vehicle]="vehicle"
+      [vehicleIcon]="vehicleIcons[i]"
+      [routerLink]="[vehicle.id]"
+    ></app-vehicle-information>
+  </ion-list>
+</ion-content>

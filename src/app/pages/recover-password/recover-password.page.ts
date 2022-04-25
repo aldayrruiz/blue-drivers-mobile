@@ -3,8 +3,8 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { finalize } from 'rxjs/operators';
 import { CreateRecoverPasswordResponse } from 'src/app/core/models/auth/create-recover-password-response.model';
 import {
+  AppRouter,
   ErrorMessageService,
-  Ghost,
   LoadingService,
   PasswordRecover,
   SnackerService,
@@ -29,7 +29,7 @@ export class RecoverPasswordPage implements OnInit {
     private loadingSrv: LoadingService,
     private snacker: SnackerService,
     private fb: FormBuilder,
-    private ghost: Ghost
+    private ghost: AppRouter
   ) {}
 
   get email(): AbstractControl {

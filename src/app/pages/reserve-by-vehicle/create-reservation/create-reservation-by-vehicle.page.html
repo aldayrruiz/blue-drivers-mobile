@@ -1,0 +1,27 @@
+<ion-header>
+  <app-toolbar [title]="toolbarTitle"></app-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-vehicle-information [vehicle]="vehicle"></app-vehicle-information>
+  <ion-card>
+    <ion-card-content>
+      <!-- Start date -->
+      <app-datetime title="Inicio" [datetime]="initStart" #start></app-datetime>
+      <hr style="background: grey" />
+      <!-- End Date -->
+      <app-datetime title="Fin" [datetime]="initEnd" #end></app-datetime>
+    </ion-card-content>
+  </ion-card>
+  <!-- Title and description -->
+  <app-reservation-common-form></app-reservation-common-form>
+  <ion-button
+    color="danger"
+    class="ion-margin-horizontal"
+    expand="block"
+    (click)="create()"
+    [disabled]="!reservationCommonForm?.form?.valid"
+  >
+    Reservar
+  </ion-button>
+</ion-content>

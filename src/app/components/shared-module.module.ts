@@ -1,10 +1,13 @@
+/* eslint-disable max-len */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { DatetimeModalComponent } from './datetime-modal/datetime-modal.component';
+import { CustomPipesModule } from '../core/pipes/custom-pipes.module';
+import { DatetimeComponent } from './datetime/datetime.component';
 import { HomeButtonComponent } from './home-button/home-button.component';
 import { IncidentTypeComponent } from './incident-type/incident-type.component';
+import { ReservationCommonFormComponent } from './reservation-common-form/reservation-common-form.component';
 import { ShowHidePasswordComponent } from './show-hide-password/show-hide-password.component';
 import { TicketStatusComponent } from './ticket-status/ticket-status.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
@@ -18,9 +21,10 @@ import { VehicleInformationComponent } from './vehicle-information/vehicle-infor
     ToolbarComponent,
     VehicleInformationComponent,
     HomeButtonComponent,
-    DatetimeModalComponent,
+    DatetimeComponent,
+    ReservationCommonFormComponent,
   ],
-  imports: [CommonModule, IonicModule, FormsModule],
+  imports: [CommonModule, IonicModule, FormsModule, ReactiveFormsModule, CustomPipesModule],
   exports: [
     IncidentTypeComponent,
     TicketStatusComponent,
@@ -28,7 +32,8 @@ import { VehicleInformationComponent } from './vehicle-information/vehicle-infor
     ToolbarComponent,
     VehicleInformationComponent,
     HomeButtonComponent,
-    DatetimeModalComponent,
+    DatetimeComponent,
+    ReservationCommonFormComponent,
   ],
 })
 export class SharedModule {}

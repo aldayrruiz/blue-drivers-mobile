@@ -6,7 +6,7 @@ import { finalize } from 'rxjs/operators';
 import { User } from 'src/app/core/models';
 import { EditUser } from 'src/app/core/models/users/edit.models';
 import {
-  Ghost,
+  AppRouter,
   Key,
   LoadingService,
   SnackerService,
@@ -37,7 +37,7 @@ export class EditUserPage implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly userSrv: UserService,
     private readonly fb: FormBuilder,
-    private readonly ghost: Ghost
+    private readonly ghost: AppRouter
   ) {}
 
   get email(): AbstractControl {

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Ghost } from 'src/app/core/services';
+import { AppRouter } from 'src/app/core/services';
 
 @Component({
   selector: 'app-home-button',
@@ -8,7 +8,7 @@ import { Ghost } from 'src/app/core/services';
 })
 export class HomeButtonComponent implements OnInit {
   @Input() button: any;
-  constructor(private readonly fleetRouter: Ghost) {}
+  constructor(private readonly fleetRouter: AppRouter) {}
   ngOnInit() {}
 
   async goTo(url: string) {

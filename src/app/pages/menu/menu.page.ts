@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Ghost, Key, LoginService, StorageService } from 'src/app/core/services';
+import { AppRouter, Key, LoginService, StorageService } from 'src/app/core/services';
 import { ROUTE } from 'src/app/core/utils/routing/menu';
 import { environment } from 'src/environments/environment';
 import { homeButtons } from '../home/home-buttons';
@@ -23,7 +23,7 @@ export class MenuPage implements OnInit {
   constructor(
     private loginService: LoginService,
     private storage: StorageService,
-    private ghost: Ghost
+    private ghost: AppRouter
   ) {}
 
   async ngOnInit() {

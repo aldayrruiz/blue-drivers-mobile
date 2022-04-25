@@ -1,0 +1,24 @@
+<ion-card>
+  <ion-card-content>
+    <form [formGroup]="form">
+      <!-- Title Field -->
+      <ion-item lines="none">
+        <ion-label> Motivo </ion-label>
+        <ion-select formControlName="title">
+          <ion-select-option *ngFor="let template of reservationTemplates" [value]="template.title">
+            {{ template.title }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <hr style="background: grey" />
+      <!-- Description Field -->
+      <ion-item lines="none">
+        <ion-textarea formControlName="description" placeholder="Notas de la reserva">
+        </ion-textarea>
+      </ion-item>
+      <div *ngIf="(description.dirty || description.touched) && description.errors" class="errors">
+        <span *ngIf="description.errors?.maxlength">El número de caracteres máximo 255</span>
+      </div>
+    </form>
+  </ion-card-content>
+</ion-card>

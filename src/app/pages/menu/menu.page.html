@@ -19,9 +19,9 @@
               lines="none"
               detail="false"
               routerLinkActive="selected"
-              [routerLinkActiveOptions]="{ exact: true }"
             >
-              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+              <!-- [routerLinkActiveOptions]="{ exact: true }" -->
+              <ion-icon slot="start" [src]="p.icon" [name]="p.icon"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
           </ion-menu-toggle>

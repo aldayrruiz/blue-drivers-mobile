@@ -27,7 +27,7 @@ export class MapPage implements OnInit, AfterViewInit {
   vehicleSelected: Vehicle;
   iconSrcSelected = '';
   positionMarkers$: Observable<MyMarker[]>;
-  toolbarTitle = 'Map';
+  toolbarTitle = 'Mapa';
   expanded: boolean[];
 
   private icons: string[];

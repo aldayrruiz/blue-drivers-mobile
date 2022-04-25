@@ -1,0 +1,93 @@
+<ion-header>
+  <app-toolbar [title]="toolbarTitle"></app-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <!-- Start date -->
+      <app-datetime
+        title="Inicio"
+        [datetime]="initStart"
+        [isRecurrent]="isRecurrent"
+        #start
+      ></app-datetime>
+      <hr style="background: grey" />
+      <!-- End Date -->
+      <app-datetime
+        title="Fin"
+        [datetime]="initEnd"
+        [isRecurrent]="isRecurrent"
+        #end
+      ></app-datetime>
+    </ion-card-content>
+  </ion-card>
+  <!-- Vehicles -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Ordenar por preferentes</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-reorder-group (ionItemReorder)="doReorder($event)" disabled="false">
+          <ion-item *ngFor="let vehicle of vehicles" lines="none">
+            <ion-avatar slot="start">
+              <img src="/assets/icon/vehicles/blue-vehicle.png" />
+            </ion-avatar>
+            <ion-label>
+              {{ vehicle.brand }} {{ vehicle.model }} {{ vehicle.number_plate }}
+            </ion-label>
+            <ion-reorder slot="end"></ion-reorder>
+          </ion-item>
+        </ion-reorder-group>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Title and description -->
+  <app-reservation-common-form></app-reservation-common-form>
+
+  <!-- Is recurrent -->
+  <ion-card>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-label>¿Es recurrente?</ion-label>
+        <ion-toggle [(ngModel)]="isRecurrent"></ion-toggle>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Is recurrent -->
+  <div *ngIf="isRecurrent">
+    <!-- Weekdays -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>Se repiten los días</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let weekday of weekdays" lines="none">
+            <ion-label>{{ weekday.label }}</ion-label>
+            <ion-checkbox slot="end" [(ngModel)]="weekday.isChecked"></ion-checkbox>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-content>
+        <!-- Until date-->
+        <app-datetime title="Hasta" [datetime]="initUntil" #until></app-datetime>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <!-- Button -->
+  <ion-button
+    class="ion-margin-horizontal"
+    color="danger"
+    expand="block"
+    [disabled]="!reservationCommonForm?.form?.valid"
+    (click)="create()"
+  >
+    Reservar
+  </ion-button>
+</ion-content>

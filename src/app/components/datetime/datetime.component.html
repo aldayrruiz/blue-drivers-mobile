@@ -8,11 +8,10 @@
 </ion-item>
 <ion-modal [class]="!isRecurrent ? 'date-time-modal' : 'only-time-modal'" [trigger]="id">
   <ng-template>
-    <ion-content>
+    <ion-content force-overscroll="false">
       <ion-datetime
         [class]="!isRecurrent ? 'date-time-height' : 'only-time-height'"
-        [presentation]="!isRecurrent ? 'datetime' : 'time'"
-        showDefaultButtons="true"
+        [presentation]="!isRecurrent ? 'date-time' : 'time'"
         minuteValues="0,15,30,45"
         [(ngModel)]="datetime"
       >

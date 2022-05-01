@@ -3,8 +3,12 @@ import { ActivatedRoute, IsActiveMatchOptions, Router } from '@angular/router';
 import * as L from 'leaflet';
 import { Observable, Subject } from 'rxjs';
 import { Position, Vehicle } from 'src/app/core/models';
-import { AssetsService, PositionService } from 'src/app/core/services';
-import { MapIconProvider } from 'src/app/core/services/view/map-icon.service';
+import {
+  AssetsService,
+  PositionService,
+  VehicleIcon,
+  VehicleIconProvider,
+} from 'src/app/core/services';
 import { MapConfiguration } from 'src/app/core/utils/leaflet/map-configuration';
 import { MapCreator } from 'src/app/core/utils/leaflet/map-creator';
 
@@ -15,7 +19,7 @@ interface MyMarker {
   iconUrl: string;
 }
 
-const refreshTime = 5000;
+const refreshTime = 10000;
 
 @Component({
   selector: 'app-map',
@@ -30,7 +34,7 @@ export class MapPage implements OnInit, AfterViewInit {
   toolbarTitle = 'Mapa';
   expanded: boolean[];
 
-  private icons: string[];
+  private icons: VehicleIcon[];
   private map: L.Map;
   private vehicles: Vehicle[];
   private positions;
@@ -38,27 +42,27 @@ export class MapPage implements OnInit, AfterViewInit {
   private positionMarkersSubject = new Subject<MyMarker[]>();
 
   constructor(
-    private readonly mapIconProvider: MapIconProvider,
+    private readonly vehicleIconProvider: VehicleIconProvider,
     private readonly positionSrv: PositionService,
     private readonly assetsSrv: AssetsService,
     private readonly route: ActivatedRoute,
     private readonly router: Router
   ) {
     this.positionMarkers$ = this.positionMarkersSubject.asObservable();
+    this.icons = this.vehicleIconProvider.getIcons();
   }
 
   getMyMarkerInit(icon: string): MyMarker {
-    const leafIcon = this.getLeafIcon(icon);
+    const leafIcon = this.createLeafIcon(icon);
     const iconUrl = leafIcon.options.iconUrl;
     return { vehicle: null, position: null, marker: null, iconUrl };
   }
 
   ngOnInit() {
-    this.icons = this.mapIconProvider.getIconsPaths();
     this.expanded = new Array(this.icons.length).fill(false);
     this.listenForNewPositions();
     this.resolveData();
-    const initPositionMarkers = this.icons.map((icon) => this.getMyMarkerInit(icon));
+    const initPositionMarkers = this.icons.map((icon) => this.getMyMarkerInit(icon.src));
     this.updateMarkers(initPositionMarkers);
   }
 
@@ -85,7 +89,7 @@ export class MapPage implements OnInit, AfterViewInit {
 
   private initMarkers(vehicles: Vehicle[], positions: Position[]) {
     const positionsMarkers = vehicles.map((vehicle, i) => {
-      const leafIcon = this.getLeafIcon(this.icons[i]);
+      const leafIcon = this.createLeafIcon(this.icons[i].src);
       const position = this.findPosition(positions, vehicle);
       const marker = this.addMarkerToMap(position, leafIcon);
       const iconUrl = leafIcon.options.iconUrl;
@@ -111,7 +115,8 @@ export class MapPage implements OnInit, AfterViewInit {
           // * If marker is on map remove it and get his icon (to put the same). Otherwise do not anything.
           oldMarker?.remove();
           const icon =
-            (oldMarker?.getIcon() as L.Icon<L.IconOptions>) || this.getLeafIcon(this.icons[i]);
+            (oldMarker?.getIcon() as L.Icon<L.IconOptions>) ||
+            this.createLeafIcon(this.icons[i].src);
           // * Set a new marker on map with previous icon or a new one.
           const position = this.findPosition(this.positions, vehicle);
           const marker = this.addMarkerToMap(position, icon);
@@ -142,10 +147,9 @@ export class MapPage implements OnInit, AfterViewInit {
     });
   }
 
-  private getLeafIcon(icon: string) {
-    const iconUrl = this.assetsSrv.getUrl(icon);
+  private createLeafIcon(iconSrc: string) {
     return L.icon({
-      iconUrl,
+      iconUrl: iconSrc,
       iconSize: [22, 22], // size of the icon
       iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
       popupAnchor: [0, 0], // point from which the popup should open relative to the iconAnchor
@@ -191,14 +195,14 @@ export class MapPage implements OnInit, AfterViewInit {
       {
         latitude: Math.floor(Math.random() * 10),
         longitude: Math.floor(Math.random() * 10),
-        deviceId: 24,
+        deviceId: 2,
         deviceTime: new Date('2022-04-02T18:09:04.067Z').toJSON(),
         speed: 20,
       },
       {
         latitude: Math.floor(Math.random() * 10),
         longitude: Math.floor(Math.random() * 10),
-        deviceId: 67,
+        deviceId: 3,
         deviceTime: new Date('2022-03-03T18:09:04.067Z').toJSON(),
         speed: 30,
       },

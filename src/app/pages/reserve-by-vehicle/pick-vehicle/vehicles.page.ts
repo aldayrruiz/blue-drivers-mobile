@@ -11,7 +11,6 @@ import { TOOLBAR_TITLE } from '../constants';
 export class VehiclesPage implements OnInit {
   toolbarTitle = TOOLBAR_TITLE;
   vehicles: Vehicle[] = [];
-  vehicleIcons: string[] = [];
 
   constructor(private readonly route: ActivatedRoute) {}
 

@@ -24,5 +24,6 @@ export * from './storage';
 export * from './view/datepicker.service';
 export * from './view/loading.service';
 export * from './view/snacker.service';
+export * from './view/vehicle-icon.service';
 // None
 export * from './weekdays.service';

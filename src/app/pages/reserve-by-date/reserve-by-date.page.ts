@@ -12,9 +12,10 @@ import {
   DateZonerHelper,
   ErrorMessageService,
   LoadingService,
-  MyReservationsTabStorage,
   ReservationService,
   SnackerService,
+  VehicleIcon,
+  VehicleIconProvider,
   WeekdayCheckbox,
   WeekdaysService,
 } from 'src/app/core/services';
@@ -49,9 +50,10 @@ export class ReserveByDatePage implements OnInit {
   weekdays: WeekdayCheckbox[];
   isRecurrent: boolean;
   recurrent: Recurrent;
+  private icons: VehicleIcon[];
 
   constructor(
-    private readonly tabStorage: MyReservationsTabStorage,
+    private readonly vehicleIconProvider: VehicleIconProvider,
     private readonly reservationSrv: ReservationService,
     private readonly errorMessage: ErrorMessageService,
     private readonly weekdaySrv: WeekdaysService,
@@ -61,7 +63,9 @@ export class ReserveByDatePage implements OnInit {
     private readonly snacker: SnackerService,
     private readonly route: ActivatedRoute,
     private readonly appRouter: AppRouter
-  ) {}
+  ) {
+    this.icons = this.vehicleIconProvider.getIcons();
+  }
 
   ngOnInit() {
     this.initData();
@@ -174,6 +178,11 @@ export class ReserveByDatePage implements OnInit {
 
   doReorder(ev: CustomEvent<ItemReorderEventDetail>) {
     this.vehicles = ev.detail.complete(this.vehicles);
+  }
+
+  private getIconSrcFromVehicle(vehicle: Vehicle) {
+    const icon = this.icons.filter((i) => i.value === vehicle.icon)[0];
+    return icon.src;
   }
 
   /**

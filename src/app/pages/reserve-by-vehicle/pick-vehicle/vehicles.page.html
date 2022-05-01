@@ -6,9 +6,8 @@
   <!-- List of Text Items -->
   <ion-list>
     <app-vehicle-information
-      *ngFor="let vehicle of vehicles; let i = index"
+      *ngFor="let vehicle of vehicles"
       [vehicle]="vehicle"
-      [vehicleIcon]="vehicleIcons[i]"
       [routerLink]="[vehicle.id]"
     ></app-vehicle-information>
   </ion-list>

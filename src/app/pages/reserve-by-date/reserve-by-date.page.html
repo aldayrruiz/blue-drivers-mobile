@@ -32,7 +32,7 @@
         <ion-reorder-group (ionItemReorder)="doReorder($event)" disabled="false">
           <ion-item *ngFor="let vehicle of vehicles" lines="none">
             <ion-avatar slot="start">
-              <img src="/assets/icon/vehicles/blue-vehicle.png" />
+              <img [src]="getIconSrcFromVehicle(vehicle)" />
             </ion-avatar>
             <ion-label>
               {{ vehicle.brand }} {{ vehicle.model }} {{ vehicle.number_plate }}

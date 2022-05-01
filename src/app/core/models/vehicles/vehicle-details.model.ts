@@ -18,4 +18,5 @@ export interface VehicleDetails {
   fuel: VehicleFuel;
   insurance_company: InsuranceCompany;
   policy_number: string;
+  icon: number;
 }

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { OnlyDatePipe } from './date.pipe';
 import { DistanceFromNow } from './distance-from-now.pipe';
 import { DurationPipe } from './duration.pipe';
 import { EssentialDatePipe } from './essential-date.pipe';
@@ -15,6 +16,7 @@ import { FromKnotsToKphPipe } from './to-kph.pipe';
     FromKnotsToKphPipe,
     EssentialDatePipe,
     OnlyTimePipe,
+    OnlyDatePipe,
   ],
   imports: [CommonModule],
   exports: [
@@ -24,6 +26,7 @@ import { FromKnotsToKphPipe } from './to-kph.pipe';
     FromKnotsToKphPipe,
     EssentialDatePipe,
     OnlyTimePipe,
+    OnlyDatePipe,
   ],
 })
 export class CustomPipesModule {}

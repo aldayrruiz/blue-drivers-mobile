@@ -14,6 +14,8 @@ import {
   PositionService,
   ReservationService,
   SnackerService,
+  VehicleIcon,
+  VehicleIconProvider,
   WeekdaysService,
 } from 'src/app/core/services';
 import { MapConfiguration } from 'src/app/core/utils/leaflet/map-configuration';
@@ -42,8 +44,10 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
   private userMarker: L.Marker;
   private userIcon: L.Icon<L.IconOptions>;
   private vehicleIcon: L.Icon<L.IconOptions>;
+  private icons: VehicleIcon[];
 
   constructor(
+    private readonly vehicleIconProvider: VehicleIconProvider,
     private readonly reservationService: ReservationService,
     private readonly tabStorage: MyReservationsTabStorage,
     private readonly errorMessage: ErrorMessageService,
@@ -56,7 +60,9 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
     private readonly dateSrv: MyDateService,
     private readonly route: ActivatedRoute,
     private readonly router: Router
-  ) {}
+  ) {
+    this.icons = this.vehicleIconProvider.getIcons();
+  }
 
   ngOnInit(): void {
     this.initIcons();
@@ -86,6 +92,11 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
     const now = new Date();
 
     return start <= now;
+  }
+
+  getIconSrcFromVehicle(vehicle: Vehicle) {
+    const icon = this.icons.filter((i) => i.value === vehicle.icon)[0];
+    return icon.src;
   }
 
   async showCancelAlert() {

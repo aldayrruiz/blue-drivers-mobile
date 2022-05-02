@@ -1,8 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CalendarComponent } from 'ionic2-calendar';
-import { Reservation } from 'src/app/core/models';
-import { AppRouter, MyReservationsTabStorage } from 'src/app/core/services';
+import { Reservation, Vehicle } from 'src/app/core/models';
+import {
+  AppRouter,
+  MyReservationsTabStorage,
+  VehicleIcon,
+  VehicleIconProvider,
+} from 'src/app/core/services';
 import { MyDateService } from 'src/app/core/services/my-date.service';
 import { alreadyStarted } from 'src/app/core/utils/dates/dates';
 
@@ -27,13 +32,17 @@ export class MyReservationsPage implements OnInit {
   private reservationsCalendarMode: Reservation[] = [];
   private reservationsListMode: Reservation[] = [];
   private eventSource = [];
+  private icons: VehicleIcon[];
 
   constructor(
-    private tabStorage: MyReservationsTabStorage,
-    private dateSrv: MyDateService,
-    private route: ActivatedRoute,
-    private ghost: AppRouter
-  ) {}
+    private readonly vehicleIconProvider: VehicleIconProvider,
+    private readonly tabStorage: MyReservationsTabStorage,
+    private readonly dateSrv: MyDateService,
+    private readonly route: ActivatedRoute,
+    private readonly ghost: AppRouter
+  ) {
+    this.icons = this.vehicleIconProvider.getIcons();
+  }
 
   ngOnInit(): void {
     this.refreshComponentData();
@@ -43,6 +52,11 @@ export class MyReservationsPage implements OnInit {
 
   onViewTitleChanged(title: string): void {
     this.viewTitle = title;
+  }
+
+  getIconSrcFromVehicle(vehicle: Vehicle) {
+    const icon = this.icons.filter((i) => i.value === vehicle.icon)[0];
+    return icon.src;
   }
 
   private refreshComponentData(): void {
@@ -58,11 +72,9 @@ export class MyReservationsPage implements OnInit {
     // These reservations are all from requester.
     this.reservationsCalendarMode.forEach((reservation) => {
       events.push({
-        id: reservation.id,
-        title: 'Reservado',
+        ...reservation,
         startTime: new Date(reservation.start),
         endTime: new Date(reservation.end),
-        vehicle: `${reservation.vehicle.brand} ${reservation.vehicle.model}`,
       });
     });
 

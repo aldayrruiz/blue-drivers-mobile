@@ -1,0 +1,21 @@
+<ion-item [lines]="lines">
+  <ion-avatar slot="start">
+    <img [src]="getIconSrcFromVehicle(reservation.vehicle)" />
+  </ion-avatar>
+  <ion-label>
+    <h2>{{ reservation.start | date: 'fullDate' | titlecase }}</h2>
+    <h2>De {{ reservation.start | onlyTime }} a {{ reservation.end | onlyTime }} hrs</h2>
+    <h3>
+      {{ reservation.vehicle.brand }} {{ reservation.vehicle.model }}
+      {{ reservation.vehicle.number_plate }}
+    </h3>
+    <h3>{{ reservation.title }}</h3>
+  </ion-label>
+  <ion-icon
+    *ngIf="editable"
+    size="large"
+    slot="end"
+    (click)="goToReservation(reservation.id)"
+    name="pencil"
+  ></ion-icon>
+</ion-item>

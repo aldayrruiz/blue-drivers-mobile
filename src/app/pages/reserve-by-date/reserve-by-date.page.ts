@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { ItemReorderEventDetail } from '@ionic/core';
 import { finalize } from 'rxjs/operators';
+import { DateComponent } from 'src/app/components/date/date.component';
 import { DatetimeComponent } from 'src/app/components/datetime/datetime.component';
 import { ReservationCommonFormComponent } from 'src/app/components/reservation-common-form/reservation-common-form.component';
 import { CreateRecurrentReservation, Recurrent, Vehicle } from 'src/app/core/models';
@@ -38,7 +39,7 @@ export class ReserveByDatePage implements OnInit {
   // Date form
   @ViewChild('start') start: DatetimeComponent;
   @ViewChild('end') end: DatetimeComponent;
-  @ViewChild('until') until: DatetimeComponent;
+  @ViewChild('until') until: DateComponent;
   @ViewChild(ReservationCommonFormComponent) reservationCommonForm: ReservationCommonFormComponent;
   initStart: string;
   initEnd: string;
@@ -76,7 +77,7 @@ export class ReserveByDatePage implements OnInit {
   async create() {
     if (this.isRecurrent) {
       // * Create Recurrent reservation
-      if (new Date(this.until.datetime) > now()) {
+      if (new Date(this.until.date) > now()) {
         await this.createRecurrentReservation();
         return;
       }
@@ -180,7 +181,7 @@ export class ReserveByDatePage implements OnInit {
     this.vehicles = ev.detail.complete(this.vehicles);
   }
 
-  private getIconSrcFromVehicle(vehicle: Vehicle) {
+  getIconSrcFromVehicle(vehicle: Vehicle) {
     const icon = this.icons.filter((i) => i.value === vehicle.icon)[0];
     return icon.src;
   }
@@ -223,7 +224,7 @@ export class ReserveByDatePage implements OnInit {
    */
   private getRecurrentData(): Recurrent {
     const since = serializeDate(new Date()); // Reservations will be created since now
-    const until = serializeDate(this.until.datetime); // Until
+    const until = serializeDate(this.until.date); // Until
     const weekdays = this.weekdaySrv.getValuesFromCheckBoxes(this.weekdays).toString();
     return { since, until, weekdays };
   }

@@ -21,17 +21,18 @@
         Recurrente
       </ion-badge>
     </ion-item>
-    <ion-card-header>
-      <ion-card-subtitle>{{ reservation.title }}</ion-card-subtitle>
-    </ion-card-header>
     <ion-card-content>
-      {{ reservation.start | date: 'cccc d MMMM yyyy' | titlecase }}
-      <br />
-      De {{ reservation.start | date: 'HH:mm' }} a {{ reservation.end | date: 'HH:mm' }}
-      <br />
-      <span *ngIf="reservation.description">
-        {{ reservation.description }}
-      </span>
+      <ion-item lines="none">
+        <ion-label>
+          <h2>{{ reservation.start | date: 'fullDate' | titlecase }}</h2>
+          <h2>De {{ reservation.start | onlyTime }} a {{ reservation.end | onlyTime }} hrs</h2>
+          <h3>
+            {{ reservation.vehicle.brand }} {{ reservation.vehicle.model }}
+            {{ reservation.vehicle.number_plate }}
+          </h3>
+          <h3>{{ reservation.title }}</h3>
+        </ion-label>
+      </ion-item>
     </ion-card-content>
 
     <ion-button expand="block" [routerLink]="['create-incident']" color="danger">

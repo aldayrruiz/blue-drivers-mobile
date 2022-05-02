@@ -3,48 +3,38 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid>
-    <ion-row>
-      <ion-col size="12" class="ion-no-padding">
-        <ion-card>
-          <div id="map" style="height: 300px"></div>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="12" class="ion-no-padding">
-        <ion-card>
-          <ion-card-content>
-            <ion-list>
-              <span *ngFor="let positionMarker of positionMarkers$ | async; let i = index">
-                <ion-item (click)="toggle(i)">
-                  <ion-label>
-                    <strong>
-                      {{ positionMarker.vehicle.brand }} {{ positionMarker.vehicle.model }}
-                    </strong>
-                  </ion-label>
-                  <img class="car-icon" [src]="positionMarker?.iconUrl" />
-                </ion-item>
-                <!-- Info -->
-                <ion-list *ngIf="expanded[i]">
-                  <ion-item>
-                    <ion-label>
-                      Última posición: {{ positionMarker?.position?.deviceTime | distance }}
-                    </ion-label>
-                  </ion-item>
-                  <ion-item>
-                    <ion-label>
-                      Velocidad:
-                      {{ positionMarker?.position?.speed | toKph | number: '1.0-0' }}
-                      km/h</ion-label
-                    >
-                  </ion-item>
-                </ion-list>
-              </span>
-            </ion-list>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <ion-card>
+    <div id="map" style="height: 300px"></div>
+  </ion-card>
+  <ion-card *ngFor="let positionMarker of positionMarkers$ | async">
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <img [src]="positionMarker?.iconUrl" />
+        </ion-avatar>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-label>
+                <h3>{{ positionMarker.vehicle.brand }} {{ positionMarker.vehicle.model }}</h3>
+                <h2>{{ positionMarker.vehicle.number_plate }}</h2>
+              </ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label>
+                <h3>
+                  <ion-icon name="time-outline"></ion-icon>
+                  {{ positionMarker?.position?.deviceTime | distance }}
+                </h3>
+                <h3>
+                  <ion-icon name="speedometer-outline"></ion-icon>
+                  {{ positionMarker?.position?.speed | toKph | number: '1.0-0' }} km/h
+                </h3>
+              </ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

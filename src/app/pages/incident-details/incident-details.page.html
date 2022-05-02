@@ -3,45 +3,26 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid class="ion-no-padding">
-    <ion-row>
-      <ion-col size="12" class="ion-no-padding">
-        <ion-card class="border border-radius no-box-shadow ion-padding">
-          <img *ngIf="photoUrl" class="max-width" [src]="photoUrl" alt="Foto del incidente" />
-          <ion-item lines="none" class="transparent">
-            <ion-badge>{{ vehicle.brand }} {{ vehicle.model }}</ion-badge>
-            <app-incident-type [type]="incident.type"></app-incident-type>
-          </ion-item>
-          <ion-card-content>
-            <h1
-              class="text-size-lg font-regular text-color-primary ion-text-wrap ion-padding-bottom"
-            >
-              {{ incident.type }} - {{ vehicle.brand }} {{ vehicle.model }}
-            </h1>
-            <h3 class="text-size-xs font-regular text-color-secondary ion-text-wrap">
-              {{ incident.description }}
-            </h3>
-            <div class="ion-text-right">
-              <span class="text-size-sm font-medium text-color-primary">
-                {{ incident.date_stored | date: 'dd/MM/yyyy HH:mm' }}
-              </span>
-            </div>
-          </ion-card-content>
-          <ion-grid>
-            <ion-row>
-              <ion-col class="ion-text-right">
-                <ion-button
-                  [routerLink]="['../..', 'my-reservations', reservation.id]"
-                  class="default-button color-accent ion-margin-top box-shadow"
-                  color="danger"
-                >
-                  Ir a la reserva
-                </ion-button>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <app-vehicle-information [vehicle]="vehicle"></app-vehicle-information>
+  <ion-card class="border border-radius no-box-shadow ion-padding">
+    <img *ngIf="photoUrl" class="max-width" [src]="photoUrl" alt="Foto del incidente" />
+    <app-incident-type [type]="incident.type"></app-incident-type>
+    <ion-card-header>
+      <ion-card-subtitle>
+        {{ vehicle.brand }} {{ vehicle.model }} {{ vehicle.number_plate }}
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{ incident.description }}</p>
+      <ion-note>{{ incident.date_stored | essential | titlecase }}</ion-note>
+      <ion-button
+        class="ion-margin-top"
+        expand="block"
+        color="danger"
+        (click)="goToReservationDetails()"
+      >
+        Ir a la reserva
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

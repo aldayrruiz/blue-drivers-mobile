@@ -4,25 +4,22 @@
 
 <ion-content>
   <ion-list>
-    <ion-card
-      *ngFor="let incident of incidents"
-      [routerLink]="[incident.id]"
-      class="border border-radius no-box-shadow ion-padding"
-    >
-      <ion-item lines="none" class="transparent">
-        <ion-badge
-          >{{ incident.reservation.vehicle.brand }}
-          {{ incident.reservation.vehicle.model }}
-        </ion-badge>
-        <app-incident-type [type]="incident.type"></app-incident-type>
-      </ion-item>
+    <ion-card *ngFor="let incident of incidents" [routerLink]="[incident.id]">
+      <app-incident-type [type]="incident.type"></app-incident-type>
       <ion-card-content>
-        <h3 class="text-size-xs font-regular text-color-secondary ion-text-wrap">
-          {{ incident.description }}
-        </h3>
-        <span class="text-size-sm font-medium text-color-primary">
-          {{ incident.date_stored | date: 'dd/MM/yyyy, HH:mm' }}
-        </span>
+        <ion-item lines="none">
+          <ion-avatar slot="start">
+            <img [src]="getIconSrcFromVehicle(incident.reservation.vehicle)" />
+          </ion-avatar>
+          <ion-label>
+            <h2>
+              {{ incident.reservation.vehicle.brand }} {{ incident.reservation.vehicle.model }}
+              {{ incident.reservation.vehicle.number_plate }}
+            </h2>
+            <p>{{ incident.description }}</p>
+            <ion-note>{{ incident.date_stored | essential | titlecase }}</ion-note>
+          </ion-label>
+        </ion-item>
       </ion-card-content>
     </ion-card>
 

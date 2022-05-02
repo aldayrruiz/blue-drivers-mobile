@@ -10,3 +10,18 @@ export interface Incident {
   type: IncidentType;
   photo: string;
 }
+
+export const getIncidentTypeLabel = (type: IncidentType) => {
+  switch (type) {
+    case IncidentType.BANG:
+      return 'Choque';
+    case IncidentType.LIGHTS:
+      return 'Luces';
+    case IncidentType.TIRE_PUNCTURE:
+      return 'Pinchazo';
+    case IncidentType.USAGE_PROBLEMS:
+      return 'Problemas de uso';
+    case IncidentType.OTHERS:
+      return 'Otros';
+  }
+};

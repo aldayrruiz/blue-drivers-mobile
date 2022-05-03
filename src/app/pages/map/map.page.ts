@@ -66,18 +66,19 @@ export class MapPage implements OnInit, AfterViewInit {
     this.updateMarkers(initPositionMarkers);
   }
 
-  toggle(i: number) {
-    this.expanded[i] = !this.expanded[i];
-  }
-
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.initMap();
       this.initMarkers(this.vehicles, this.positions);
+      this.focusMapOnPosition(this.positionMarkers[0]);
     }, 400);
   }
 
-  initMap(): void {
+  focusMapOnPosition(positionMarker: MyMarker) {
+    this.map.panTo(positionMarker.marker.getLatLng());
+  }
+
+  private initMap(): void {
     // ! If not position DO NOT LOAD MAP. Try to load map in after few seconds.
     if (!this.positions) {
       setTimeout(async () => this.initMap(), refreshTime);

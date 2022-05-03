@@ -7,7 +7,7 @@
     <div id="map" style="height: 300px"></div>
   </ion-card>
   <ion-card *ngFor="let positionMarker of positionMarkers$ | async">
-    <ion-card-content>
+    <ion-card-content (click)="focusMapOnPosition(positionMarker)">
       <ion-item lines="none">
         <ion-avatar slot="start">
           <img [src]="positionMarker?.iconUrl" />

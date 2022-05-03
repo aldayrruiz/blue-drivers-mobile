@@ -44,11 +44,11 @@ export class TicketDetailsPage implements OnInit {
     this.ticketService.delete(this.ticket.id).subscribe(
       async () => {
         await this.appRouter.goBack(this.route);
-        const msg = 'Ticket cancelado con éxito';
+        const msg = 'Conflicto cancelado con éxito';
         this.snacker.showSuccessful(msg);
       },
       async (errors) => {
-        const msg = 'Error cancelando el ticket';
+        const msg = 'Error cancelando el conflicto';
         this.snacker.showFailed(msg);
       }
     );

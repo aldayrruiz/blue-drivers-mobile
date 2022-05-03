@@ -12,7 +12,7 @@
   <form (ngSubmit)="send()" [formGroup]="form">
     <!-- Title field -->
     <ion-item>
-      <ion-input type="text" placeholder="Título del ticket" formControlName="title"></ion-input>
+      <ion-input type="text" placeholder="Título" formControlName="title"></ion-input>
       <ion-label class="asterisk-required"></ion-label>
     </ion-item>
     <div *ngIf="(title.dirty || title.touched) && title.errors" class="errors">
@@ -41,7 +41,7 @@
       <ion-row>
         <ion-col class="ion-text-right">
           <ion-button color="danger" type="submit" expand="block" [disabled]="!form.valid">
-            Crear ticket
+            Crear
           </ion-button>
         </ion-col>
       </ion-row>

@@ -11,36 +11,27 @@
   </ion-card>
 
   <ion-card>
-    <ion-item
-      style="height: 31px"
-      class="ion-no-padding ion-no-margin"
-      lines="none"
-      class="transparent"
-    >
+    <ion-item style="height: 31px" lines="none">
       <ion-badge color="warning" *ngIf="reservation.is_recurrent" slot="end">
         Recurrente
       </ion-badge>
     </ion-item>
     <ion-card-content>
-      <ion-item lines="none">
-        <ion-label>
-          <h2>{{ reservation.start | date: 'fullDate' | titlecase }}</h2>
-          <h2>De {{ reservation.start | onlyTime }} a {{ reservation.end | onlyTime }} hrs</h2>
-          <h3>
-            {{ reservation.vehicle.brand }} {{ reservation.vehicle.model }}
-            {{ reservation.vehicle.number_plate }}
-          </h3>
-          <h3>{{ reservation.title }}</h3>
-          <p>{{ reservation.description }}</p>
-        </ion-label>
-      </ion-item>
+      <h2>{{ reservation.start | date: 'fullDate' | titlecase }}</h2>
+      <h2>De {{ reservation.start | onlyTime }} a {{ reservation.end | onlyTime }} hrs</h2>
+      <h3>
+        {{ reservation.vehicle.brand }} {{ reservation.vehicle.model }}
+        {{ reservation.vehicle.number_plate }}
+      </h3>
+      <h3>{{ reservation.title }}</h3>
+      <p>{{ reservation.description }}</p>
     </ion-card-content>
 
-    <ion-button expand="block" [routerLink]="['create-incident']" color="danger">
+    <ion-button class="ion-margin" expand="block" [routerLink]="['create-incident']" color="danger">
       <ion-icon name="warning-outline"></ion-icon>
       Reportar incidencia
     </ion-button>
-    <ion-button expand="block" color="danger" (click)="showCancelAlert()">
+    <ion-button class="ion-margin" expand="block" color="danger" (click)="showCancelAlert()">
       <ion-icon name="close-circle-outline"></ion-icon>
       Cancelar
     </ion-button>

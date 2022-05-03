@@ -9,20 +9,15 @@
     <app-incident-type [type]="incident.type"></app-incident-type>
     <ion-card-header>
       <ion-card-subtitle>
-        {{ vehicle.brand }} {{ vehicle.model }} {{ vehicle.number_plate }}
+        {{ vehicle.brand + ' ' + vehicle.model + ' ' + vehicle.number_plate | uppercase }}
       </ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       <p>{{ incident.description }}</p>
       <ion-note>{{ incident.date_stored | essential | titlecase }}</ion-note>
-      <ion-button
-        class="ion-margin-top"
-        expand="block"
-        color="danger"
-        (click)="goToReservationDetails()"
-      >
-        Ir a la reserva
-      </ion-button>
     </ion-card-content>
+    <ion-button expand="block" color="danger" (click)="goToReservationDetails()">
+      Ir a la reserva
+    </ion-button>
   </ion-card>
 </ion-content>

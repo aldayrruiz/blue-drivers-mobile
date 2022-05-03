@@ -61,7 +61,13 @@
         <span *ngIf="password2.errors?.minlength">Contraseña necesita mas de 5 carácteres</span>
       </div>
     </div>
-    <ion-button color="danger" type="submit" expand="block" [disabled]="!profile.valid">
+    <ion-button
+      class="ion-margin"
+      color="danger"
+      type="submit"
+      expand="block"
+      [disabled]="!profile.valid"
+    >
       Guardar
     </ion-button>
   </form>

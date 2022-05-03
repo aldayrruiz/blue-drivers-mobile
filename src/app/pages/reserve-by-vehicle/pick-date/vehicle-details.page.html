@@ -72,7 +72,7 @@
         </ion-list-header>
 
         <ion-item lines="none" *ngFor="let event of selectedDate.events">
-          <ion-icon slot="start" name="person"></ion-icon>
+          <ion-icon slot="start" name="document-text-outline"></ion-icon>
           <!-- Reservation start and end in different days -->
           <ion-label *ngIf="differentDay(event); else sameDay">
             <ion-text>
@@ -128,39 +128,24 @@
   <ng-template #info>
     <ion-card>
       <ion-card-header>
-        <ion-card-subtitle>{{ fuel }}</ion-card-subtitle>
+        <ion-card-subtitle>{{ fuel | uppercase }}</ion-card-subtitle>
         <ion-card-title>{{ vehicle.brand }} {{ vehicle.model }}</ion-card-title>
       </ion-card-header>
 
       <ion-card-content>
-        <ion-list>
-          <ion-item>
-            <ion-label> <strong>Nº de placa:</strong> {{ vehicle.number_plate }} </ion-label>
-          </ion-item>
-        </ion-list>
+        <h2><strong>Número de placa:</strong> {{ vehicle.number_plate }}</h2>
       </ion-card-content>
     </ion-card>
 
     <ion-card>
       <ion-card-header>
-        <ion-card-subtitle>Compañía de seguro</ion-card-subtitle>
+        <ion-card-subtitle>COMPAÑÍA DE SEGURO</ion-card-subtitle>
         <ion-card-title>{{ vehicle.insurance_company?.name }}</ion-card-title>
       </ion-card-header>
 
       <ion-card-content>
-        <ion-list>
-          <ion-item>
-            <ion-label>
-              <strong>Teléfono: </strong> {{ vehicle.insurance_company?.phone }}
-            </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>
-              <strong>Nº de póliza: </strong>
-              {{ vehicle?.policy_number }}
-            </ion-label>
-          </ion-item>
-        </ion-list>
+        <h2><strong>Teléfono: </strong> {{ vehicle.insurance_company?.phone }}</h2>
+        <h2><strong>Número de póliza: </strong> {{ vehicle?.policy_number }}</h2>
       </ion-card-content>
     </ion-card>
   </ng-template>

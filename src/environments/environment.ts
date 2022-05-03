@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   fleetBaseUrl: 'http://localhost:8000',
-  version: '1.0',
+  version: '1.1',
 };
 
 /*

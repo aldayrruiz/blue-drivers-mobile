@@ -74,23 +74,21 @@
 
   <!-- My reservation LIST MODE -->
   <ng-template #list>
-    <ion-list fullscreen>
-      <ion-card
-        *ngFor="let reservation of reservationsListMode"
-        [routerLink]="[reservation.id]"
-        [ngClass]="reservationAlreadyStarted(reservation.start) ? 'opaque' : ''"
-      >
-        <ion-item *ngIf="reservation.is_recurrent" style="height: 35px" lines="none">
-          <ion-badge color="warning" slot="end">Recurrente</ion-badge>
-        </ion-item>
-        <ion-card-content>
-          <app-my-reservation-information
-            [reservation]="reservation"
-            [editable]="false"
-            lines="none"
-          ></app-my-reservation-information>
-        </ion-card-content>
-      </ion-card>
-    </ion-list>
+    <ion-card
+      *ngFor="let reservation of reservationsListMode"
+      [routerLink]="[reservation.id]"
+      [ngClass]="reservationAlreadyStarted(reservation.start) ? 'opaque' : ''"
+    >
+      <ion-item *ngIf="reservation.is_recurrent" style="height: 35px" lines="none">
+        <ion-badge color="warning" slot="end">Recurrente</ion-badge>
+      </ion-item>
+      <ion-card-content>
+        <app-my-reservation-information
+          [reservation]="reservation"
+          [editable]="false"
+          lines="none"
+        ></app-my-reservation-information>
+      </ion-card-content>
+    </ion-card>
   </ng-template>
 </ion-content>

@@ -4,11 +4,9 @@
 
 <ion-content [fullscreen]="true" padding>
   <!-- List of Text Items -->
-  <ion-list>
-    <app-vehicle-information
-      *ngFor="let vehicle of vehicles"
-      [vehicle]="vehicle"
-      [routerLink]="[vehicle.id]"
-    ></app-vehicle-information>
-  </ion-list>
+  <app-vehicle-information
+    *ngFor="let vehicle of vehicles"
+    [vehicle]="vehicle"
+    [routerLink]="[vehicle.id]"
+  ></app-vehicle-information>
 </ion-content>

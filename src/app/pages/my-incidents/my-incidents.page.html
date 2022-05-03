@@ -3,31 +3,27 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-card *ngFor="let incident of incidents" [routerLink]="[incident.id]">
-      <app-incident-type [type]="incident.type"></app-incident-type>
-      <ion-card-content>
-        <ion-item lines="none">
-          <ion-avatar slot="start">
-            <img [src]="getIconSrcFromVehicle(incident.reservation.vehicle)" />
-          </ion-avatar>
-          <ion-label>
-            <h2>
-              {{ incident.reservation.vehicle.brand }} {{ incident.reservation.vehicle.model }}
-              {{ incident.reservation.vehicle.number_plate }}
-            </h2>
-            <p>{{ incident.description }}</p>
-            <ion-note>{{ incident.date_stored | essential | titlecase }}</ion-note>
-          </ion-label>
-        </ion-item>
-      </ion-card-content>
-    </ion-card>
+  <ion-card *ngFor="let incident of incidents" [routerLink]="[incident.id]">
+    <app-incident-type [type]="incident.type"></app-incident-type>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <img [src]="getIconSrcFromVehicle(incident.reservation.vehicle)" />
+        </ion-avatar>
+        <ion-label>
+          <h2>
+            {{ incident.reservation.vehicle.brand }} {{ incident.reservation.vehicle.model }}
+            {{ incident.reservation.vehicle.number_plate }}
+          </h2>
+          <p>{{ incident.description }}</p>
+          <ion-note>{{ incident.date_stored | essential | titlecase }}</ion-note>
+        </ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
 
-    <!-- No incidents -->
-    <ion-card *ngIf="incidents.length === 0">
-      <ion-card-content class="ion-text-center">
-        Aún no tienes ninguna incidencia
-      </ion-card-content>
-    </ion-card>
-  </ion-list>
+  <!-- No incidents -->
+  <ion-card *ngIf="incidents.length === 0">
+    <ion-card-content class="ion-text-center"> Aún no tienes ninguna incidencia </ion-card-content>
+  </ion-card>
 </ion-content>

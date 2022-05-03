@@ -2,30 +2,28 @@
   <app-toolbar [title]="toolbarTitle"></app-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-list>
-    <ion-card *ngFor="let ticket of tickets" [routerLink]="[ticket.id]">
-      <ion-card-content>
-        <ion-item lines="none">
-          <ion-avatar slot="start">
-            <img [src]="getIconSrcFromVehicle(ticket.reservation.vehicle)" />
-          </ion-avatar>
-          <ion-label>
-            <h2>
-              {{ ticket.reservation.owner.brand }} {{ ticket.reservation.vehicle.model }}
-              {{ ticket.reservation.vehicle.number_plate }}
-            </h2>
-            <h2>{{ ticket.title }}</h2>
-            <p>{{ ticket.description }}</p>
-            <ion-note>{{ ticket.date_stored | essential | titlecase }}</ion-note>
-          </ion-label>
-        </ion-item>
-      </ion-card-content>
-    </ion-card>
+<ion-content [fullscreen]="true">
+  <ion-card *ngFor="let ticket of tickets" [routerLink]="[ticket.id]">
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <img [src]="getIconSrcFromVehicle(ticket.reservation.vehicle)" />
+        </ion-avatar>
+        <ion-label>
+          <h2>
+            {{ ticket.reservation.owner.brand }} {{ ticket.reservation.vehicle.model }}
+            {{ ticket.reservation.vehicle.number_plate }}
+          </h2>
+          <h2>{{ ticket.title }}</h2>
+          <p>{{ ticket.description }}</p>
+          <ion-note>{{ ticket.date_stored | essential | titlecase }}</ion-note>
+        </ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
 
-    <!-- No tickets -->
-    <ion-card *ngIf="tickets.length === 0">
-      <ion-card-content class="ion-text-center"> Aún no tienes ningún conflicto </ion-card-content>
-    </ion-card>
-  </ion-list>
+  <!-- No tickets -->
+  <ion-card *ngIf="tickets.length === 0">
+    <ion-card-content class="ion-text-center"> Aún no tienes ningún conflicto </ion-card-content>
+  </ion-card>
 </ion-content>

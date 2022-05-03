@@ -65,12 +65,6 @@
       let-noEventsLabel="noEventsLabel"
     >
       <ion-list fullscreen>
-        <ion-list-header>
-          <ion-label>
-            <h1>Reservas</h1>
-          </ion-label>
-        </ion-list-header>
-
         <ion-item lines="none" *ngFor="let event of selectedDate.events">
           <ion-icon slot="start" name="document-text-outline"></ion-icon>
           <!-- Reservation start and end in different days -->

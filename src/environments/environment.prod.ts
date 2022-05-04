@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  fleetBaseUrl: 'https://drivers.bluece.eu',
-  version: '1.1',
+  fleetBaseUrl: 'https://drivers.app.bluece.eu',
+  version: '2.0',
 };

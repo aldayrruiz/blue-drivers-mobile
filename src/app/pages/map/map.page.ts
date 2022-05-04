@@ -75,7 +75,7 @@ export class MapPage implements OnInit, AfterViewInit {
   }
 
   focusMapOnPosition(positionMarker: MyMarker) {
-    this.map.panTo(positionMarker.marker.getLatLng());
+    this.map.setView(positionMarker.marker.getLatLng(), 15);
   }
 
   private initMap(): void {
@@ -108,8 +108,8 @@ export class MapPage implements OnInit, AfterViewInit {
 
     setTimeout(() => {
       this.positionSrv.getAll().subscribe((positions) => {
-        this.positions = positions;
-        // this.positions = this.getFakePositions();
+        // this.positions = positions;
+        this.positions = this.getFakePositions();
         const positionMarkers = this.positionMarkers.map((oldCustomMarker, i) => {
           const vehicle = oldCustomMarker.vehicle;
           const oldMarker = oldCustomMarker.marker;
@@ -143,8 +143,8 @@ export class MapPage implements OnInit, AfterViewInit {
   private resolveData(): void {
     this.route.data.subscribe((data) => {
       this.vehicles = data.vehicles;
-      this.positions = data.positions;
-      // this.positions = this.getFakePositions();
+      // this.positions = data.positions;
+      this.positions = this.getFakePositions();
     });
   }
 
@@ -187,26 +187,34 @@ export class MapPage implements OnInit, AfterViewInit {
   private getFakePositions() {
     return [
       {
-        latitude: Math.floor(Math.random() * 10),
-        longitude: Math.floor(Math.random() * 10),
+        latitude: this.generateLatitude(),
+        longitude: this.generateLongitude(),
         deviceId: 1,
         deviceTime: new Date('2022-04-03T18:09:04.067Z').toJSON(),
         speed: 10,
       },
       {
-        latitude: Math.floor(Math.random() * 10),
-        longitude: Math.floor(Math.random() * 10),
+        latitude: this.generateLatitude(),
+        longitude: this.generateLongitude(),
         deviceId: 2,
         deviceTime: new Date('2022-04-02T18:09:04.067Z').toJSON(),
         speed: 20,
       },
       {
-        latitude: Math.floor(Math.random() * 10),
-        longitude: Math.floor(Math.random() * 10),
+        latitude: this.generateLatitude(),
+        longitude: this.generateLongitude(),
         deviceId: 3,
         deviceTime: new Date('2022-03-03T18:09:04.067Z').toJSON(),
         speed: 30,
       },
     ];
+  }
+
+  private generateLatitude() {
+    return Math.floor(Math.random() * (43 - 40 + 1) + 40);
+  }
+
+  private generateLongitude() {
+    return Math.floor(Math.random() * (-5 + 8 + 1) - 5);
   }
 }

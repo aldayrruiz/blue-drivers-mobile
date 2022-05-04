@@ -108,8 +108,8 @@ export class MapPage implements OnInit, AfterViewInit {
 
     setTimeout(() => {
       this.positionSrv.getAll().subscribe((positions) => {
-        // this.positions = positions;
-        this.positions = this.getFakePositions();
+        this.positions = positions;
+        // this.positions = this.getFakePositions();
         const positionMarkers = this.positionMarkers.map((oldCustomMarker, i) => {
           const vehicle = oldCustomMarker.vehicle;
           const oldMarker = oldCustomMarker.marker;
@@ -143,8 +143,8 @@ export class MapPage implements OnInit, AfterViewInit {
   private resolveData(): void {
     this.route.data.subscribe((data) => {
       this.vehicles = data.vehicles;
-      // this.positions = data.positions;
-      this.positions = this.getFakePositions();
+      this.positions = data.positions;
+      // this.positions = this.getFakePositions();
     });
   }
 

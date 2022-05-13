@@ -4,9 +4,10 @@
 
 <ion-content>
   <ion-item lines="none" class="transparent">
-    <ion-label
-      >Se solicitará el vehículo <b>{{ vehicle.brand }} {{ vehicle.model }}</b></ion-label
-    >
+    <p>
+      Se solicitará el vehículo <b>{{ vehicle.brand }} {{ vehicle.model }}</b> con matricula
+      {{ vehicle.number_plate }}
+    </p>
   </ion-item>
 
   <form (ngSubmit)="send()" [formGroup]="form">

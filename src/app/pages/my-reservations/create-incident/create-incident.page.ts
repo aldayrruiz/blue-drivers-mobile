@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { finalize } from 'rxjs/operators';
 import { CreateIncident, IncidentType, Reservation } from 'src/app/core/models';
@@ -11,7 +11,7 @@ import {
   MyReservationsTabStorage,
   SnackerService,
 } from 'src/app/core/services';
-import { incidentTypeValidators } from 'src/app/core/utils/validators';
+import { descriptionValidators, incidentTypeValidators } from 'src/app/core/utils/validators';
 
 @Component({
   selector: 'app-create-incident',
@@ -79,7 +79,7 @@ export class CreateIncidentPage implements OnInit {
 
   private initFormGroup(): FormGroup {
     return this.fb.group({
-      description: ['', [Validators.maxLength(50)]],
+      description: ['', descriptionValidators],
       incidentType: [IncidentType.OTHERS, incidentTypeValidators],
     });
   }

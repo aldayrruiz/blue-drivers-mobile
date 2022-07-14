@@ -68,21 +68,15 @@
           <ion-icon slot="start" name="document-text-outline"></ion-icon>
           <!-- Reservation start and end in different days -->
           <ion-label class="ion-text-wrap" *ngIf="differentDay(event); else sameDay">
-            <ion-text>
-              De {{ event.startTime | essential | titlecase }}
-              <br />
-              A {{ event.endTime | essential | titlecase }}
-            </ion-text>
+            <h2>De {{ event.startTime | essential | titlecase }}</h2>
+            <h2>A {{ event.endTime | essential | titlecase }}</h2>
             <p>{{ event.owner.fullname }} - {{ event.owner.email }}</p>
           </ion-label>
 
           <!-- Reservation start and end same day -->
           <ng-template #sameDay>
             <ion-label class="ion-text-wrap">
-              <ion-text>
-                De {{ event.startTime | date: 'HH:mm' }} a
-                {{ event.endTime | date: 'HH:mm' }}
-              </ion-text>
+              <h2>De {{ event.startTime | onlyTime }} a {{ event.endTime | onlyTime }}</h2>
               <p>{{ event.owner.fullname }} - {{ event.owner.email }}</p>
             </ion-label>
           </ng-template>

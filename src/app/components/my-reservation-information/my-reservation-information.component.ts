@@ -30,4 +30,11 @@ export class MyReservationInformationComponent implements OnInit {
   async goToReservation(id: string) {
     await this.appRouter.goToReservationDetails(id);
   }
+
+  differentDay(event): boolean {
+    const start = new Date(event.start);
+    const end = new Date(event.end);
+
+    return start.getUTCDay() !== end.getUTCDay();
+  }
 }

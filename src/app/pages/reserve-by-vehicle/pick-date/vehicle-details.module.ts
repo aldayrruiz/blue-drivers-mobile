@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { NgCalendarModule } from 'ionic2-calendar';
 import { SharedModule } from 'src/app/components/shared-module.module';
+import { CustomPipesModule } from 'src/app/core/pipes/custom-pipes.module';
 import { CalModalPageModule } from '../../cal-modal/cal-modal.module';
 import { ReserveByVehiclePageRoutingModule } from './vehicle-details-routing.module';
 import { ReserveByVehiclePage } from './vehicle-details.page';
@@ -16,6 +17,7 @@ registerLocaleData(localeEs);
     FormsModule,
     IonicModule,
     SharedModule,
+    CustomPipesModule,
     ReserveByVehiclePageRoutingModule,
     NgCalendarModule,
     CalModalPageModule,

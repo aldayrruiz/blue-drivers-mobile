@@ -23,11 +23,33 @@
       <ion-card-subtitle> RESERVA CONFLICTIVA </ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      <h2>{{ reservation.start | date: 'fullDate' | titlecase }}</h2>
+      <span *ngIf="differentDay(reservation); else sameDay">
+        <h2>De {{ reservation.start | essential | titlecase }}</h2>
+        <h2>A {{ reservation.end | essential | titlecase }}</h2>
+        <h3>
+          {{ reservation.vehicle.brand }} {{ reservation.vehicle.model }}
+          {{ reservation.vehicle.number_plate }}
+        </h3>
+        <h3>{{ reservation.title }}</h3>
+        <p>{{ reservation.description }}</p>
+      </span>
+      <ng-template #sameDay>
+        <span class="ion-text-wrap">
+          <h2>{{ reservation.start | date: 'fullDate' | titlecase }}</h2>
+          <h2>De {{ reservation.start | onlyTime }} a {{ reservation.end | onlyTime }} hrs</h2>
+          <h3>
+            {{ reservation.vehicle.brand }} {{ reservation.vehicle.model }}
+            {{ reservation.vehicle.number_plate }}
+          </h3>
+          <h3>{{ reservation.title }}</h3>
+          <p>{{ reservation.description }}</p>
+        </span>
+      </ng-template>
+      <!-- <h2>{{ reservation.start | date: 'fullDate' | titlecase }}</h2>
       <h2>De {{ reservation.start | onlyTime }} a {{ reservation.end | onlyTime }} hrs</h2>
       <h3>{{ reservation.owner.fullname }}</h3>
       <h3>{{ reservation.title }}</h3>
-      <p>{{ reservation.description }}</p>
+      <p>{{ reservation.description }}</p> -->
     </ion-card-content>
   </ion-card>
 </ion-content>

@@ -3,12 +3,7 @@ import { ActivatedRoute, IsActiveMatchOptions, Router } from '@angular/router';
 import * as L from 'leaflet';
 import { Observable, Subject } from 'rxjs';
 import { Position, Vehicle } from 'src/app/core/models';
-import {
-  AssetsService,
-  PositionService,
-  VehicleIcon,
-  VehicleIconProvider,
-} from 'src/app/core/services';
+import { PositionService, VehicleIcon, VehicleIconProvider } from 'src/app/core/services';
 import { MapConfiguration } from 'src/app/core/utils/leaflet/map-configuration';
 import { MapCreator } from 'src/app/core/utils/leaflet/map-creator';
 
@@ -44,7 +39,6 @@ export class MapPage implements OnInit, AfterViewInit {
   constructor(
     private readonly vehicleIconProvider: VehicleIconProvider,
     private readonly positionSrv: PositionService,
-    private readonly assetsSrv: AssetsService,
     private readonly route: ActivatedRoute,
     private readonly router: Router
   ) {
@@ -52,17 +46,14 @@ export class MapPage implements OnInit, AfterViewInit {
     this.icons = this.vehicleIconProvider.getIcons();
   }
 
-  getMyMarkerInit(icon: string): MyMarker {
-    const leafIcon = this.createLeafIcon(icon);
-    const iconUrl = leafIcon.options.iconUrl;
-    return { vehicle: null, position: null, marker: null, iconUrl };
-  }
-
   ngOnInit() {
     this.expanded = new Array(this.icons.length).fill(false);
     this.listenForNewPositions();
     this.resolveData();
-    const initPositionMarkers = this.icons.map((icon) => this.getMyMarkerInit(icon.src));
+    const initPositionMarkers = this.vehicles.map((vehicle) => {
+      const icon = this.getIconFromVehicle(vehicle);
+      return this.getMyMarkerInit(icon.src);
+    });
     this.updateMarkers(initPositionMarkers);
   }
 
@@ -72,6 +63,12 @@ export class MapPage implements OnInit, AfterViewInit {
       this.initMarkers(this.vehicles, this.positions);
       this.focusMapOnPosition(this.positionMarkers[0]);
     }, 400);
+  }
+
+  getMyMarkerInit(icon: string): MyMarker {
+    const leafIcon = this.createLeafIcon(icon);
+    const iconUrl = leafIcon.options.iconUrl;
+    return { vehicle: null, position: null, marker: null, iconUrl };
   }
 
   focusMapOnPosition(positionMarker: MyMarker) {
@@ -90,7 +87,8 @@ export class MapPage implements OnInit, AfterViewInit {
 
   private initMarkers(vehicles: Vehicle[], positions: Position[]) {
     const positionsMarkers = vehicles.map((vehicle, i) => {
-      const leafIcon = this.createLeafIcon(this.icons[i].src);
+      const icon = this.getIconFromVehicle(vehicle);
+      const leafIcon = this.createLeafIcon(icon.src);
       const position = this.findPosition(positions, vehicle);
       const marker = this.addMarkerToMap(position, leafIcon);
       const iconUrl = leafIcon.options.iconUrl;
@@ -216,5 +214,10 @@ export class MapPage implements OnInit, AfterViewInit {
 
   private generateLongitude() {
     return Math.floor(Math.random() * (-5 + 8 + 1) - 5);
+  }
+
+  private getIconFromVehicle(vehicle: Vehicle) {
+    const icon = this.icons.filter((i) => i.value === vehicle.icon)[0];
+    return icon;
   }
 }

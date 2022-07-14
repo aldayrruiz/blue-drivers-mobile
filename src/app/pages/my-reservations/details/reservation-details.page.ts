@@ -109,6 +109,13 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
     await alertElement.present(); // Mostrar al usuario
   }
 
+  differentDay(event): boolean {
+    const start = new Date(event.start);
+    const end = new Date(event.end);
+
+    return start.getUTCDay() !== end.getUTCDay();
+  }
+
   private storeReservationInTab() {
     this.tabStorage.setCurrentReservation(this.reservation);
   }

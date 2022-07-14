@@ -45,7 +45,6 @@
       (onCurrentDateChanged)="onCurrentDateChanged($event)"
       [monthviewDisplayEventTemplate]="cal_template"
       [monthviewEventDetailTemplate]="template"
-      [markDisabled]="markDisabled"
       [noEventsLabel]="calendar.noEventsLabel"
       [startingDayMonth]="1"
     >
@@ -68,11 +67,11 @@
         <ion-item lines="none" *ngFor="let event of selectedDate.events">
           <ion-icon slot="start" name="document-text-outline"></ion-icon>
           <!-- Reservation start and end in different days -->
-          <ion-label *ngIf="differentDay(event); else sameDay">
+          <ion-label class="ion-text-wrap" *ngIf="differentDay(event); else sameDay">
             <ion-text>
-              De {{ event.startTime | date: 'dd/MM/YYYY, HH:mm' }}
+              De {{ event.startTime | essential | titlecase }}
               <br />
-              A {{ event.endTime | date: 'dd/MM/YYYY, HH:mm' }}
+              A {{ event.endTime | essential | titlecase }}
             </ion-text>
             <p>{{ event.owner.fullname }} - {{ event.owner.email }}</p>
           </ion-label>

@@ -58,4 +58,11 @@ export class TicketDetailsPage implements OnInit {
     const icon = this.icons.filter((i) => i.value === vehicle.icon)[0];
     return icon.src;
   }
+
+  differentDay(event): boolean {
+    const start = new Date(event.start);
+    const end = new Date(event.end);
+
+    return start.getUTCDay() !== end.getUTCDay();
+  }
 }

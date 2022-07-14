@@ -59,6 +59,13 @@ export class MyReservationsPage implements OnInit {
     return icon.src;
   }
 
+  differentDay(event): boolean {
+    const start = new Date(event.start);
+    const end = new Date(event.end);
+
+    return start.getUTCDay() !== end.getUTCDay();
+  }
+
   private refreshComponentData(): void {
     this.route.data.subscribe((response) => {
       this.reservationsCalendarMode = response.myReservations;
@@ -125,13 +132,6 @@ export class MyReservationsPage implements OnInit {
 
   private async goToReservation(id: string) {
     await this.ghost.goToReservationDetails(id);
-  }
-
-  private differentDay(event): boolean {
-    const start = event.startTime;
-    const end = event.endTime;
-
-    return start.getUTCDay() !== end.getUTCDay();
   }
 
   // Ionic2 Calendar

@@ -10,6 +10,7 @@
   <ng-template>
     <ion-content force-overscroll="false">
       <ion-datetime
+        [firstDayOfWeek]="1"
         [class]="!isRecurrent ? 'date-time-height' : 'only-time-height'"
         [presentation]="!isRecurrent ? 'date-time' : 'time'"
         minuteValues="0,15,30,45"

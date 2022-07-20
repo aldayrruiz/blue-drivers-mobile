@@ -1,0 +1,19 @@
+<ion-card>
+  <ion-item lines="none">
+    <ion-avatar slot="start">
+      <img [src]="iconSrc" />
+    </ion-avatar>
+    <ion-label>
+      <h2>{{ vehicle.brand }} {{ vehicle.model }}</h2>
+      <h1>{{ vehicle.number_plate }}</h1>
+    </ion-label>
+    <span [ngSwitch]="vehicle.fuel">
+      <ion-icon *ngSwitchCase="'DIESEL'" size="large" src="/assets/icon/fuel/diesel.svg">
+      </ion-icon>
+      <ion-icon *ngSwitchCase="'GASOLINE'" size="large" src="/assets/icon/fuel/gasoline.svg">
+      </ion-icon>
+      <ion-icon *ngSwitchCase="'ELECTRIC'" size="large" src="/assets/icon/fuel/electric.svg">
+      </ion-icon>
+    </span>
+  </ion-item>
+</ion-card>

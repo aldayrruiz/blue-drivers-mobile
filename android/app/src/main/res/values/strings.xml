@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">BLUE Drivers</string>
+    <string name="title_activity_main">BLUE Drivers</string>
+    <string name="package_name">eu.bluece.drivers</string>
+    <string name="custom_url_scheme">eu.bluece.drivers</string>
+</resources>

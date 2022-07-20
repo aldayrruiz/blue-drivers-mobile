@@ -1,0 +1,57 @@
+<ion-header>
+  <app-toolbar [title]="toolbarTitle"></app-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item lines="none" class="transparent"
+    >Reserva:
+    <pre></pre>
+    <b>{{ reservation.title }}</b></ion-item
+  >
+  <form (ngSubmit)="createIncident()" [formGroup]="form">
+    <!-- Type -->
+    <ion-item>
+      <ion-label>Tipo</ion-label>
+      <ion-select formControlName="incidentType">
+        <ion-select-option value="TIRE_PUNCTURE">Pinchazo</ion-select-option>
+        <ion-select-option value="BANG">Golpe</ion-select-option>
+        <ion-select-option value="USAGE_PROBLEMS">Problemas de uso</ion-select-option>
+        <ion-select-option value="LIGHTS">Luces</ion-select-option>
+        <ion-select-option value="OTHERS">Otros</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Description -->
+    <ion-item>
+      <ion-textarea
+        formControlName="description"
+        rows="8"
+        cols="18"
+        placeholder="¿Que problema ha tenido? (Opcional)"
+      >
+      </ion-textarea>
+    </ion-item>
+    <div *ngIf="(description.dirty || description.touched) && description.errors" class="errors">
+      <span *ngIf="description.errors?.maxlength">El número de caracteres máximo 255</span>
+    </div>
+
+    <!-- Photo -->
+    <ion-grid>
+      <ion-row>
+        <ion-col class="ion-text-right">
+          <ion-button color="danger" (click)="addPhoto()" expand="block">
+            Añadir/Reemplazar foto
+          </ion-button>
+          <img *ngIf="photoBase64" [src]="photoBase64" alt="Foto adjunta" />
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-text-right">
+          <ion-button color="danger" type="submit" expand="block" [disabled]="!form.valid">
+            Crear incidencia
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

@@ -1,0 +1,84 @@
+<ion-header>
+  <app-toolbar [title]="toolbarTitle"></app-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-vehicle-information [vehicle]="reservation?.vehicle"></app-vehicle-information>
+  <ion-card *ngIf="isReservationOccurringNow()">
+    <ion-card-content>
+      <div id="map" style="height: 300px"></div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-item style="height: 31px" lines="none">
+      <ion-badge color="warning" *ngIf="reservation.is_recurrent" slot="end">
+        Recurrente
+      </ion-badge>
+    </ion-item>
+    <ion-card-content>
+      <span *ngIf="differentDay(reservation); else sameDay">
+        <h2>De {{ reservation.start | essential | titlecase }}</h2>
+        <h2>A {{ reservation.end | essential | titlecase }}</h2>
+        <h3>
+          {{ reservation.vehicle.brand }} {{ reservation.vehicle.model }}
+          {{ reservation.vehicle.number_plate }}
+        </h3>
+        <h3>{{ reservation.title }}</h3>
+        <p>{{ reservation.description }}</p>
+      </span>
+      <ng-template #sameDay>
+        <span class="ion-text-wrap">
+          <h2>{{ reservation.start | date: 'fullDate' | titlecase }}</h2>
+          <h2>De {{ reservation.start | onlyTime }} a {{ reservation.end | onlyTime }} hrs</h2>
+          <h3>
+            {{ reservation.vehicle.brand }} {{ reservation.vehicle.model }}
+            {{ reservation.vehicle.number_plate }}
+          </h3>
+          <h3>{{ reservation.title }}</h3>
+          <p>{{ reservation.description }}</p>
+        </span>
+      </ng-template>
+    </ion-card-content>
+
+    <ion-button class="ion-margin" expand="block" [routerLink]="['create-incident']" color="danger">
+      <ion-icon name="warning-outline"></ion-icon>
+      Reportar incidencia
+    </ion-button>
+    <ion-button class="ion-margin" expand="block" color="danger" (click)="showCancelAlert()">
+      <ion-icon name="close-circle-outline"></ion-icon>
+      Cancelar
+    </ion-button>
+  </ion-card>
+
+  <!-- Recurrent information -->
+  <ion-card class="ion-text-center" *ngIf="reservation.is_recurrent">
+    <h3 class="title">Se repite</h3>
+    <ion-grid>
+      <ion-row>
+        <!-- Since -->
+        <ion-col>
+          <h3 class="title">Desde</h3>
+          <span>{{ recurrent.since | essential }}</span>
+        </ion-col>
+        <!-- Until -->
+        <ion-col>
+          <h3 class="title">Hasta</h3>
+          <span>{{ recurrent.until | essential }}</span>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <h3 class="title">Los días</h3>
+          <ion-grid>
+            <ion-row>
+              <ion-col class="ion-padding-horizontal" *ngFor="let weekday of weekdays">{{
+                weekday
+              }}</ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+</ion-content>

@@ -3,15 +3,16 @@
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <ion-list class="custom-list" id="inbox-list">
+          <!-- Account info -->
           <ion-list-header> {{ fullname }} </ion-list-header>
           <ion-note class="not-bottom-padding"> {{ email }}</ion-note>
           <br />
-          <ion-note> v5.0 </ion-note>
+          <br />
+          <br />
+          <br />
 
-          <ion-menu-toggle
-            auto-hide="false"
-            *ngFor="let p of pages; let i = index"
-          >
+          <!-- Menu -->
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of pages">
             <ion-item
               routerDirection="root"
               [routerLink]="[p.url]"
@@ -19,17 +20,15 @@
               detail="false"
               routerLinkActive="selected"
             >
-              <ion-icon
-                slot="start"
-                [ios]="p.icon + '-outline'"
-                [md]="p.icon + '-sharp'"
-              ></ion-icon>
+              <!-- [routerLinkActiveOptions]="{ exact: true }" -->
+              <ion-icon slot="start" [src]="p.icon" [name]="p.icon"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
           </ion-menu-toggle>
         </ion-list>
+        <!-- Log out -->
         <div class="menu-footer">
-          <ion-button (click)="logOut()" class="close-session" expand="block"
+          <ion-button color="danger" (click)="logOut()" class="close-session" expand="block"
             >Cerrar sesión</ion-button
           >
         </div>

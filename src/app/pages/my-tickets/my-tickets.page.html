@@ -2,35 +2,28 @@
   <app-toolbar [title]="toolbarTitle"></app-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-list>
-    <ion-card
-      *ngFor="let ticket of tickets"
-      [routerLink]="[ticket.id]"
-      class="border border-radius no-box-shadow ion-padding"
-    >
-      <ion-item lines="none" class="transparent">
-        <ion-badge color="primary"
-          >{{ ticket.reservation.vehicle.brand }}
-          {{ ticket.reservation.vehicle.model }}
-        </ion-badge>
-        <app-ticket-status [status]="ticket.status"></app-ticket-status>
+<ion-content [fullscreen]="true">
+  <ion-card *ngFor="let ticket of tickets" [routerLink]="[ticket.id]">
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <img [src]="getIconSrcFromVehicle(ticket.reservation.vehicle)" />
+        </ion-avatar>
+        <ion-label>
+          <h2>
+            {{ ticket.reservation.vehicle.brand }} {{ ticket.reservation.vehicle.model }}
+            {{ ticket.reservation.vehicle.number_plate }}
+          </h2>
+          <h2>{{ ticket.title }}</h2>
+          <p>{{ ticket.description }}</p>
+          <ion-note>{{ ticket.date_stored | essential | titlecase }}</ion-note>
+        </ion-label>
       </ion-item>
-      <ion-card-content>
-        <h1
-          class="
-            text-size-lg
-            font-regular
-            text-color-primary
-            ion-text-wrap ion-padding-bottom
-          "
-        >
-          {{ ticket.title }}
-        </h1>
-        <span class="text-size-sm font-medium text-color-primary">
-          Fecha de creación: {{ ticket.date_stored | date: 'dd/MM/yyyy' }}
-        </span>
-      </ion-card-content>
-    </ion-card>
-  </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- No tickets -->
+  <ion-card *ngIf="tickets.length === 0">
+    <ion-card-content class="ion-text-center"> Aún no tienes ningún conflicto </ion-card-content>
+  </ion-card>
 </ion-content>

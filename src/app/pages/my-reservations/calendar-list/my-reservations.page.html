@@ -1,0 +1,94 @@
+<ion-header>
+  <app-toolbar [title]="toolbarTitle"></app-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-segment (ionChange)="segmentChanged($event)" [(value)]="segmentValue">
+    <ion-segment-button value="calendar">
+      <ion-label>Calendario</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="list">
+      <ion-label>Lista</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- My reservations CALENDAR MODE -->
+  <div *ngIf="segmentValue === 'calendar'; else list">
+    <ion-row>
+      <ion-col size="2">
+        <ion-button fill="clear" (click)="back()">
+          <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size="8" class="ion-text-center">
+        <ion-text>
+          <h5>{{ viewTitle }}</h5>
+        </ion-text>
+      </ion-col>
+      <ion-col size="2">
+        <ion-button fill="clear" (click)="next()">
+          <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <calendar
+      [eventSource]="eventSource"
+      [calendarMode]="calendar.mode"
+      [currentDate]="calendar.currentDate"
+      (onTitleChanged)="onViewTitleChanged($event)"
+      (onTimeSelected)="onTimeSelected($event)"
+      [monthviewDisplayEventTemplate]="cal_template"
+      [monthviewEventDetailTemplate]="template"
+      [noEventsLabel]="calendar.noEventsLabel"
+      [startingDayMonth]="1"
+    >
+    </calendar>
+
+    <ng-template #cal_template let-view="view" let-row="row" let-col="col">
+      <div [class.with-event]="view.dates[row * 7 + col].events.length">
+        {{ view.dates[row * 7 + col].label }}
+      </div>
+      <div class="event-indicator" *ngFor="let e of view.dates[row * 7 + col].events"></div>
+    </ng-template>
+
+    <ng-template
+      #template
+      let-showEventDetail="showEventDetail"
+      let-selectedDate="selectedDate"
+      let-noEventsLabel="noEventsLabel"
+    >
+      <ion-list>
+        <app-my-reservation-information
+          *ngFor="let reservation of selectedDate.events"
+          [reservation]="reservation"
+          [editable]="true"
+        ></app-my-reservation-information>
+        <ion-item *ngIf="selectedDate.events.length === 0">
+          <ion-label>
+            <h2>{{ noEventsLabel }}</h2>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ng-template>
+  </div>
+
+  <!-- My reservation LIST MODE -->
+  <ng-template #list>
+    <ion-card
+      *ngFor="let reservation of reservationsListMode"
+      [routerLink]="[reservation.id]"
+      [ngClass]="reservationAlreadyStarted(reservation.start) ? 'opaque' : ''"
+    >
+      <ion-item *ngIf="reservation.is_recurrent" style="height: 35px" lines="none">
+        <ion-badge color="warning" slot="end">Recurrente</ion-badge>
+      </ion-item>
+      <ion-card-content>
+        <app-my-reservation-information
+          [reservation]="reservation"
+          [editable]="false"
+          lines="none"
+        ></app-my-reservation-information>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+</ion-content>

@@ -1,0 +1,139 @@
+<ion-header>
+  <app-toolbar [title]="toolbarTitle"></app-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-vehicle-information [vehicle]="vehicle"></app-vehicle-information>
+  <ion-segment (ionChange)="segmentChanged($event)" [(value)]="segmentValue">
+    <ion-segment-button value="reserve">
+      <ion-label>Reservar</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="info">
+      <ion-label>Información</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Reservation segment -->
+  <div *ngIf="segmentValue === 'reserve'; else info">
+    <ion-grid>
+      <ion-row>
+        <ion-col class="ion-text-start">
+          <ion-button fill="clear" (click)="back()">
+            <ion-icon color="danger" name="arrow-back" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col size="6" class="ion-text-center">
+          <ion-text>
+            <h5>{{ viewTitle }}</h5>
+          </ion-text>
+        </ion-col>
+        <ion-col class="ion-text-end">
+          <ion-button fill="clear" (click)="next()">
+            <ion-icon color="danger" name="arrow-forward" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <calendar
+      [eventSource]="eventSource"
+      [calendarMode]="calendar.mode"
+      [currentDate]="calendar.currentDate"
+      (onTitleChanged)="onViewTitleChanged($event)"
+      (onRangeChanged)="reloadSource(startTime, endTime)"
+      (onTimeSelected)="onTimeSelected($event)"
+      (onCurrentDateChanged)="onCurrentDateChanged($event)"
+      [monthviewDisplayEventTemplate]="cal_template"
+      [monthviewEventDetailTemplate]="template"
+      [noEventsLabel]="calendar.noEventsLabel"
+      [startingDayMonth]="1"
+    >
+    </calendar>
+
+    <ng-template #cal_template let-view="view" let-row="row" let-col="col">
+      <div [class.with-event]="view.dates[row * 7 + col].events.length">
+        {{ view.dates[row * 7 + col].label }}
+      </div>
+      <div class="event-indicator" *ngFor="let e of view.dates[row * 7 + col].events"></div>
+    </ng-template>
+
+    <ng-template
+      #template
+      let-showEventDetail="showEventDetail"
+      let-selectedDate="selectedDate"
+      let-noEventsLabel="noEventsLabel"
+    >
+      <ion-list fullscreen>
+        <ion-item lines="none" *ngFor="let event of selectedDate.events">
+          <ion-icon slot="start" name="document-text-outline"></ion-icon>
+          <!-- Reservation start and end in different days -->
+          <ion-label class="ion-text-wrap" *ngIf="differentDay(event); else sameDay">
+            <h2>De {{ event.startTime | essential | titlecase }}</h2>
+            <h2>A {{ event.endTime | essential | titlecase }}</h2>
+            <p>{{ event.owner.fullname }} - {{ event.owner.email }}</p>
+          </ion-label>
+
+          <!-- Reservation start and end same day -->
+          <ng-template #sameDay>
+            <ion-label class="ion-text-wrap">
+              <h2>De {{ event.startTime | onlyTime }} a {{ event.endTime | onlyTime }}</h2>
+              <p>{{ event.owner.fullname }} - {{ event.owner.email }}</p>
+            </ion-label>
+          </ng-template>
+          <ion-icon
+            *ngIf="isMine(event.id); else notMine"
+            slot="end"
+            item-right
+            name="person-outline"
+          ></ion-icon>
+          <ng-template #notMine>
+            <ion-button
+              [disabled]="alreadyStarted(event.id)"
+              slot="end"
+              (click)="selectReservation(event.id)"
+            >
+              <ion-icon item-right src="/assets/icon/home/gavel.svg"></ion-icon>
+            </ion-button>
+          </ng-template>
+        </ion-item>
+        <ion-item lines="none" *ngIf="selectedDate.events.length === 0">
+          <ion-label>
+            <h2>{{ noEventsLabel }}</h2>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ng-template>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button color="danger" (click)="gotToCreateReservationPage()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+
+  <!-- Vehicle information segment -->
+  <ng-template #info>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>{{ fuel | uppercase }}</ion-card-subtitle>
+        <ion-card-title>{{ vehicle.brand }} {{ vehicle.model }}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <h2><strong>Número de placa:</strong> {{ vehicle.number_plate }}</h2>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>COMPAÑÍA DE SEGURO</ion-card-subtitle>
+        <ion-card-title>{{ vehicle.insurance_company?.name }}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <h2><strong>Teléfono: </strong> {{ vehicle.insurance_company?.phone }}</h2>
+        <h2><strong>Número de póliza: </strong> {{ vehicle?.policy_number }}</h2>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+</ion-content>

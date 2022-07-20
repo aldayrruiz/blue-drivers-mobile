@@ -3,10 +3,9 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { finalize } from 'rxjs/operators';
 import { CreateRecoverPasswordResponse } from 'src/app/core/models/auth/create-recover-password-response.model';
 import {
+  AppRouter,
   ErrorMessageService,
-  Ghost,
   LoadingService,
-  LoginService,
   PasswordRecover,
   SnackerService,
 } from 'src/app/core/services';
@@ -27,12 +26,19 @@ export class RecoverPasswordPage implements OnInit {
   constructor(
     private errorMessage: ErrorMessageService,
     private passwordRecover: PasswordRecover,
-    private loginService: LoginService,
     private loadingSrv: LoadingService,
     private snacker: SnackerService,
     private fb: FormBuilder,
-    private ghost: Ghost
+    private ghost: AppRouter
   ) {}
+
+  get email(): AbstractControl {
+    return this.createRecoverPassword.get('email');
+  }
+
+  get code(): AbstractControl {
+    return this.confirmRecoverPassword.get('code');
+  }
 
   ngOnInit() {
     this.initCreateRecoverPasswordForm();
@@ -73,14 +79,6 @@ export class RecoverPasswordPage implements OnInit {
         await this.snacker.showFailed(msg);
       }
     );
-  }
-
-  get email(): AbstractControl {
-    return this.createRecoverPassword.get('email');
-  }
-
-  get code(): AbstractControl {
-    return this.confirmRecoverPassword.get('code');
   }
 
   private initCreateRecoverPasswordForm() {

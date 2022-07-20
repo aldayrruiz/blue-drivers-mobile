@@ -60,4 +60,14 @@
   padding-left: 15px;
   padding-top: 5px;
   padding-bottom: 5px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+@font-face {
+  font-family: 'Barlow Medium';
+  src: url('./assets/fonts/Barlow-Medium.ttf'); //change url accordingly
+}
+
+:root {
+  --ion-font-family: 'Barlow Medium';
 }

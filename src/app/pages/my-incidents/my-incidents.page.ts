@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Incident } from 'src/app/core/models';
+import { Incident, Vehicle } from 'src/app/core/models';
+import { VehicleIcon, VehicleIconProvider } from 'src/app/core/services';
 
 @Component({
   selector: 'app-my-incidents',
@@ -10,12 +11,23 @@ import { Incident } from 'src/app/core/models';
 export class MyIncidentsPage implements OnInit {
   toolbarTitle = 'Mis Incidencias';
   incidents: Incident[] = [];
+  private icons: VehicleIcon[];
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private readonly vehicleIconProvider: VehicleIconProvider,
+    private readonly route: ActivatedRoute
+  ) {
+    this.icons = this.vehicleIconProvider.getIcons();
+  }
 
   ngOnInit(): void {
     this.route.data.subscribe((response) => {
       this.incidents = response.myIncidents;
     });
+  }
+
+  getIconSrcFromVehicle(vehicle: Vehicle) {
+    const icon = this.icons.filter((i) => i.value === vehicle.icon)[0];
+    return icon.src;
   }
 }

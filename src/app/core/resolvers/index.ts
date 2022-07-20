@@ -3,6 +3,9 @@ export * from './incidents/incident-details.resolver';
 export * from './incidents/my-incidents.resolver';
 // Positions
 export * from './positions/positions.resolver';
+// Reservation templates
+export * from './reservation-templates/reservation-template.resolver';
+export * from './reservation-templates/reservation-templates.resolver';
 // Reservations
 export * from './reservations/my-reservations.resolver';
 export * from './reservations/reservation-details.resolver';

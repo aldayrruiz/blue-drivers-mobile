@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { CreateTicket, Vehicle } from 'src/app/core/models';
 import {
+  AppRouter,
   ErrorMessageService,
-  Ghost,
   LoadingService,
   SnackerService,
   TicketService,
@@ -24,15 +24,22 @@ export class CreateTicketPage implements OnInit {
   reservationId: string;
 
   constructor(
-    private errorMessage: ErrorMessageService,
-    private ticketService: TicketService,
-    private loadingSrv: LoadingService,
-    private snacker: SnackerService,
-    private route: ActivatedRoute,
-    private ghost: Ghost,
-    private fb: FormBuilder,
-    private router: Router
+    private readonly errorMessage: ErrorMessageService,
+    private readonly ticketService: TicketService,
+    private readonly loadingSrv: LoadingService,
+    private readonly snacker: SnackerService,
+    private readonly route: ActivatedRoute,
+    private readonly ghost: AppRouter,
+    private readonly fb: FormBuilder
   ) {}
+
+  get title(): AbstractControl {
+    return this.form.get('title');
+  }
+
+  get description(): AbstractControl {
+    return this.form.get('description');
+  }
 
   ngOnInit(): void {
     this.initFormGroup();
@@ -48,7 +55,7 @@ export class CreateTicketPage implements OnInit {
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
         async (ticket) => {
-          const msg = 'Ticket creado con éxito';
+          const msg = 'Conflicto creado con éxito';
           await this.ghost.goToTicketDetails(ticket.id);
           await this.snacker.showSuccessful(msg);
         },
@@ -57,14 +64,6 @@ export class CreateTicketPage implements OnInit {
           await this.snacker.showFailed(msg);
         }
       );
-  }
-
-  get title(): AbstractControl {
-    return this.form.get('title');
-  }
-
-  get description(): AbstractControl {
-    return this.form.get('description');
   }
 
   private initFormGroup() {

@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Reservation, Ticket, Vehicle } from 'src/app/core/models';
-import { Ghost, SnackerService, TicketService } from 'src/app/core/services';
+import {
+  AppRouter,
+  SnackerService,
+  TicketService,
+  VehicleIcon,
+  VehicleIconProvider,
+} from 'src/app/core/services';
 
 @Component({
   selector: 'app-ticket-details',
@@ -9,17 +15,22 @@ import { Ghost, SnackerService, TicketService } from 'src/app/core/services';
   styleUrls: ['./ticket-details.page.scss'],
 })
 export class TicketDetailsPage implements OnInit {
-  toolbarTitle = 'Detalles de tu ticket';
+  toolbarTitle = 'Mis conflictos';
   reservation: Reservation;
   vehicle: Vehicle;
   ticket: Ticket;
 
+  private icons: VehicleIcon[];
+
   constructor(
+    private readonly vehicleIconProvider: VehicleIconProvider,
     private readonly ticketService: TicketService,
     private readonly snacker: SnackerService,
     private readonly route: ActivatedRoute,
-    private readonly ghost: Ghost
-  ) {}
+    private readonly appRouter: AppRouter
+  ) {
+    this.icons = this.vehicleIconProvider.getIcons();
+  }
 
   ngOnInit(): void {
     this.route.data.subscribe((response) => {
@@ -32,14 +43,26 @@ export class TicketDetailsPage implements OnInit {
   cancelTicket(): void {
     this.ticketService.delete(this.ticket.id).subscribe(
       async () => {
-        await this.ghost.goBack(this.route);
-        const msg = 'Ticket cancelado con éxito';
+        await this.appRouter.goBack(this.route);
+        const msg = 'Conflicto cancelado con éxito';
         this.snacker.showSuccessful(msg);
       },
       async (errors) => {
-        const msg = 'Error cancelando el ticket';
+        const msg = 'Error cancelando el conflicto';
         this.snacker.showFailed(msg);
       }
     );
+  }
+
+  getIconSrcFromVehicle(vehicle: Vehicle) {
+    const icon = this.icons.filter((i) => i.value === vehicle.icon)[0];
+    return icon.src;
+  }
+
+  differentDay(event): boolean {
+    const start = new Date(event.start);
+    const end = new Date(event.end);
+
+    return start.getUTCDay() !== end.getUTCDay();
   }
 }

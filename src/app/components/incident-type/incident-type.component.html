@@ -1,10 +1,9 @@
-<div [ngSwitch]="type">
-  <ion-badge *ngSwitchCase="'TIRE_PUNCTURE'" color="tertiary"
-    >Pinchazo</ion-badge
-  >
-  <ion-badge *ngSwitchCase="'BANG'" color="danger">Golpe</ion-badge>
-  <ion-badge *ngSwitchCase="'USAGE_PROBLEMS'" color="warning"
+<ion-item [ngSwitch]="type" lines="none" style="height: 35px">
+  <ion-badge slot="end" *ngSwitchCase="'TIRE_PUNCTURE'" color="tertiary">Pinchazo</ion-badge>
+  <ion-badge slot="end" *ngSwitchCase="'BANG'" color="danger">Golpe</ion-badge>
+  <ion-badge slot="end" *ngSwitchCase="'USAGE_PROBLEMS'" color="warning"
     >Problemas de uso</ion-badge
   >
-  <ion-badge *ngSwitchCase="'OTHERS'" color="dark">Otros</ion-badge>
-</div>
+  <ion-badge slot="end" *ngSwitchCase="'LIGHTS'" color="secondary">Luces</ion-badge>
+  <ion-badge slot="end" *ngSwitchCase="'OTHERS'" color="dark">Otros</ion-badge>
+</ion-item>

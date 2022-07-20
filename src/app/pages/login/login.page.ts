@@ -4,11 +4,13 @@ import { Router } from '@angular/router';
 import { Network } from '@capacitor/network';
 import { AlertController } from '@ionic/angular';
 import { finalize } from 'rxjs/operators';
+import { Role, Tenant } from 'src/app/core/models';
 import {
   ErrorMessageService,
   LoadingService,
   LoginService,
   PasswordRecover,
+  TenantService,
 } from 'src/app/core/services';
 import { emailValidators, passwordValidators } from 'src/app/core/utils/validators';
 
@@ -18,18 +20,30 @@ import { emailValidators, passwordValidators } from 'src/app/core/utils/validato
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  tenants: Tenant[] = [];
+  tenantToChange: string;
   credentials: FormGroup;
   submitted = false;
+  isSuperAdmin: boolean;
 
   constructor(
-    private errorMessage: ErrorMessageService,
-    private passwordRecover: PasswordRecover,
-    private alertController: AlertController,
-    private loginService: LoginService,
-    private loadingSrv: LoadingService,
-    private fb: FormBuilder,
-    private router: Router
+    private readonly errorMessage: ErrorMessageService,
+    private readonly passwordRecover: PasswordRecover,
+    private readonly alertController: AlertController,
+    private readonly tenantService: TenantService,
+    private readonly loginService: LoginService,
+    private readonly loadingSrv: LoadingService,
+    private readonly fb: FormBuilder,
+    private readonly router: Router
   ) {}
+
+  get username(): AbstractControl {
+    return this.credentials.get('username');
+  }
+
+  get password(): AbstractControl {
+    return this.credentials.get('password');
+  }
 
   ngOnInit() {
     this.initFormGroup();
@@ -50,8 +64,13 @@ export class LoginPage implements OnInit {
       .login(credentials)
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
-        async () => {
-          this.router.navigateByUrl('/members', { replaceUrl: true });
+        async (user) => {
+          if (user.role === Role.SUPER_ADMIN) {
+            this.getAndSetDefaultTenant(user.tenant);
+            this.isSuperAdmin = true;
+          } else {
+            this.router.navigateByUrl('/members', { replaceUrl: true });
+          }
         },
         async (error) => {
           const message = this.errorMessage.get(error);
@@ -70,16 +89,10 @@ export class LoginPage implements OnInit {
     this.passwordRecover.recover('email.com');
   }
 
-  goToRegisterPage() {
-    this.router.navigateByUrl(`register`);
-  }
-
-  get username(): AbstractControl {
-    return this.credentials.get('username');
-  }
-
-  get password(): AbstractControl {
-    return this.credentials.get('password');
+  async changeTenant() {
+    this.tenantService
+      .changeTenant(this.tenantToChange)
+      .subscribe(() => this.router.navigateByUrl('/members', { replaceUrl: true }));
   }
 
   /**
@@ -117,5 +130,12 @@ export class LoginPage implements OnInit {
       username: this.username.value,
       password: this.password.value,
     };
+  }
+
+  private getAndSetDefaultTenant(tenant: string) {
+    this.tenantService.getAll().subscribe((tenants) => {
+      this.tenantToChange = tenant;
+      this.tenants = tenants;
+    });
   }
 }

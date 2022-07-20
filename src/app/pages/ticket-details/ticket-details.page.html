@@ -3,89 +3,53 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid class="ion-no-padding">
-    <ion-row>
-      <ion-col size="12" class="ion-no-padding">
-        <ion-card class="border border-radius no-box-shadow ion-padding">
-          <ion-item lines="none" class="transparent">
-            <ion-badge color="primary">{{
-              ticket.reservation.vehicle.brand
-            }}</ion-badge>
-            <app-ticket-status [status]="ticket.status"></app-ticket-status>
-            <!-- <ion-note slot="end">{{ ticket.reservation.vehicle.model }}</ion-note> -->
-          </ion-item>
-          <ion-card-content>
-            <h1
-              class="
-                text-size-lg
-                font-regular
-                text-color-primary
-                ion-text-wrap ion-padding-bottom
-              "
-            >
-              {{ ticket.title }}
-            </h1>
-            <h3
-              class="
-                text-size-xs
-                font-regular
-                text-color-secondary
-                ion-text-wrap
-              "
-            >
-              {{ ticket.description }}
-            </h3>
-            <span class="text-size-sm font-medium text-color-primary">
-              Fecha de creación: {{ ticket.date_stored | date: 'dd/MM/yyyy' }}
-            </span>
-          </ion-card-content>
-          <ion-button
-            (click)="cancelTicket()"
-            class="default-button color-accent ion-margin-top box-shadow"
-            color="danger"
-            expand="block"
-            >Cancelar ticket</ion-button
-          >
-        </ion-card>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-card
-          class="no-box-shadow ion-padding ion-text-center border border-radius"
-        >
-          <h2
-            class="
-              text-size-lg
-              ion-padding-top ion-no-margin
-              text-color-primary
-            "
-          >
-            Desde
-          </h2>
-          <span class="text-size-xs">{{
-            reservation.start | date: 'dd/MM/yyyy, HH:mm'
-          }}</span>
-        </ion-card>
-      </ion-col>
-      <ion-col>
-        <ion-card
-          class="no-box-shadow ion-padding ion-text-center border border-radius"
-        >
-          <h2
-            class="
-              text-size-lg
-              ion-padding-top ion-no-margin
-              text-color-primary
-            "
-          >
-            Hasta
-          </h2>
-          <span class="text-size-xs">{{
-            reservation.end | date: 'dd/MM/yyyy, HH:mm'
-          }}</span>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <app-vehicle-information [vehicle]="vehicle"></app-vehicle-information>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle> TU INFORMACIÓN </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <h2>{{ ticket.title }}</h2>
+      <p>{{ ticket.description }}</p>
+      <ion-note>{{ ticket.date_stored | essential | titlecase }}</ion-note>
+    </ion-card-content>
+    <ion-button class="ion-margin" (click)="cancelTicket()" color="danger" expand="block">
+      Cancelar ticket
+    </ion-button>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle> RESERVA CONFLICTIVA </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <span *ngIf="differentDay(reservation); else sameDay">
+        <h2>De {{ reservation.start | essential | titlecase }}</h2>
+        <h2>A {{ reservation.end | essential | titlecase }}</h2>
+        <h3>
+          {{ reservation.vehicle.brand }} {{ reservation.vehicle.model }}
+          {{ reservation.vehicle.number_plate }}
+        </h3>
+        <h3>{{ reservation.title }}</h3>
+        <p>{{ reservation.description }}</p>
+      </span>
+      <ng-template #sameDay>
+        <span class="ion-text-wrap">
+          <h2>{{ reservation.start | date: 'fullDate' | titlecase }}</h2>
+          <h2>De {{ reservation.start | onlyTime }} a {{ reservation.end | onlyTime }} hrs</h2>
+          <h3>
+            {{ reservation.vehicle.brand }} {{ reservation.vehicle.model }}
+            {{ reservation.vehicle.number_plate }}
+          </h3>
+          <h3>{{ reservation.title }}</h3>
+          <p>{{ reservation.description }}</p>
+        </span>
+      </ng-template>
+      <!-- <h2>{{ reservation.start | date: 'fullDate' | titlecase }}</h2>
+      <h2>De {{ reservation.start | onlyTime }} a {{ reservation.end | onlyTime }} hrs</h2>
+      <h3>{{ reservation.owner.fullname }}</h3>
+      <h3>{{ reservation.title }}</h3>
+      <p>{{ reservation.description }}</p> -->
+    </ion-card-content>
+  </ion-card>
 </ion-content>

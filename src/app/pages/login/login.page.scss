@@ -1,23 +1,17 @@
 ion-content {
-  --padding-top: 40%;
-  --padding-start: 10%;
-  --padding-end: 10%;
-
-  --background: white url('/assets/img/background/login.jpg') bottom/100% no-repeat fixed !important;
-  --background-position: center !important;
+  --padding-top: 20%;
 }
 
 .forgot-password-div {
-  font-family: 'Noto Sans', serif;
-  font-size: 15px;
   font-weight: 600;
   padding-bottom: 3px;
   padding-top: 9px;
+  text-align: center;
 }
 
 .forgot-password {
   border-radius: 4px;
-  color: #1a73e8;
+  color: #eb445a;
   display: inline-block;
   outline: 0;
   position: relative;

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Incident, Reservation, Vehicle } from 'src/app/core/models';
+import { AppRouter, VehicleIcon, VehicleIconProvider } from 'src/app/core/services';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -9,14 +10,22 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./incident-details.page.scss'],
 })
 export class IncidentDetailsPage implements OnInit {
-  toolbarTitle = 'Detalles de incidencia';
+  toolbarTitle = 'Mis incidencias';
 
   incident: Incident;
   reservation: Reservation;
   vehicle: Vehicle;
   photoUrl: string;
 
-  constructor(private route: ActivatedRoute) {}
+  private icons: VehicleIcon[];
+
+  constructor(
+    private readonly vehicleIconProvider: VehicleIconProvider,
+    private readonly route: ActivatedRoute,
+    private readonly appRouter: AppRouter
+  ) {
+    this.icons = this.vehicleIconProvider.getIcons();
+  }
 
   ngOnInit(): void {
     this.route.data.subscribe(async (response) => {
@@ -25,6 +34,15 @@ export class IncidentDetailsPage implements OnInit {
       this.vehicle = this.reservation.vehicle;
       this.photoUrl = await this.getPhotoUrl(this.incident);
     });
+  }
+
+  goToReservationDetails() {
+    this.appRouter.goToReservationDetails(this.reservation.id);
+  }
+
+  getIconSrcFromVehicle(vehicle: Vehicle) {
+    const icon = this.icons.filter((i) => i.value === vehicle.icon)[0];
+    return icon.src;
   }
 
   private async getPhotoUrl(incident: Incident) {

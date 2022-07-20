@@ -1,0 +1,40 @@
+<ion-header>
+  <app-toolbar [title]="toolbarTitle"></app-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <div id="map" style="height: 300px"></div>
+  </ion-card>
+  <ion-card class="vehicle-card" *ngFor="let positionMarker of positionMarkers$ | async">
+    <ion-card-content (click)="focusMapOnPosition(positionMarker)">
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <img [src]="positionMarker?.iconUrl" />
+        </ion-avatar>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-label>
+                <h3>{{ positionMarker.vehicle.brand }} {{ positionMarker.vehicle.model }}</h3>
+                <h2>{{ positionMarker.vehicle.number_plate }}</h2>
+              </ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label>
+                <h3>
+                  <ion-icon name="time-outline"></ion-icon>
+                  {{ positionMarker?.position?.deviceTime | distance }}
+                </h3>
+                <h3>
+                  <ion-icon name="speedometer-outline"></ion-icon>
+                  {{ positionMarker?.position?.speed | toKph | number: '1.0-0' }} km/h
+                </h3>
+              </ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

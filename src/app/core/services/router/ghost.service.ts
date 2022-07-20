@@ -4,10 +4,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Injectable({
   providedIn: 'root',
 })
-export class Ghost {
+export class AppRouter {
   extras = { replaceUrl: true };
 
   constructor(private router: Router) {}
+
+  async goTo(to: string) {
+    return this.router.navigateByUrl(to, this.extras);
+  }
 
   async goToReservationDetails(id: string) {
     const to = `members/my-reservations/${id}`;

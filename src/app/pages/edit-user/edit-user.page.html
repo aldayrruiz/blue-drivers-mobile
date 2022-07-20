@@ -15,13 +15,8 @@
         ></ion-input>
         <ion-label class="asterisk-required"></ion-label>
       </ion-item>
-      <div
-        *ngIf="(fullname.dirty || fullname.touched) && fullname.errors"
-        class="errors"
-      >
-        <span *ngIf="fullname.errors?.required"
-          >Nombre y Apellidos es obligatorio</span
-        >
+      <div *ngIf="(fullname.dirty || fullname.touched) && fullname.errors" class="errors">
+        <span *ngIf="fullname.errors?.required">Nombre y Apellidos es obligatorio</span>
       </div>
       <!-- Email -->
       <ion-item>
@@ -33,10 +28,7 @@
         ></ion-input>
         <ion-label class="asterisk-required"></ion-label>
       </ion-item>
-      <div
-        *ngIf="(email.dirty || email.touched) && email.errors"
-        class="errors"
-      >
+      <div *ngIf="(email.dirty || email.touched) && email.errors" class="errors">
         <span *ngIf="email.errors?.required">Email es obligatorio</span>
         <span *ngIf="email.errors?.email">Email es invalido</span>
       </div>
@@ -50,14 +42,9 @@
           ></ion-input>
         </app-show-hide-password>
       </ion-item>
-      <div
-        *ngIf="(password.dirty || password.touched) && password.errors"
-        class="errors"
-      >
+      <div *ngIf="(password.dirty || password.touched) && password.errors" class="errors">
         <span *ngIf="password.errors?.required">Contraseña is obligatoria</span>
-        <span *ngIf="password.errors?.minlength"
-          >Contraseña necesita mas de 5 carácteres</span
-        >
+        <span *ngIf="password.errors?.minlength">Contraseña necesita mas de 5 carácteres</span>
       </div>
       <!-- Password 2 -->
       <ion-item>
@@ -69,20 +56,19 @@
           ></ion-input>
         </app-show-hide-password>
       </ion-item>
-      <div
-        *ngIf="(password2.dirty || password2.touched) && password2.errors"
-        class="errors"
-      >
-        <span *ngIf="password2.errors?.required"
-          >Contraseña es obligatoria</span
-        >
-        <span *ngIf="password2.errors?.minlength"
-          >Contraseña necesita mas de 5 carácteres</span
-        >
+      <div *ngIf="(password2.dirty || password2.touched) && password2.errors" class="errors">
+        <span *ngIf="password2.errors?.required">Contraseña es obligatoria</span>
+        <span *ngIf="password2.errors?.minlength">Contraseña necesita mas de 5 carácteres</span>
       </div>
     </div>
-    <ion-button type="submit" expand="block" [disabled]="!profile.valid"
-      >Guardar</ion-button
+    <ion-button
+      class="ion-margin"
+      color="danger"
+      type="submit"
+      expand="block"
+      [disabled]="!profile.valid"
     >
+      Guardar
+    </ion-button>
   </form>
 </ion-content>

@@ -18,13 +18,24 @@ const routes: Routes = [
       },
       {
         path: 'vehicles',
-        loadChildren: () => import('../vehicles/vehicles.module').then((m) => m.VehiclesPageModule),
+        loadChildren: () =>
+          import('../reserve-by-vehicle/pick-vehicle/vehicles.module').then(
+            (m) => m.VehiclesPageModule
+          ),
       },
       {
         path: 'my-reservations',
         loadChildren: () =>
-          import('../my-reservations/my-reservations.module').then(
+          import('../my-reservations/calendar-list/my-reservations.module').then(
             (m) => m.MyReservationsPageModule
+          ),
+      },
+
+      {
+        path: 'create-by-date',
+        loadChildren: () =>
+          import('../reserve-by-date/reserve-by-date.module').then(
+            (m) => m.ReserveByDatePageModule
           ),
       },
       {
@@ -42,8 +53,8 @@ const routes: Routes = [
           import('../my-incidents/my-incidents.module').then((m) => m.MyIncidentsPageModule),
       },
       {
-        path: 'gnss',
-        loadChildren: () => import('../gnss/gnss.module').then((m) => m.GnssPageModule),
+        path: 'map',
+        loadChildren: () => import('../map/map.module').then((m) => m.MapPageModule),
       },
     ],
   },

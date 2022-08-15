@@ -7,7 +7,6 @@ import { User } from 'src/app/core/models';
 import { EditUser } from 'src/app/core/models/users/edit.models';
 import {
   AppRouter,
-  Key,
   LoadingService,
   SnackerService,
   StorageService,
@@ -90,7 +89,7 @@ export class EditUserPage implements OnInit {
     }
 
     const userUpdated = this.getEditUser();
-    const userStored = await this.storage.getParsed(Key.user);
+    const userStored = await this.storage.getUser();
 
     this.userSrv
       .update(userStored.id, userUpdated)

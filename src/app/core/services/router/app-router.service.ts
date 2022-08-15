@@ -13,6 +13,11 @@ export class AppRouter {
     return this.router.navigateByUrl(to, this.extras);
   }
 
+  async goToHome() {
+    const to = `/members/home`;
+    this.router.navigateByUrl(to, this.extras);
+  }
+
   async goToReservationDetails(id: string) {
     const to = `members/my-reservations/${id}`;
     return this.router.navigateByUrl(to, this.extras);

@@ -14,6 +14,9 @@ export * from './reservations/recurrent.model';
 export * from './reservations/recurrent/request.model';
 export * from './reservations/recurrent/response.model';
 export * from './reservations/reservation.model';
+// Storage
+export * from './storage/tenant.storage';
+export * from './storage/user.storage';
 // Tenants
 export * from './tenants/tenant.model';
 // Tickets

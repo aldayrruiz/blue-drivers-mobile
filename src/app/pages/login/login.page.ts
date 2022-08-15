@@ -66,7 +66,7 @@ export class LoginPage implements OnInit {
       .subscribe(
         async (user) => {
           if (user.role === Role.SUPER_ADMIN) {
-            this.getAndSetDefaultTenant(user.tenant);
+            this.getAndSetDefaultTenant(user.tenant.id);
             this.isSuperAdmin = true;
           } else {
             this.router.navigateByUrl('/members', { replaceUrl: true });

@@ -13,10 +13,7 @@ export class MyIncidentsPage implements OnInit {
   incidents: Incident[] = [];
   private icons: VehicleIcon[];
 
-  constructor(
-    private readonly vehicleIconProvider: VehicleIconProvider,
-    private readonly route: ActivatedRoute
-  ) {
+  constructor(private vehicleIconProvider: VehicleIconProvider, private route: ActivatedRoute) {
     this.icons = this.vehicleIconProvider.getIcons();
   }
 

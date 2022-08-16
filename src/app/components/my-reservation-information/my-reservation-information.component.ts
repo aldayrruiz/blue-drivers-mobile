@@ -13,10 +13,7 @@ export class MyReservationInformationComponent implements OnInit {
   @Input() lines: string;
 
   private icons: VehicleIcon[];
-  constructor(
-    private readonly vehicleIconProvider: VehicleIconProvider,
-    private readonly appRouter: AppRouter
-  ) {
+  constructor(private vehicleIconProvider: VehicleIconProvider, private appRouter: AppRouter) {
     this.icons = this.vehicleIconProvider.getIcons();
   }
 

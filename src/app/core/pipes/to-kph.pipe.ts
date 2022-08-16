@@ -9,7 +9,7 @@ export class FromKnotsToKphPipe implements PipeTransform {
    * @param args
    * @returns
    */
-  transform(knots: number, ...args: unknown[]): number {
+  transform(knots: number): number {
     return knots * 1.85;
   }
 }

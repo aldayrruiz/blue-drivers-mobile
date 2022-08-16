@@ -20,9 +20,9 @@ export class IncidentDetailsPage implements OnInit {
   private icons: VehicleIcon[];
 
   constructor(
-    private readonly vehicleIconProvider: VehicleIconProvider,
-    private readonly route: ActivatedRoute,
-    private readonly appRouter: AppRouter
+    private vehicleIconProvider: VehicleIconProvider,
+    private route: ActivatedRoute,
+    private appRouter: AppRouter
   ) {
     this.icons = this.vehicleIconProvider.getIcons();
   }

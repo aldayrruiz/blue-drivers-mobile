@@ -30,7 +30,7 @@ export class LoginService {
         await this.storeTenant(response);
         return user;
       }),
-      tap((_) => {
+      tap(() => {
         this.isAuth.next(true);
       })
     );

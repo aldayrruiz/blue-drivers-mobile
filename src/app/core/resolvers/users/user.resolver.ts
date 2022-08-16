@@ -9,9 +9,9 @@ import { LoadingService, StorageService, UserService } from '../../services';
 })
 export class UserResolver implements Resolve<User> {
   constructor(
-    private readonly userSrv: UserService,
-    private readonly storage: StorageService,
-    private readonly loadingSrv: LoadingService
+    private userSrv: UserService,
+    private storage: StorageService,
+    private loadingSrv: LoadingService
   ) {}
 
   async resolve(): Promise<User> {

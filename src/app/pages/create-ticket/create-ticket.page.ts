@@ -24,13 +24,13 @@ export class CreateTicketPage implements OnInit {
   reservationId: string;
 
   constructor(
-    private readonly errorMessage: ErrorMessageService,
-    private readonly ticketService: TicketService,
-    private readonly loadingSrv: LoadingService,
-    private readonly snacker: SnackerService,
-    private readonly route: ActivatedRoute,
-    private readonly ghost: AppRouter,
-    private readonly fb: FormBuilder
+    private errorMessage: ErrorMessageService,
+    private ticketService: TicketService,
+    private loadingSrv: LoadingService,
+    private snacker: SnackerService,
+    private route: ActivatedRoute,
+    private appRouter: AppRouter,
+    private fb: FormBuilder
   ) {}
 
   get title(): AbstractControl {
@@ -56,7 +56,7 @@ export class CreateTicketPage implements OnInit {
       .subscribe(
         async (ticket) => {
           const msg = 'Conflicto creado con éxito';
-          await this.ghost.goToTicketDetails(ticket.id);
+          await this.appRouter.goToTicketDetails(ticket.id);
           await this.snacker.showSuccessful(msg);
         },
         async (error) => {

@@ -27,14 +27,14 @@ export class LoginPage implements OnInit {
   isSuperAdmin: boolean;
 
   constructor(
-    private readonly errorMessage: ErrorMessageService,
-    private readonly passwordRecover: PasswordRecover,
-    private readonly alertController: AlertController,
-    private readonly tenantService: TenantService,
-    private readonly loginService: LoginService,
-    private readonly loadingSrv: LoadingService,
-    private readonly fb: FormBuilder,
-    private readonly router: Router
+    private errorMessage: ErrorMessageService,
+    private passwordRecover: PasswordRecover,
+    private alertController: AlertController,
+    private tenantService: TenantService,
+    private loginService: LoginService,
+    private loadingSrv: LoadingService,
+    private fb: FormBuilder,
+    private router: Router
   ) {}
 
   get username(): AbstractControl {

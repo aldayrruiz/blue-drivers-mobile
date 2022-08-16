@@ -12,7 +12,7 @@ export class DurationPipe implements PipeTransform {
    * @param args
    * @returns
    */
-  transform(value: number, ...args: unknown[]): string {
+  transform(value: number): string {
     if (value === 0) {
       return '0 minutos';
     }

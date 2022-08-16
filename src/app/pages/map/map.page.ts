@@ -37,10 +37,10 @@ export class MapPage implements OnInit, AfterViewInit {
   private positionMarkersSubject = new Subject<MyMarker[]>();
 
   constructor(
-    private readonly vehicleIconProvider: VehicleIconProvider,
-    private readonly positionSrv: PositionService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router
+    private vehicleIconProvider: VehicleIconProvider,
+    private positionSrv: PositionService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.positionMarkers$ = this.positionMarkersSubject.asObservable();
     this.icons = this.vehicleIconProvider.getIcons();
@@ -86,7 +86,7 @@ export class MapPage implements OnInit, AfterViewInit {
   }
 
   private initMarkers(vehicles: Vehicle[], positions: Position[]) {
-    const positionsMarkers = vehicles.map((vehicle, i) => {
+    const positionsMarkers = vehicles.map((vehicle) => {
       const icon = this.getIconFromVehicle(vehicle);
       const leafIcon = this.createLeafIcon(icon.src);
       const position = this.findPosition(positions, vehicle);

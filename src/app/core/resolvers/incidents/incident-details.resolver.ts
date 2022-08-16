@@ -8,10 +8,7 @@ import { IncidentService, LoadingService } from '../../services';
   providedIn: 'root',
 })
 export class IncidentDetailsResolver implements Resolve<Incident> {
-  constructor(
-    private readonly incidentService: IncidentService,
-    private readonly loadingSrv: LoadingService
-  ) {}
+  constructor(private incidentService: IncidentService, private loadingSrv: LoadingService) {}
   async resolve(route: ActivatedRouteSnapshot): Promise<Incident> {
     await this.loadingSrv.present();
     const id = route.params.incidentId;

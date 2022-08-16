@@ -12,7 +12,7 @@ export class VehicleInformationComponent implements OnInit {
 
   iconSrc = 'assets/icon/vehicles/yellow-vehicle.png';
 
-  constructor(private readonly vehicleIconProvider: VehicleIconProvider) {}
+  constructor(private vehicleIconProvider: VehicleIconProvider) {}
 
   ngOnInit(): void {
     const icons = this.vehicleIconProvider.getIcons();

@@ -47,19 +47,19 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
   private icons: VehicleIcon[];
 
   constructor(
-    private readonly vehicleIconProvider: VehicleIconProvider,
-    private readonly reservationService: ReservationService,
-    private readonly tabStorage: MyReservationsTabStorage,
-    private readonly errorMessage: ErrorMessageService,
-    private readonly positionSrv: PositionService,
-    private readonly weekdaysSrv: WeekdaysService,
-    private readonly alertCtrl: AlertController,
-    private readonly loadingSrv: LoadingService,
-    private readonly assetsSrv: AssetsService,
-    private readonly snacker: SnackerService,
-    private readonly dateSrv: MyDateService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router
+    private vehicleIconProvider: VehicleIconProvider,
+    private reservationService: ReservationService,
+    private tabStorage: MyReservationsTabStorage,
+    private errorMessage: ErrorMessageService,
+    private positionSrv: PositionService,
+    private weekdaysSrv: WeekdaysService,
+    private alertCtrl: AlertController,
+    private loadingSrv: LoadingService,
+    private assetsSrv: AssetsService,
+    private snacker: SnackerService,
+    private dateSrv: MyDateService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.icons = this.vehicleIconProvider.getIcons();
   }

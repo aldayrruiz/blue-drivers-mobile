@@ -12,10 +12,7 @@ interface ResolvedData {
   providedIn: 'root',
 })
 export class VehicleDetailsResolver implements Resolve<ResolvedData> {
-  constructor(
-    private readonly vehicleSrv: VehicleService,
-    private readonly loadingSrv: LoadingService
-  ) {}
+  constructor(private vehicleSrv: VehicleService, private loadingSrv: LoadingService) {}
 
   async resolve(route: ActivatedRouteSnapshot) {
     await this.loadingSrv.present();

@@ -54,16 +54,16 @@ export class ReserveByDatePage implements OnInit {
   private icons: VehicleIcon[];
 
   constructor(
-    private readonly vehicleIconProvider: VehicleIconProvider,
-    private readonly reservationSrv: ReservationService,
-    private readonly errorMessage: ErrorMessageService,
-    private readonly weekdaySrv: WeekdaysService,
-    private readonly alertCtrl: AlertController,
-    private readonly loadingSrv: LoadingService,
-    private readonly zoner: DateZonerHelper,
-    private readonly snacker: SnackerService,
-    private readonly route: ActivatedRoute,
-    private readonly appRouter: AppRouter
+    private vehicleIconProvider: VehicleIconProvider,
+    private reservationSrv: ReservationService,
+    private errorMessage: ErrorMessageService,
+    private weekdaySrv: WeekdaysService,
+    private alertCtrl: AlertController,
+    private loadingSrv: LoadingService,
+    private zoner: DateZonerHelper,
+    private snacker: SnackerService,
+    private route: ActivatedRoute,
+    private appRouter: AppRouter
   ) {
     this.icons = this.vehicleIconProvider.getIcons();
   }

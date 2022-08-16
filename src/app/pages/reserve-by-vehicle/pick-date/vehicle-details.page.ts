@@ -33,12 +33,12 @@ export class ReserveByVehiclePage implements OnInit {
   selectedDate: Date;
   reservations: Reservation[] = [];
   constructor(
-    private readonly vehiclesTabStorage: VehiclesTabStorage,
-    private readonly reservationSrv: ReservationService,
-    private readonly alertCtrl: AlertController,
-    private readonly storage: StorageService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router
+    private vehiclesTabStorage: VehiclesTabStorage,
+    private reservationSrv: ReservationService,
+    private alertCtrl: AlertController,
+    private storage: StorageService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   async ngOnInit() {
@@ -141,15 +141,6 @@ export class ReserveByVehiclePage implements OnInit {
     current.setUTCDate(current.getUTCDate() - 1);
     return date < current;
   };
-
-  /**
-   * Basically load new reservations corresponded to the month visualized in calendar and its next to months.
-   *
-   * @param ev Date clicked or changed in calendar
-   */
-  onCurrentDateChanged(ev: Date) {
-    return;
-  }
 
   private async resolveData() {
     this.route.data.subscribe((response) => {

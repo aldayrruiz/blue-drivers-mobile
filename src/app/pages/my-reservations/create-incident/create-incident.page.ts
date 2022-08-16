@@ -25,13 +25,13 @@ export class CreateIncidentPage implements OnInit {
   photoBase64: string;
 
   constructor(
-    private readonly tabStorage: MyReservationsTabStorage,
-    private readonly errorMessage: ErrorMessageService,
-    private readonly incidentService: IncidentService,
-    private readonly loadingSrv: LoadingService,
-    private readonly snacker: SnackerService,
-    private readonly fb: FormBuilder,
-    private readonly ghost: AppRouter
+    private tabStorage: MyReservationsTabStorage,
+    private errorMessage: ErrorMessageService,
+    private incidentService: IncidentService,
+    private loadingSrv: LoadingService,
+    private snacker: SnackerService,
+    private fb: FormBuilder,
+    private ghost: AppRouter
   ) {}
 
   get description(): AbstractControl {

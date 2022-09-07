@@ -1,0 +1,90 @@
+<ion-header>
+  <app-toolbar [title]="toolbarTitle"></app-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- *ngIf avoids load datetimes before initialize dates and collection -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Fecha de salida y llegada</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <!-- Start date -->
+      <app-datetime
+        title="Inicio"
+        [datetime]="initStart"
+        [disabled]="completed"
+        #start
+      ></app-datetime>
+      <hr style="background: grey" />
+      <!-- End Date -->
+      <app-datetime title="Fin" [datetime]="initEnd" [disabled]="completed" #end></app-datetime>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- No dietas -->
+  <ion-card *ngIf="diets.length === 0">
+    <ion-card-content class="ion-text-center"> No tiene ninguna dieta aún </ion-card-content>
+  </ion-card>
+
+  <!-- Si hay dietas -->
+  <ion-card *ngFor="let diet of diets">
+    <ion-card-content (click)="completed ? undefined : goToEditDiet(diet.id)">
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <ion-icon size="large" *ngIf="diet.photos?.length === 0" name="image"></ion-icon>
+          <img *ngIf="diet.photos?.length > 0" [src]="diet?.photo" />
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ diet.type }} - {{ diet.amount | currency: 'EUR' }}</h2>
+          <p>{{ diet.description }}</p>
+        </ion-label>
+        <ion-button
+          [disabled]="completed"
+          color="danger"
+          slot="end"
+          fill="clear"
+          (click)="showDeleteDietAlert($event, diet.id)"
+        >
+          <ion-icon name="trash"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Añadir dietas -->
+  <ion-button
+    class="ion-margin"
+    expand="block"
+    color="danger"
+    (click)="goToAddDiet()"
+    [disabled]="completed"
+  >
+    <ion-icon class="ion-margin-end" name="add-circle-outline"></ion-icon>
+    <ion-label>Añadir</ion-label>
+  </ion-button>
+
+  <!-- Close and Send -->
+  <ion-button
+    class="ion-margin"
+    expand="block"
+    color="danger"
+    (click)="save()"
+    [disabled]="completed"
+  >
+    <ion-icon class="ion-margin-end" name="save-outline"></ion-icon>
+    <ion-label>Guardar</ion-label>
+  </ion-button>
+
+  <!-- Close and Send -->
+  <ion-button
+    class="ion-margin"
+    expand="block"
+    color="danger"
+    (click)="markCollectionAsCompleted()"
+    [disabled]="completed"
+  >
+    <ion-icon class="ion-margin-end" name="lock-closed-outline"></ion-icon>
+    <ion-label>Cerrar y enviar</ion-label>
+  </ion-button>
+</ion-content>

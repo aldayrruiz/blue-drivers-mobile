@@ -17,4 +17,7 @@ export class ServerUrlService {
   getTickets = () => `${this.fleetUrl}${API.tickets}`;
   getIncidents = () => `${this.fleetUrl}${API.incidents}`;
   getReservations = () => `${this.fleetUrl}${API.reservations}`;
+  getDiets = () => `${this.fleetUrl}${API.diets}`;
+  getDietCollections = () => `${this.fleetUrl}${API.dietCollections}`;
+  getDietPhotos = () => `${this.fleetUrl}${API.dietPhotos}`;
 }

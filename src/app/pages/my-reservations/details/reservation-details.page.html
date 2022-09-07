@@ -3,7 +3,7 @@
 </ion-header>
 
 <ion-content>
-  <app-vehicle-information [vehicle]="reservation?.vehicle"></app-vehicle-information>
+  <app-vehicle-information [vehicle]="vehicle"></app-vehicle-information>
   <ion-card *ngIf="isReservationOccurringNow()">
     <ion-card-content>
       <div id="map" style="height: 300px"></div>
@@ -42,12 +42,22 @@
     </ion-card-content>
 
     <ion-button class="ion-margin" expand="block" [routerLink]="['create-incident']" color="danger">
-      <ion-icon name="warning-outline"></ion-icon>
-      Reportar incidencia
+      <ion-icon class="ion-margin-end" name="warning-outline"></ion-icon>
+      <ion-label>Reportar incidencia</ion-label>
+    </ion-button>
+    <ion-button
+      *ngIf="diets"
+      class="ion-margin"
+      expand="block"
+      color="danger"
+      (click)="goToMyDiets()"
+    >
+      <ion-icon class="ion-margin-end" name="cash-outline"></ion-icon>
+      <ion-label>Mis dietas</ion-label>
     </ion-button>
     <ion-button class="ion-margin" expand="block" color="danger" (click)="showCancelAlert()">
-      <ion-icon name="close-circle-outline"></ion-icon>
-      Cancelar
+      <ion-icon class="ion-margin-end" name="close-circle-outline"></ion-icon>
+      <ion-label>Cancelar</ion-label>
     </ion-button>
   </ion-card>
 

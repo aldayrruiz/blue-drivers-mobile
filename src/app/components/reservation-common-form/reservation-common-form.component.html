@@ -4,7 +4,7 @@
       <!-- Title Field -->
       <ion-item lines="none">
         <ion-label> Motivo </ion-label>
-        <ion-select formControlName="title">
+        <ion-select interface="action-sheet" formControlName="title">
           <ion-select-option *ngFor="let template of reservationTemplates" [value]="template.title">
             {{ template.title }}
           </ion-select-option>

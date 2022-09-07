@@ -30,8 +30,8 @@ export class CreateIncidentPage implements OnInit {
     private incidentService: IncidentService,
     private loadingSrv: LoadingService,
     private snacker: SnackerService,
-    private fb: FormBuilder,
-    private ghost: AppRouter
+    private appRouter: AppRouter,
+    private fb: FormBuilder
   ) {}
 
   get description(): AbstractControl {
@@ -55,7 +55,7 @@ export class CreateIncidentPage implements OnInit {
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
         async (incident) => {
-          await this.ghost.goToIncidentDetails(incident.id);
+          await this.appRouter.goToIncidentDetails(incident.id);
           const msg = 'Incidencia creado con éxito';
           await this.snacker.showSuccessful(msg);
         },

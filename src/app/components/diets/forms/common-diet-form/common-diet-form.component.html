@@ -1,0 +1,32 @@
+<form [formGroup]="form">
+  <!-- Importe -->
+  <ion-card>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-input
+          placeholder="Importe"
+          formControlName="amount"
+          type="number"
+          required
+        ></ion-input>
+        €
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Descripción (opcional) -->
+  <ion-card>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-textarea
+          placeholder="Descripción (opcional)"
+          formControlName="description"
+          type="text"
+          rows="8"
+          cols="18"
+        >
+        </ion-textarea>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</form>

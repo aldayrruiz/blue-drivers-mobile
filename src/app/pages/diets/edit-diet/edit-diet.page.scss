@@ -1,0 +1,19 @@
+.container .fab {
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  transform: translate(50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+}
+
+.container {
+  position: relative;
+  width: 100%;
+}
+
+ion-fab-button {
+  &.small-fab {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Geolocation } from '@capacitor/geolocation';
 import { AlertController } from '@ionic/angular';
@@ -6,6 +6,7 @@ import * as L from 'leaflet';
 import { finalize } from 'rxjs/operators';
 import { Position, Recurrent, Reservation, Vehicle } from 'src/app/core/models';
 import {
+  AppRouter,
   AssetsService,
   ErrorMessageService,
   LoadingService,
@@ -14,6 +15,7 @@ import {
   PositionService,
   ReservationService,
   SnackerService,
+  StorageService,
   VehicleIcon,
   VehicleIconProvider,
   WeekdaysService,
@@ -29,7 +31,6 @@ const userIcon = 'icon/users/user.png';
   selector: 'app-reservation-details',
   templateUrl: './reservation-details.page.html',
   styleUrls: ['./reservation-details.page.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReservationDetailsPage implements OnInit, AfterViewInit {
   toolbarTitle = 'Mis reservas';
@@ -38,6 +39,7 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
   recurrent: Recurrent;
   weekdays: string[];
   vehicle: Vehicle;
+  diets: boolean;
   private positions: Position[];
   private map: L.Map;
   private vehicleMarker: L.Marker;
@@ -47,29 +49,32 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
   private icons: VehicleIcon[];
 
   constructor(
-    private readonly vehicleIconProvider: VehicleIconProvider,
-    private readonly reservationService: ReservationService,
-    private readonly tabStorage: MyReservationsTabStorage,
-    private readonly errorMessage: ErrorMessageService,
-    private readonly positionSrv: PositionService,
-    private readonly weekdaysSrv: WeekdaysService,
-    private readonly alertCtrl: AlertController,
-    private readonly loadingSrv: LoadingService,
-    private readonly assetsSrv: AssetsService,
-    private readonly snacker: SnackerService,
-    private readonly dateSrv: MyDateService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router
+    private vehicleIconProvider: VehicleIconProvider,
+    private reservationService: ReservationService,
+    private tabStorage: MyReservationsTabStorage,
+    private errorMessage: ErrorMessageService,
+    private positionSrv: PositionService,
+    private weekdaysSrv: WeekdaysService,
+    private alertCtrl: AlertController,
+    private loadingSrv: LoadingService,
+    private assetsSrv: AssetsService,
+    private storage: StorageService,
+    private snacker: SnackerService,
+    private dateSrv: MyDateService,
+    private route: ActivatedRoute,
+    private appRouter: AppRouter,
+    private router: Router
   ) {
     this.icons = this.vehicleIconProvider.getIcons();
-  }
-
-  ngOnInit(): void {
     this.initIcons();
     this.resolveData();
   }
 
-  ngAfterViewInit(): void {
+  async ngOnInit() {
+    await this.loadDiets();
+  }
+
+  async ngAfterViewInit() {
     if (this.isReservationOccurringNow()) {
       setTimeout(async () => {
         await this.initMap();
@@ -116,6 +121,10 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
     return start.getUTCDay() !== end.getUTCDay();
   }
 
+  async goToMyDiets() {
+    await this.appRouter.goToMyDiets(this.reservation.id);
+  }
+
   private storeReservationInTab() {
     this.tabStorage.setCurrentReservation(this.reservation);
   }
@@ -152,7 +161,7 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
         async () => {
-          this.router.navigate(['..'], { relativeTo: this.route });
+          await this.appRouter.goToMyReservations();
           const message = 'Operación realizada con éxito';
           this.snacker.showSuccessful(message);
         },
@@ -287,5 +296,10 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
       .map((weekday) => this.weekdaysSrv.getWeekDayLabel(weekday));
 
     return labels;
+  }
+
+  private async loadDiets() {
+    const tenant = await this.storage.getTenant();
+    this.diets = tenant.diet;
   }
 }

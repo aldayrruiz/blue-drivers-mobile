@@ -20,6 +20,11 @@
         {{ reservation.vehicle.number_plate }}
       </h3>
       <h3>{{ reservation.title }}</h3>
+      <ion-icon
+        *ngIf="reservation?.diet_collection?.modified"
+        size="small"
+        name="document-text"
+      ></ion-icon>
     </ion-label>
   </ng-template>
   <ion-icon

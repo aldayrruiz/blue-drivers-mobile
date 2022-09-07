@@ -1,4 +1,15 @@
 export * from './auth/create-recover-password-response.model';
+// Diets - Collections
+export * from './diets/collections/collection.model';
+export * from './diets/collections/create.model';
+export * from './diets/collections/patch.model';
+// Diets - Diets
+export * from './diets/diets/create.model';
+export * from './diets/diets/diet.model';
+export * from './diets/diets/patch.model';
+// Diets - Photos
+export * from './diets/photos/photo.model';
+export * from './diets/type.model';
 // Incidents
 export * from './incidents/create.model';
 export * from './incidents/incident-type.model';
@@ -14,6 +25,9 @@ export * from './reservations/recurrent.model';
 export * from './reservations/recurrent/request.model';
 export * from './reservations/recurrent/response.model';
 export * from './reservations/reservation.model';
+// Storage
+export * from './storage/tenant.storage';
+export * from './storage/user.storage';
 // Tenants
 export * from './tenants/tenant.model';
 // Tickets

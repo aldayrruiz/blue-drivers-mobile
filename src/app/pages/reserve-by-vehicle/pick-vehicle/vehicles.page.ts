@@ -12,7 +12,7 @@ export class VehiclesPage implements OnInit {
   toolbarTitle = TOOLBAR_TITLE;
   vehicles: Vehicle[] = [];
 
-  constructor(private readonly route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.data.subscribe((response) => {

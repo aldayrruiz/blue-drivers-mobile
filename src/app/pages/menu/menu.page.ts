@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AppRouter, Key, LoginService, StorageService } from 'src/app/core/services';
+import { AppRouter, LoginService, StorageService } from 'src/app/core/services';
 import { ROUTE } from 'src/app/core/utils/routing/menu';
 import { environment } from 'src/environments/environment';
 import { homeButtons } from '../home/home-buttons';
@@ -27,7 +27,7 @@ export class MenuPage implements OnInit {
   ) {}
 
   async ngOnInit() {
-    const user = await this.storage.getParsed(Key.user);
+    const user = await this.storage.getUser();
     this.email = user.email;
     this.fullname = user.fullname;
   }

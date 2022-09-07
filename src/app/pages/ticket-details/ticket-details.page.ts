@@ -23,11 +23,11 @@ export class TicketDetailsPage implements OnInit {
   private icons: VehicleIcon[];
 
   constructor(
-    private readonly vehicleIconProvider: VehicleIconProvider,
-    private readonly ticketService: TicketService,
-    private readonly snacker: SnackerService,
-    private readonly route: ActivatedRoute,
-    private readonly appRouter: AppRouter
+    private vehicleIconProvider: VehicleIconProvider,
+    private ticketService: TicketService,
+    private snacker: SnackerService,
+    private route: ActivatedRoute,
+    private appRouter: AppRouter
   ) {
     this.icons = this.vehicleIconProvider.getIcons();
   }
@@ -47,7 +47,7 @@ export class TicketDetailsPage implements OnInit {
         const msg = 'Conflicto cancelado con éxito';
         this.snacker.showSuccessful(msg);
       },
-      async (errors) => {
+      async () => {
         const msg = 'Error cancelando el conflicto';
         this.snacker.showFailed(msg);
       }

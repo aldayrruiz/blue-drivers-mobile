@@ -13,8 +13,33 @@ export class AppRouter {
     return this.router.navigateByUrl(to, this.extras);
   }
 
+  async goToHome() {
+    const to = `/members/home`;
+    this.router.navigateByUrl(to, this.extras);
+  }
+
+  async goToMyReservations() {
+    const to = `/members/my-reservations`;
+    return this.router.navigateByUrl(to, this.extras);
+  }
+
   async goToReservationDetails(id: string) {
-    const to = `members/my-reservations/${id}`;
+    const to = `/members/my-reservations/${id}`;
+    return this.router.navigateByUrl(to, this.extras);
+  }
+
+  async goToMyDiets(reservationId: string) {
+    const to = `/members/my-reservations/${reservationId}/my-diets`;
+    return this.router.navigateByUrl(to, this.extras);
+  }
+
+  async goToAddDiet(reservationId: string) {
+    const to = `/members/my-reservations/${reservationId}/my-diets/add-diet`;
+    return this.router.navigateByUrl(to, this.extras);
+  }
+
+  async goToEditDiet(reservationId: string, dietId: string) {
+    const to = `/members/my-reservations/${reservationId}/my-diets/edit-diet/${dietId}`;
     return this.router.navigateByUrl(to, this.extras);
   }
 

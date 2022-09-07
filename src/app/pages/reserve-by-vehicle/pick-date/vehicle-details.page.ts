@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { CalendarComponent } from 'ionic2-calendar';
 import { fuelLabel, Reservation, VehicleDetails } from 'src/app/core/models';
-import { Key, ReservationService, StorageService, VehiclesTabStorage } from 'src/app/core/services';
+import { ReservationService, StorageService, VehiclesTabStorage } from 'src/app/core/services';
 import { TOOLBAR_TITLE } from '../constants';
 
 @Component({
@@ -33,17 +33,17 @@ export class ReserveByVehiclePage implements OnInit {
   selectedDate: Date;
   reservations: Reservation[] = [];
   constructor(
-    private readonly vehiclesTabStorage: VehiclesTabStorage,
-    private readonly reservationSrv: ReservationService,
-    private readonly alertCtrl: AlertController,
-    private readonly storage: StorageService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router
+    private vehiclesTabStorage: VehiclesTabStorage,
+    private reservationSrv: ReservationService,
+    private alertCtrl: AlertController,
+    private storage: StorageService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   async ngOnInit() {
     await this.resolveData();
-    this.userId = (await this.storage.getParsed(Key.user)).id;
+    this.userId = (await this.storage.getUser()).id;
     this.loadReservations(this.reservations);
   }
 
@@ -141,15 +141,6 @@ export class ReserveByVehiclePage implements OnInit {
     current.setUTCDate(current.getUTCDate() - 1);
     return date < current;
   };
-
-  /**
-   * Basically load new reservations corresponded to the month visualized in calendar and its next to months.
-   *
-   * @param ev Date clicked or changed in calendar
-   */
-  onCurrentDateChanged(ev: Date) {
-    return;
-  }
 
   private async resolveData() {
     this.route.data.subscribe((response) => {

@@ -35,11 +35,11 @@ export class MyReservationsPage implements OnInit {
   private icons: VehicleIcon[];
 
   constructor(
-    private readonly vehicleIconProvider: VehicleIconProvider,
-    private readonly tabStorage: MyReservationsTabStorage,
-    private readonly dateSrv: MyDateService,
-    private readonly route: ActivatedRoute,
-    private readonly ghost: AppRouter
+    private vehicleIconProvider: VehicleIconProvider,
+    private tabStorage: MyReservationsTabStorage,
+    private dateSrv: MyDateService,
+    private route: ActivatedRoute,
+    private ghost: AppRouter
   ) {
     this.icons = this.vehicleIconProvider.getIcons();
   }

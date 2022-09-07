@@ -6,6 +6,8 @@ import { IonicModule } from '@ionic/angular';
 import { CustomPipesModule } from '../core/pipes/custom-pipes.module';
 import { DateComponent } from './date/date.component';
 import { DatetimeComponent } from './datetime/datetime.component';
+import { CommonDietFormComponent } from './diets/forms/common-diet-form/common-diet-form.component';
+import { GasolineDietFormComponent } from './diets/forms/gasoline-diet-form/gasoline-diet-form.component';
 import { HomeButtonComponent } from './home-button/home-button.component';
 import { IncidentTypeComponent } from './incident-type/incident-type.component';
 import { MyReservationInformationComponent } from './my-reservation-information/my-reservation-information.component';
@@ -27,6 +29,8 @@ import { VehicleInformationComponent } from './vehicle-information/vehicle-infor
     DateComponent,
     ReservationCommonFormComponent,
     MyReservationInformationComponent,
+    CommonDietFormComponent,
+    GasolineDietFormComponent,
   ],
   imports: [CommonModule, IonicModule, FormsModule, ReactiveFormsModule, CustomPipesModule],
   exports: [
@@ -40,6 +44,8 @@ import { VehicleInformationComponent } from './vehicle-information/vehicle-infor
     DateComponent,
     ReservationCommonFormComponent,
     MyReservationInformationComponent,
+    CommonDietFormComponent,
+    GasolineDietFormComponent,
   ],
 })
 export class SharedModule {}

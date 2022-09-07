@@ -8,10 +8,10 @@ import { AppRouter } from 'src/app/core/services';
 })
 export class HomeButtonComponent implements OnInit {
   @Input() button: any;
-  constructor(private readonly fleetRouter: AppRouter) {}
+  constructor(private appRouter: AppRouter) {}
   ngOnInit() {}
 
   async goTo(url: string) {
-    await this.fleetRouter.goTo(url);
+    await this.appRouter.goTo(url);
   }
 }

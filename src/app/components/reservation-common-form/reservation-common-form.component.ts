@@ -13,7 +13,7 @@ export class ReservationCommonFormComponent implements OnInit {
   form: FormGroup;
   reservationTemplates: ReservationTemplate[] = [];
 
-  constructor(private readonly route: ActivatedRoute, private readonly fb: FormBuilder) {}
+  constructor(private route: ActivatedRoute, private fb: FormBuilder) {}
 
   get title(): AbstractControl {
     return this.form.get('title');

@@ -25,13 +25,13 @@ export class CreateIncidentPage implements OnInit {
   photoBase64: string;
 
   constructor(
-    private readonly tabStorage: MyReservationsTabStorage,
-    private readonly errorMessage: ErrorMessageService,
-    private readonly incidentService: IncidentService,
-    private readonly loadingSrv: LoadingService,
-    private readonly snacker: SnackerService,
-    private readonly fb: FormBuilder,
-    private readonly ghost: AppRouter
+    private tabStorage: MyReservationsTabStorage,
+    private errorMessage: ErrorMessageService,
+    private incidentService: IncidentService,
+    private loadingSrv: LoadingService,
+    private snacker: SnackerService,
+    private appRouter: AppRouter,
+    private fb: FormBuilder
   ) {}
 
   get description(): AbstractControl {
@@ -55,7 +55,7 @@ export class CreateIncidentPage implements OnInit {
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
         async (incident) => {
-          await this.ghost.goToIncidentDetails(incident.id);
+          await this.appRouter.goToIncidentDetails(incident.id);
           const msg = 'Incidencia creado con éxito';
           await this.snacker.showSuccessful(msg);
         },

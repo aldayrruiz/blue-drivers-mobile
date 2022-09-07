@@ -7,7 +7,6 @@ import { User } from 'src/app/core/models';
 import { EditUser } from 'src/app/core/models/users/edit.models';
 import {
   AppRouter,
-  Key,
   LoadingService,
   SnackerService,
   StorageService,
@@ -30,14 +29,14 @@ export class EditUserPage implements OnInit {
   user: User;
 
   constructor(
-    private readonly alertCtrl: AlertController,
-    private readonly loadingSrv: LoadingService,
-    private readonly storage: StorageService,
-    private readonly snacker: SnackerService,
-    private readonly route: ActivatedRoute,
-    private readonly userSrv: UserService,
-    private readonly fb: FormBuilder,
-    private readonly ghost: AppRouter
+    private alertCtrl: AlertController,
+    private loadingSrv: LoadingService,
+    private storage: StorageService,
+    private snacker: SnackerService,
+    private route: ActivatedRoute,
+    private userSrv: UserService,
+    private fb: FormBuilder,
+    private ghost: AppRouter
   ) {}
 
   get email(): AbstractControl {
@@ -90,7 +89,7 @@ export class EditUserPage implements OnInit {
     }
 
     const userUpdated = this.getEditUser();
-    const userStored = await this.storage.getParsed(Key.user);
+    const userStored = await this.storage.getUser();
 
     this.userSrv
       .update(userStored.id, userUpdated)

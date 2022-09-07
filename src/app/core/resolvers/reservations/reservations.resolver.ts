@@ -9,10 +9,7 @@ import { LoadingService, ReservationService } from 'src/app/core/services';
   providedIn: 'root',
 })
 export class ReservationsResolver implements Resolve<Reservation[]> {
-  constructor(
-    private readonly service: ReservationService,
-    private readonly loadingSrv: LoadingService
-  ) {}
+  constructor(private service: ReservationService, private loadingSrv: LoadingService) {}
 
   async resolve(route: ActivatedRouteSnapshot): Promise<Reservation[]> {
     await this.loadingSrv.present();

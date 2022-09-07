@@ -32,14 +32,14 @@ export class CreateReservationByVehiclePage implements OnInit {
   isRecurrent = false;
 
   constructor(
-    private readonly reservationService: ReservationService,
-    private readonly errorMessage: ErrorMessageService,
-    private readonly tabStorage: VehiclesTabStorage,
-    private readonly loadingSrv: LoadingService,
-    private readonly snacker: SnackerService,
-    private readonly zoner: DateZonerHelper,
-    private readonly route: ActivatedRoute,
-    private readonly appRouter: AppRouter
+    private reservationService: ReservationService,
+    private errorMessage: ErrorMessageService,
+    private tabStorage: VehiclesTabStorage,
+    private loadingSrv: LoadingService,
+    private snacker: SnackerService,
+    private zoner: DateZonerHelper,
+    private route: ActivatedRoute,
+    private appRouter: AppRouter
   ) {}
 
   ngOnInit(): void {

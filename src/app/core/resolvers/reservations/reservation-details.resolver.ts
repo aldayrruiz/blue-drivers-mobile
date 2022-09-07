@@ -6,10 +6,7 @@ import { LoadingService, ReservationService } from '../../services';
 
 @Injectable({ providedIn: 'root' })
 export class ReservationDetailsResolver implements Resolve<Reservation> {
-  constructor(
-    private readonly reservationService: ReservationService,
-    private readonly loadingSrv: LoadingService
-  ) {}
+  constructor(private reservationService: ReservationService, private loadingSrv: LoadingService) {}
 
   async resolve(route: ActivatedRouteSnapshot): Promise<Reservation> {
     await this.loadingSrv.present();

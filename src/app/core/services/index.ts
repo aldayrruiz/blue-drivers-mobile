@@ -14,9 +14,9 @@ export * from './cal-modal.service';
 // Error
 export * from './error/error-message.service';
 export * from './my-date.service';
+export * from './router/app-router.service';
 // Router
 export * from './router/assets.service';
-export * from './router/ghost.service';
 export * from './router/server-url.service';
 // Storage
 export * from './storage';

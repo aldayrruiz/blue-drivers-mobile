@@ -1,3 +1,6 @@
+// Diets
+export * from './diets/collection.resolver';
+export * from './diets/diet.resolver';
 // Incidents
 export * from './incidents/incident-details.resolver';
 export * from './incidents/my-incidents.resolver';

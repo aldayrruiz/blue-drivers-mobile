@@ -1,7 +1,7 @@
 import { HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { from } from 'rxjs';
-import { Key, StorageService } from '../services';
+import { StorageService } from '../services';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -13,7 +13,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   async handle(req: HttpRequest<any>, next: HttpHandler) {
-    const user = await this.storage.getParsed(Key.user);
+    const user = await this.storage.getUser();
     const token = user ? user.token : '';
     // eslint-disable-next-line @typescript-eslint/naming-convention
     const tokenHeaders = { setHeaders: { Authorization: `Token ${token}` } };

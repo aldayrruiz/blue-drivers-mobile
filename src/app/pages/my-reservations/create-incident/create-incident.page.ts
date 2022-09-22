@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Camera, CameraResultType } from '@capacitor/camera';
@@ -36,6 +37,10 @@ export class CreateIncidentPage implements OnInit {
 
   get description(): AbstractControl {
     return this.form.get('description');
+  }
+
+  get selfResponsible(): AbstractControl {
+    return this.form.get('selfResponsible');
   }
 
   get incidentType(): AbstractControl {
@@ -81,6 +86,7 @@ export class CreateIncidentPage implements OnInit {
     return this.fb.group({
       description: ['', descriptionValidators],
       incidentType: [IncidentType.OTHERS, incidentTypeValidators],
+      selfResponsible: [true],
     });
   }
 
@@ -89,6 +95,7 @@ export class CreateIncidentPage implements OnInit {
       description: this.form.value.description,
       type: this.form.value.incidentType,
       reservation: this.reservation.id,
+      self_responsible: this.selfResponsible.value,
     };
 
     return this.setPhoto(incident);

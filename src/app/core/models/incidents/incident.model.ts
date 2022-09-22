@@ -9,6 +9,7 @@ export interface Incident {
   reservation: Reservation;
   type: IncidentType;
   photo: string;
+  self_responsible: boolean;
 }
 
 export const getIncidentTypeLabel = (type: IncidentType) => {

@@ -58,6 +58,7 @@ export class CreateReservationByVehiclePage implements OnInit {
 
     if (!isValid) {
       await this.snacker.showFailed(msg);
+      await this.loadingSrv.dismiss();
       return;
     }
 

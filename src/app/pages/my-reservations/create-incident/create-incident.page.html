@@ -21,6 +21,15 @@
       </ion-select>
     </ion-item>
 
+    <!-- Type -->
+    <ion-item>
+      <ion-label>Responsabilidad</ion-label>
+      <ion-select interface="action-sheet" formControlName="selfResponsible">
+        <ion-select-option [value]="true">Causada por mí</ion-select-option>
+        <ion-select-option [value]="false">Encontrada por mí</ion-select-option>
+      </ion-select>
+    </ion-item>
+
     <!-- Description -->
     <ion-item>
       <ion-textarea

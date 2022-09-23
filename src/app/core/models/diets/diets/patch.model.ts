@@ -1,8 +1,6 @@
-import { DietType } from '../type.model';
-
 export interface PatchDiet {
-  type: DietType;
-  liters?: number;
-  amount: number;
-  description?: string;
+  start?: string;
+  end?: string;
+  completed?: boolean;
+  number_of_diets?: number;
 }

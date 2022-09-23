@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { DietCollection, Recurrent, User, Vehicle } from '..';
+import { Diet, Recurrent, User, Vehicle } from '..';
 
 export interface Reservation {
   id?: string;
@@ -13,5 +13,5 @@ export interface Reservation {
   is_cancelled: boolean;
   is_recurrent: boolean;
   recurrent?: Recurrent;
-  diet_collection?: DietCollection;
+  diet?: Diet;
 }

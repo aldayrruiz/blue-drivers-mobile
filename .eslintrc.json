@@ -39,6 +39,25 @@
         "no-unused-vars": [
           "error",
           { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }
+        ],
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            "selector": "default",
+            "format": ["camelCase", "snake_case", "UPPER_CASE"],
+            "leadingUnderscore": "allow",
+            "trailingUnderscore": "allow"
+          },
+          {
+            "selector": "variable",
+            "format": ["camelCase", "snake_case", "UPPER_CASE"],
+            "leadingUnderscore": "allow",
+            "trailingUnderscore": "allow"
+          },
+          {
+            "selector": "typeLike",
+            "format": ["PascalCase"]
+          }
         ]
       }
     },

@@ -4,29 +4,24 @@ import { ActivatedRoute } from '@angular/router';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { CommonDietFormComponent } from 'src/app/components/diets/forms/common-diet-form/common-diet-form.component';
 import { GasolineDietFormComponent } from 'src/app/components/diets/forms/gasoline-diet-form/gasoline-diet-form.component';
-import { CreateDietPhoto, DietType, PatchPayment, Payment, Reservation } from 'src/app/core/models';
+import { CreatePayment, DietType, Reservation } from 'src/app/core/models';
 import { AppRouter, SnackerService } from 'src/app/core/services';
 import { DietService } from 'src/app/core/services/api/diet.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-edit-diet',
-  templateUrl: './edit-diet.page.html',
-  styleUrls: ['./edit-diet.page.scss'],
+  selector: 'app-add-payment',
+  templateUrl: './add-payment.page.html',
+  styleUrls: ['./add-payment.page.scss'],
 })
-export class EditDietPage implements OnInit {
+export class AddPaymentPage implements OnInit {
   @ViewChild(CommonDietFormComponent) commonForm: CommonDietFormComponent;
   @ViewChild(GasolineDietFormComponent) gasolineForm: GasolineDietFormComponent;
 
   toolbarTitle = 'Dieta y gastos';
   form: FormGroup;
-  payment: Payment;
   reservation: Reservation;
-
-  // Photos
   photos: string[] = [];
-  initPhotos: CreateDietPhoto[] = [];
-  photosToRemove: CreateDietPhoto[] = [];
+  dietId: string;
 
   constructor(
     private dietService: DietService,
@@ -41,8 +36,8 @@ export class EditDietPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.resolveData();
     this.form = this.initFormGroup();
+    this.resolveData();
   }
 
   async save() {
@@ -52,23 +47,16 @@ export class EditDietPage implements OnInit {
     }
 
     const newPayment = this.getPaymentByType();
-    this.dietService.patchPayment(this.payment.id, newPayment).subscribe({
+    this.dietService.createPayment(newPayment).subscribe({
       next: async (payment) => {
-        // Añadir las fotos nuevas.
         this.photos.forEach((photo) => this.addDietPhotoToPayment(photo, payment.id));
-        // Eliminar las fotos antiguas.
-        this.photosToRemove.forEach((photo) => this.deletePhotoPermanently(photo));
-        await this.snacker.showSuccessful('Pago actualizado');
+        this.snacker.showSuccessful('La dieta ha sido añadida');
         await this.appRouter.goToMyDiets(this.reservation.id);
       },
       error: () => {
-        this.snacker.showFailed('Error al añadir el pago');
+        this.snacker.showFailed('Error al añadir la dieta');
       },
     });
-  }
-
-  deletePhotoPermanently(photo: CreateDietPhoto) {
-    this.dietService.deletePhoto(photo.id).subscribe({ next: () => {} });
   }
 
   addDietPhotoToPayment(photo: string, payment: string) {
@@ -76,22 +64,21 @@ export class EditDietPage implements OnInit {
   }
 
   async addPhoto() {
-    const image = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: false,
-      resultType: CameraResultType.DataUrl,
-    });
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.DataUrl,
+      });
 
-    this.photos.push(image.dataUrl);
+      this.photos.push(image.dataUrl);
+    } catch (error) {
+      console.log('User did not take a photo');
+    }
   }
 
   removePhoto(index: number) {
     this.photos.splice(index, 1);
-  }
-
-  addToPhotosToRemove(index: number) {
-    this.photosToRemove.push(this.initPhotos[index]);
-    this.initPhotos.splice(index, 1);
   }
 
   private getPaymentByType() {
@@ -106,34 +93,35 @@ export class EditDietPage implements OnInit {
   private getGasolinePayment() {
     const { liters, amount, description } = this.gasolineForm.form.value;
     const type = DietType.Gasolina;
-    const payment: PatchPayment = { type, liters, amount, description };
+    const diet = this.dietId;
+    const payment: CreatePayment = { diet, type, liters, amount, description };
     return payment;
   }
 
   private getCommonPayment() {
     const { amount, description } = this.commonForm.form.value;
     const type = this.paymentType.value;
-    const payment: PatchPayment = { type, amount, description };
+    const diet = this.dietId;
+    const payment: CreatePayment = { diet, type, amount, description };
     return payment;
   }
 
   private initFormGroup(): FormGroup {
     return this.fb.group({
-      dietType: [this.payment.type, [Validators.required]],
+      paymentType: ['', [Validators.required]],
     });
   }
 
   private resolveData() {
     this.route.data.subscribe((response) => {
-      this.payment = response.payment;
       this.reservation = response.reservation;
-      this.initPhotos = this.payment.photos.map((photo) => this.serializePaymentPhoto(photo));
+      this.dietId = this.reservation.diet.id;
     });
   }
 
   private isFormValid() {
     if (!this.paymentType.value) {
-      this.snacker.showFailed('Selecciona un tipo de pago');
+      this.snacker.showFailed('Selecciona un tipo de dieta');
       return false;
     }
     switch (this.paymentType.value) {
@@ -177,11 +165,5 @@ export class EditDietPage implements OnInit {
       return false;
     }
     return true;
-  }
-
-  private serializePaymentPhoto(photo: CreateDietPhoto) {
-    const photoRelativePath = photo.photo;
-    const url = `${environment.fleetBaseUrl}${photoRelativePath}`;
-    return { ...photo, url };
   }
 }

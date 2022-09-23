@@ -38,6 +38,11 @@ export class AppRouter {
     return this.router.navigateByUrl(to, this.extras);
   }
 
+  async goToAddPayment(reservationId: string) {
+    const to = `/members/my-reservations/${reservationId}/my-diets/add-payment`;
+    return this.router.navigateByUrl(to, this.extras);
+  }
+
   async goToEditDiet(reservationId: string, dietId: string) {
     const to = `/members/my-reservations/${reservationId}/my-diets/edit-diet/${dietId}`;
     return this.router.navigateByUrl(to, this.extras);

@@ -1,4 +1,5 @@
 // API
+export * from './api/diet.service';
 export * from './api/incident.service';
 export * from './api/position.service';
 export * from './api/reservation-template.service';

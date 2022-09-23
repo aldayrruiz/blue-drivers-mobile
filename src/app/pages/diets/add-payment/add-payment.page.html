@@ -18,38 +18,19 @@
     </ion-card>
 
     <span [ngSwitch]="paymentType.value">
-      <app-gasoline-diet-form
-        [initAmount]="diet.amount"
-        [initLiters]="diet.liters"
-        [initDescription]="diet.description"
-        *ngSwitchCase="'Gasolina'"
-      ></app-gasoline-diet-form>
-      <app-common-diet-form
-        [initAmount]="diet.amount"
-        [initDescription]="diet.description"
-        *ngSwitchDefault
-      ></app-common-diet-form>
+      <app-gasoline-diet-form *ngSwitchCase="'Gasolina'"></app-gasoline-diet-form>
+      <app-common-diet-form *ngSwitchDefault></app-common-diet-form>
     </span>
 
-    <ion-card *ngIf="photos.length === 0 && initPhotos.length === 0" class="new-msgs">
+    <ion-card *ngIf="photos.length === 0" class="new-msgs">
       <ion-card-content class="ion-text-center"> No tienes fotos añadidas </ion-card-content>
     </ion-card>
 
     <!-- Photos -->
-    <ion-card *ngIf="photos.length > 0 || initPhotos.length > 0">
+    <ion-card *ngIf="photos.length > 0">
       <ion-card-content>
         <ion-grid>
           <ion-row>
-            <ion-col size="6" *ngFor="let photo of initPhotos; let i = index">
-              <div class="container">
-                <img [src]="photo.url" />
-                <ion-fab class="fab" vertical="top" horizontal="end" slot="fixed">
-                  <ion-fab-button class="small-fab" color="danger" (click)="addToPhotosToRemove(i)">
-                    <ion-icon name="close"></ion-icon>
-                  </ion-fab-button>
-                </ion-fab>
-              </div>
-            </ion-col>
             <ion-col size="6" *ngFor="let photo of photos; let i = index">
               <div class="container">
                 <img [src]="photo" />

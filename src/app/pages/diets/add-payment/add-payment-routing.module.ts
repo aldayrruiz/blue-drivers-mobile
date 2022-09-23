@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DietResolver } from 'src/app/core/resolvers';
-import { AddDietPage } from './add-diet.page';
+import { ReservationDetailsResolver } from 'src/app/core/resolvers';
+import { AddPaymentPage } from './add-payment.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: AddDietPage,
+    component: AddPaymentPage,
     resolve: {
-      diet: DietResolver,
+      reservation: ReservationDetailsResolver,
     },
   },
 ];
@@ -17,4 +17,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AddDietPageRoutingModule {}
+export class AddPaymentPageRoutingModule {}

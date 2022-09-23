@@ -1,11 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { finalize } from 'rxjs/operators';
-import { DatetimeComponent } from 'src/app/components/datetime/datetime.component';
-import { Diet, DietCollection, Reservation } from 'src/app/core/models';
-import { AppRouter, DateZonerHelper, LoadingService, SnackerService } from 'src/app/core/services';
-import { DietService } from 'src/app/core/services/api/diet.service.service';
+import { Diet, Payment, Reservation } from 'src/app/core/models';
+import { AppRouter, LoadingService, SnackerService } from 'src/app/core/services';
+import { DietService } from 'src/app/core/services/api/diet.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -14,15 +13,10 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./my-diets.page.scss'],
 })
 export class MyDietsPage implements OnInit {
-  @ViewChild('start') start: DatetimeComponent;
-  @ViewChild('end') end: DatetimeComponent;
-  initStart: string;
-  initEnd: string;
-
-  toolbarTitle = 'Mis Dietas';
+  toolbarTitle = 'Dieta y gastos';
   reservation: Reservation;
-  collection: DietCollection;
-  diets: Diet[] = [];
+  diet: Diet;
+  payments: Payment[] = [];
   completed = false;
 
   constructor(
@@ -30,106 +24,114 @@ export class MyDietsPage implements OnInit {
     private alertCtrl: AlertController,
     private dietService: DietService,
     private snacker: SnackerService,
-    private zoner: DateZonerHelper,
     private route: ActivatedRoute,
     private appRouter: AppRouter
   ) {}
 
   ngOnInit() {
     this.resolveData();
-    this.initDates();
   }
 
   goToAddDiet() {
     this.appRouter.goToAddDiet(this.reservation.id);
   }
 
-  goToEditDiet(dietId: string) {
-    this.appRouter.goToEditDiet(this.reservation.id, dietId);
+  goToAddPayment() {
+    this.appRouter.goToAddPayment(this.reservation.id);
   }
 
-  async showDeleteDietAlert(event: any, dietId: string) {
+  goToReservation(reservationId: string) {
+    this.appRouter.goToReservationDetails(reservationId);
+  }
+
+  goToEditPayment(id: string) {
+    this.appRouter.goToEditDiet(this.reservation.id, id);
+  }
+
+  differentDay(event): boolean {
+    const start = new Date(event.start);
+    const end = new Date(event.end);
+
+    return start.getUTCDay() !== end.getUTCDay();
+  }
+
+  async showDeletePaymentAlert(event: any, paymentId: string) {
     event.stopPropagation();
-    const buttons = this.getAlertButtons(dietId);
+    const buttons = this.getDeleteAlertButtons(paymentId);
     const alertElement = await this.alertCtrl.create({ message: '¿Esta seguro?', buttons });
     await alertElement.present(); // Mostrar al usuario
   }
 
-  markCollectionAsCompleted() {
-    const start = this.start.getDateSerialized();
-    const end = this.end.getDateSerialized();
-    this.dietService
-      .patchDietCollection(this.collection.id, { start, end, completed: true })
-      .subscribe({
-        next: async () => {
-          this.completed = true;
-          await this.snacker.showSuccessful('Dieta completada correctamente');
-        },
-        error: async () => await this.snacker.showFailed('Error al completar dieta'),
-      });
+  async showCompleteDietAlert() {
+    const buttons = this.getCompleteDietAlertButtons();
+    const message = 'Tras cerrar la dieta y los gastos, no se podrán modificar. ¿Esta seguro?';
+    const alertElement = await this.alertCtrl.create({ message, buttons });
+    await alertElement.present(); // Mostrar al usuario
   }
 
-  save() {
-    const start = this.start.getDateSerialized();
-    const end = this.end.getDateSerialized();
-    this.dietService.patchDietCollection(this.collection.id, { start, end }).subscribe({
-      next: async () => await this.snacker.showSuccessful('Dieta guardada correctamente'),
+  private markDietAsCompleted() {
+    this.dietService.patchDiet(this.diet.id, { completed: true }).subscribe({
+      next: async () => {
+        this.completed = true;
+        await this.snacker.showSuccessful('Dieta completada correctamente');
+      },
+      error: async () => await this.snacker.showFailed('Error al completar dieta'),
     });
   }
 
   private resolveData() {
     this.route.data.subscribe((response) => {
       this.reservation = response.reservation;
-      this.collection = response.collection;
-      this.completed = this.collection.completed;
-      this.diets = this.collection.diets;
-      this.serializeDiets();
+      this.diet = response.diet;
+      this.completed = this.diet.completed;
+      this.payments = this.diet.payments;
+      this.serializePayments();
     });
-  }
-
-  private initDates() {
-    const start = new Date(this.collection.start);
-    const end = new Date(this.collection.end);
-
-    this.initStart = this.zoner.toMyZone(start);
-    this.initEnd = this.zoner.toMyZone(end);
   }
 
   /**
    * Add a "photo" field. So it can be called in html like <img [src]="diet.photo" />
    */
-  private serializeDiets() {
-    this.diets = this.diets.map((diet) => this.serializeDiet(diet));
+  private serializePayments() {
+    this.payments = this.payments.map((diet) => this.serializePayment(diet));
   }
 
-  private serializeDiet(diet: Diet) {
-    const photoRelativePath = diet.photos[0]?.photo;
+  private serializePayment(payment: Payment) {
+    const photoRelativePath = payment.photos[0]?.photo;
     if (!photoRelativePath) {
-      return diet;
+      return payment;
     }
     const photoUrl = `${environment.fleetBaseUrl}${photoRelativePath}`;
-    return { ...diet, photo: photoUrl };
+    return { ...payment, photo: photoUrl };
   }
 
-  // Delete diet
-  private getAlertButtons(dietId: string) {
+  // Delete payment alert buttons
+  private getDeleteAlertButtons(paymentId: string) {
     return [
       { text: 'No', role: 'cancel' },
-      { text: 'Si', handler: async () => await this.deleteDiet(dietId) },
+      { text: 'Si', handler: async () => await this.deletePayment(paymentId) },
     ];
   }
 
-  private async deleteDiet(dietId: string) {
+  // Complete diet alert buttons
+  private getCompleteDietAlertButtons() {
+    return [
+      { text: 'No', role: 'cancel' },
+      { text: 'Si', handler: async () => await this.markDietAsCompleted() },
+    ];
+  }
+
+  private async deletePayment(id: string) {
     await this.loadingSrv.present();
     this.dietService
-      .deleteDiet(dietId)
+      .deletePayment(id)
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe({
         next: async () => {
-          await this.snacker.showSuccessful('Dieta eliminada correctamente');
-          this.diets = this.diets.filter((diet) => diet.id !== dietId);
+          await this.snacker.showSuccessful('Pago eliminado correctamente');
+          this.payments = this.payments.filter((payment) => payment.id !== id);
         },
-        error: async () => await this.snacker.showFailed('Error al eliminar dieta'),
+        error: async () => await this.snacker.showFailed('Error al eliminar pago'),
       });
   }
 }

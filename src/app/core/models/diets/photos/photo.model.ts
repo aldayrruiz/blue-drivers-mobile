@@ -1,5 +1,5 @@
 export interface CreateDietPhoto {
   id?: string;
-  diet: string;
+  payment: string;
   photo: string;
 }

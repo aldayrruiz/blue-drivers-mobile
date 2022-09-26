@@ -3,48 +3,57 @@
 </ion-header>
 
 <ion-content>
-  <!-- *ngIf avoids load datetimes before initialize dates and collection -->
+  <!-- Reservation details -->
+  <app-vehicle-information [vehicle]="reservation?.vehicle"></app-vehicle-information>
   <ion-card>
     <ion-card-header>
-      <ion-card-subtitle>Fecha de salida y llegada</ion-card-subtitle>
+      <ion-card-subtitle>RESERVA</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      <!-- Start date -->
-      <app-datetime
-        title="Inicio"
-        [datetime]="initStart"
-        [disabled]="completed"
-        #start
-      ></app-datetime>
-      <hr style="background: grey" />
-      <!-- End Date -->
-      <app-datetime title="Fin" [datetime]="initEnd" [disabled]="completed" #end></app-datetime>
+      <span *ngIf="differentDay(reservation); else sameDay">
+        <h2>De {{ reservation.start | essential | titlecase }}</h2>
+        <h2>A {{ reservation.end | essential | titlecase }}</h2>
+        <h3>
+          {{ reservation.vehicle.brand }} {{ reservation.vehicle.model }}
+          {{ reservation.vehicle.number_plate }}
+        </h3>
+        <h3>{{ reservation.title }}</h3>
+        <p>{{ reservation.description }}</p>
+      </span>
+      <ng-template #sameDay>
+        <span class="ion-text-wrap">
+          <h2>{{ reservation.start | date: 'fullDate' | titlecase }}</h2>
+          <h2>De {{ reservation.start | onlyTime }} a {{ reservation.end | onlyTime }} hrs</h2>
+          <h3>{{ reservation.title }}</h3>
+          <p>{{ reservation.description }}</p>
+        </span>
+      </ng-template>
     </ion-card-content>
   </ion-card>
 
-  <!-- No dietas -->
-  <ion-card *ngIf="diets.length === 0">
+  <!-- No pagos -->
+  <ion-card *ngIf="payments.length === 0">
     <ion-card-content class="ion-text-center"> No tiene ninguna dieta aún </ion-card-content>
   </ion-card>
 
   <!-- Si hay dietas -->
-  <ion-card *ngFor="let diet of diets">
-    <ion-card-content (click)="completed ? undefined : goToEditDiet(diet.id)">
+  <ion-card *ngFor="let payment of payments">
+    <ion-card-content (click)="completed ? undefined : goToEditPayment(payment.id)">
       <ion-item lines="none">
         <ion-avatar slot="start">
-          <ion-icon size="large" *ngIf="diet.photos?.length === 0" name="image"></ion-icon>
-          <img *ngIf="diet.photos?.length > 0" [src]="diet?.photo" />
+          <ion-icon size="large" *ngIf="payment.photos?.length === 0" name="image"></ion-icon>
+          <img *ngIf="payment.photos?.length > 0" [src]="payment?.photo" />
         </ion-avatar>
         <ion-label>
-          <h2>{{ diet.type }} - {{ diet.amount | currency: 'EUR' }}</h2>
-          <p>{{ diet.description }}</p>
+          <h2>{{ payment.type }} - {{ payment.amount | currency: 'EUR' }}</h2>
+          <p>{{ payment.description }}</p>
         </ion-label>
         <ion-button
           [disabled]="completed"
           color="danger"
           slot="end"
           fill="clear"
-          (click)="showDeleteDietAlert($event, diet.id)"
+          (click)="showDeletePaymentAlert($event, payment.id)"
         >
           <ion-icon name="trash"></ion-icon>
         </ion-button>
@@ -52,7 +61,7 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- Añadir dietas -->
+  <!-- Añadir dieta -->
   <ion-button
     class="ion-margin"
     expand="block"
@@ -60,20 +69,20 @@
     (click)="goToAddDiet()"
     [disabled]="completed"
   >
-    <ion-icon class="ion-margin-end" name="add-circle-outline"></ion-icon>
-    <ion-label>Añadir</ion-label>
+    <ion-icon class="ion-margin-end" name="calendar-outline"></ion-icon>
+    <ion-label>Añadir dieta</ion-label>
   </ion-button>
 
-  <!-- Close and Send -->
+  <!-- Añadir gasto -->
   <ion-button
     class="ion-margin"
     expand="block"
     color="danger"
-    (click)="save()"
+    (click)="goToAddPayment()"
     [disabled]="completed"
   >
-    <ion-icon class="ion-margin-end" name="save-outline"></ion-icon>
-    <ion-label>Guardar</ion-label>
+    <ion-icon class="ion-margin-end" name="cash-outline"></ion-icon>
+    <ion-label>Añadir gasto</ion-label>
   </ion-button>
 
   <!-- Close and Send -->
@@ -81,10 +90,22 @@
     class="ion-margin"
     expand="block"
     color="danger"
-    (click)="markCollectionAsCompleted()"
+    (click)="showCompleteDietAlert()"
     [disabled]="completed"
   >
     <ion-icon class="ion-margin-end" name="lock-closed-outline"></ion-icon>
     <ion-label>Cerrar y enviar</ion-label>
+  </ion-button>
+
+  <!-- Cancel -->
+  <ion-button
+    class="ion-margin"
+    expand="block"
+    color="danger"
+    (click)="goToReservation(reservation.id)"
+    [disabled]="completed"
+  >
+    <ion-icon class="ion-margin-end" name="close-circle-outline"></ion-icon>
+    <ion-label>Cancelar</ion-label>
   </ion-button>
 </ion-content>

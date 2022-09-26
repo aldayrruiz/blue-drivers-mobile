@@ -38,8 +38,13 @@ export class AppRouter {
     return this.router.navigateByUrl(to, this.extras);
   }
 
-  async goToEditDiet(reservationId: string, dietId: string) {
-    const to = `/members/my-reservations/${reservationId}/my-diets/edit-diet/${dietId}`;
+  async goToAddPayment(reservationId: string) {
+    const to = `/members/my-reservations/${reservationId}/my-diets/add-payment`;
+    return this.router.navigateByUrl(to, this.extras);
+  }
+
+  async goToEditPayment(reservationId: string, dietId: string) {
+    const to = `/members/my-reservations/${reservationId}/my-diets/edit-payment/${dietId}`;
     return this.router.navigateByUrl(to, this.extras);
   }
 

@@ -6,7 +6,7 @@ export enum API {
   incidents = '/api/incidents',
   users = '/api/users',
   diets = '/api/diets',
-  dietCollections = '/api/diet-collections',
+  dietPayments = '/api/diet-payments',
   dietPhotos = '/api/diet-photos',
   login = '/api/login',
   register = '/api/register/create_fake',

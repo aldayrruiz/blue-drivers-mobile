@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Vehicle } from 'src/app/core/models';
+import { Vehicle, vehicleTypeLabel } from 'src/app/core/models';
 import { VehicleIcon, VehicleIconProvider } from 'src/app/core/services';
 
 @Component({
@@ -11,6 +11,7 @@ export class VehicleInformationComponent implements OnInit {
   @Input() vehicle: Vehicle;
 
   iconSrc = 'assets/icon/vehicles/yellow-vehicle.png';
+  getVehicleTypeLabel = vehicleTypeLabel;
 
   constructor(private vehicleIconProvider: VehicleIconProvider) {}
 

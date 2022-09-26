@@ -8,4 +8,5 @@ export interface CreateReservation {
   description: string;
   owner?: string;
   vehicle: string;
+  is_driver_needed: boolean;
 }

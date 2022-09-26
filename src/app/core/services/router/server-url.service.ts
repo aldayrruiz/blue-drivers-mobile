@@ -18,6 +18,6 @@ export class ServerUrlService {
   getIncidents = () => `${this.fleetUrl}${API.incidents}`;
   getReservations = () => `${this.fleetUrl}${API.reservations}`;
   getDiets = () => `${this.fleetUrl}${API.diets}`;
-  getDietCollections = () => `${this.fleetUrl}${API.dietCollections}`;
+  getDietPayments = () => `${this.fleetUrl}${API.dietPayments}`;
   getDietPhotos = () => `${this.fleetUrl}${API.dietPhotos}`;
 }

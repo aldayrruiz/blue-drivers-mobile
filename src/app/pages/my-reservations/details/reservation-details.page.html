@@ -12,6 +12,9 @@
 
   <ion-card>
     <ion-item style="height: 31px" lines="none">
+      <ion-badge color="primary" *ngIf="reservation.is_driver_needed" slot="end">
+        Conductor
+      </ion-badge>
       <ion-badge color="warning" *ngIf="reservation.is_recurrent" slot="end">
         Recurrente
       </ion-badge>
@@ -20,10 +23,6 @@
       <span *ngIf="differentDay(reservation); else sameDay">
         <h2>De {{ reservation.start | essential | titlecase }}</h2>
         <h2>A {{ reservation.end | essential | titlecase }}</h2>
-        <h3>
-          {{ reservation.vehicle.brand }} {{ reservation.vehicle.model }}
-          {{ reservation.vehicle.number_plate }}
-        </h3>
         <h3>{{ reservation.title }}</h3>
         <p>{{ reservation.description }}</p>
       </span>
@@ -31,10 +30,6 @@
         <span class="ion-text-wrap">
           <h2>{{ reservation.start | date: 'fullDate' | titlecase }}</h2>
           <h2>De {{ reservation.start | onlyTime }} a {{ reservation.end | onlyTime }} hrs</h2>
-          <h3>
-            {{ reservation.vehicle.brand }} {{ reservation.vehicle.model }}
-            {{ reservation.vehicle.number_plate }}
-          </h3>
           <h3>{{ reservation.title }}</h3>
           <p>{{ reservation.description }}</p>
         </span>
@@ -53,7 +48,7 @@
       (click)="goToMyDiets()"
     >
       <ion-icon class="ion-margin-end" name="cash-outline"></ion-icon>
-      <ion-label>Mis dietas</ion-label>
+      <ion-label>Dieta y gastos</ion-label>
     </ion-button>
     <ion-button class="ion-margin" expand="block" color="danger" (click)="showCancelAlert()">
       <ion-icon class="ion-margin-end" name="close-circle-outline"></ion-icon>

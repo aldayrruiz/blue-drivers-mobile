@@ -9,4 +9,5 @@ export interface CreateIncident {
   owner?: string;
   reservation: string;
   photo?: string;
+  self_responsible: boolean;
 }

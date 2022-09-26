@@ -1,12 +1,11 @@
-import { CreateDietPhoto } from '../photos/photo.model';
-import { DietType } from '../type.model';
+import { Payment } from '../payments/payment.model';
 
 export interface Diet {
-  id: string;
-  collection: string;
-  type: DietType;
-  liters: number;
-  amount: number;
-  description: string;
-  photos: CreateDietPhoto[];
+  id?: string;
+  reservation: string;
+  completed: boolean;
+  start: string;
+  end: string;
+  payments: Payment[];
+  modified?: boolean;
 }

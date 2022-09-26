@@ -2,26 +2,31 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Camera, CameraResultType } from '@capacitor/camera';
-import { CommonDietFormComponent } from 'src/app/components/diets/forms/common-diet-form/common-diet-form.component';
-import { GasolineDietFormComponent } from 'src/app/components/diets/forms/gasoline-diet-form/gasoline-diet-form.component';
-import { CreateDietPhoto, Diet, DietType, PatchDiet, Reservation } from 'src/app/core/models';
+import { CommonPaymentFormComponent } from 'src/app/components/diets/forms/common-payment-form/common-payment-form.component';
+import { GasolinePaymentFormComponent } from 'src/app/components/diets/forms/gasoline-payment-form/gasoline-payment-form.component';
+import {
+  CreateDietPhoto,
+  PatchPayment,
+  Payment,
+  PaymentType,
+  Reservation,
+} from 'src/app/core/models';
 import { AppRouter, SnackerService } from 'src/app/core/services';
-import { DietService } from 'src/app/core/services/api/diet.service.service';
+import { DietService } from 'src/app/core/services/api/diet.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-edit-diet',
-  templateUrl: './edit-diet.page.html',
-  styleUrls: ['./edit-diet.page.scss'],
+  selector: 'app-edit-payment',
+  templateUrl: './edit-payment.page.html',
+  styleUrls: ['./edit-payment.page.scss'],
 })
-export class EditDietPage implements OnInit {
-  @ViewChild(CommonDietFormComponent) commonForm: CommonDietFormComponent;
-  @ViewChild(GasolineDietFormComponent) gasolineForm: GasolineDietFormComponent;
+export class EditPaymentPage implements OnInit {
+  @ViewChild(CommonPaymentFormComponent) commonForm: CommonPaymentFormComponent;
+  @ViewChild(GasolinePaymentFormComponent) gasolineForm: GasolinePaymentFormComponent;
 
-  toolbarTitle = 'Añadir Dieta';
+  toolbarTitle = 'Dieta y gastos';
   form: FormGroup;
-  diet: Diet;
-
+  payment: Payment;
   reservation: Reservation;
 
   // Photos
@@ -37,8 +42,12 @@ export class EditDietPage implements OnInit {
     private fb: FormBuilder
   ) {}
 
-  get dietType(): AbstractControl {
-    return this.form.get('dietType');
+  get paymentType(): AbstractControl {
+    return this.form.get('paymentType');
+  }
+
+  get demand(): AbstractControl {
+    return this.form.get('demand');
   }
 
   ngOnInit(): void {
@@ -46,34 +55,34 @@ export class EditDietPage implements OnInit {
     this.form = this.initFormGroup();
   }
 
-  async addDiet() {
+  save() {
     const valid = this.isFormValid();
     if (!valid) {
       return;
     }
 
-    const newDiet = this.getDietByType();
-    this.dietService.patchDiet(this.diet.id, newDiet).subscribe({
-      next: async (diet) => {
+    const newPayment = this.getPaymentByType();
+    this.dietService.patchPayment(this.payment.id, newPayment).subscribe({
+      next: (payment) => {
         // Añadir las fotos nuevas.
-        this.photos.forEach((photo) => this.addDietPhotoToDiet(photo, diet.id));
+        this.photos.forEach((photo) => this.addDietPhotoToPayment(photo, payment.id));
         // Eliminar las fotos antiguas.
         this.photosToRemove.forEach((photo) => this.deletePhotoPermanently(photo));
-        await this.snacker.showSuccessful('Dieta actualizada');
-        await this.appRouter.goToMyDiets(this.reservation.id);
+        this.snacker.showSuccessful('Pago actualizado');
+        this.appRouter.goToMyDiets(this.reservation.id);
       },
       error: () => {
-        this.snacker.showFailed('Error al añadir la dieta');
+        this.snacker.showFailed('Error al añadir el pago');
       },
     });
   }
 
   deletePhotoPermanently(photo: CreateDietPhoto) {
-    this.dietService.deleteDietPhoto(photo.id).subscribe({ next: () => {} });
+    this.dietService.deletePhoto(photo.id).subscribe({ next: () => {} });
   }
 
-  addDietPhotoToDiet(photo: string, diet: string) {
-    this.dietService.addDietPhotoToDiet({ diet, photo }).subscribe({ next: () => {} });
+  addDietPhotoToPayment(photo: string, payment: string) {
+    this.dietService.addPhotoToPayment({ payment, photo }).subscribe({ next: () => {} });
   }
 
   async addPhoto() {
@@ -95,50 +104,53 @@ export class EditDietPage implements OnInit {
     this.initPhotos.splice(index, 1);
   }
 
-  private getDietByType() {
-    switch (this.dietType.value) {
-      case DietType.Gasolina:
-        return this.getGasolineDiet();
+  private getPaymentByType() {
+    switch (this.paymentType.value) {
+      case PaymentType.Gasolina:
+        return this.getGasolinePayment();
       default:
-        return this.getCommonDiet();
+        return this.getCommonPayment();
     }
   }
 
-  private getGasolineDiet() {
+  private getGasolinePayment() {
     const { liters, amount, description } = this.gasolineForm.form.value;
-    const type = DietType.Gasolina;
-    const diet: PatchDiet = { type, liters, amount, description };
-    return diet;
+    const type = PaymentType.Gasolina;
+    const demand = this.demand.value;
+    const payment: PatchPayment = { type, liters, amount, description, demand };
+    return payment;
   }
 
-  private getCommonDiet() {
+  private getCommonPayment() {
     const { amount, description } = this.commonForm.form.value;
-    const type = this.dietType.value;
-    const diet: PatchDiet = { type, amount, description };
-    return diet;
+    const type = this.paymentType.value;
+    const demand = this.demand.value;
+    const payment: PatchPayment = { type, amount, description, demand };
+    return payment;
   }
 
   private initFormGroup(): FormGroup {
     return this.fb.group({
-      dietType: [this.diet.type, [Validators.required]],
+      paymentType: [this.payment.type, [Validators.required]],
+      demand: [this.payment.demand, [Validators.required]],
     });
   }
 
   private resolveData() {
     this.route.data.subscribe((response) => {
-      this.diet = response.diet;
+      this.payment = response.payment;
       this.reservation = response.reservation;
-      this.initPhotos = this.diet.photos.map((photo) => this.serializerDietPhoto(photo));
+      this.initPhotos = this.payment.photos.map((photo) => this.serializePaymentPhoto(photo));
     });
   }
 
   private isFormValid() {
-    if (!this.dietType.value) {
-      this.snacker.showFailed('Selecciona un tipo de dieta');
+    if (!this.paymentType.value) {
+      this.snacker.showFailed('Selecciona un tipo de pago');
       return false;
     }
-    switch (this.dietType.value) {
-      case DietType.Gasolina:
+    switch (this.paymentType.value) {
+      case PaymentType.Gasolina:
         return this.isGasolineFormValid();
       default:
         return this.isCommonFormValid();
@@ -180,9 +192,9 @@ export class EditDietPage implements OnInit {
     return true;
   }
 
-  private serializerDietPhoto(dietPhoto: CreateDietPhoto) {
-    const photoRelativePath = dietPhoto.photo;
+  private serializePaymentPhoto(photo: CreateDietPhoto) {
+    const photoRelativePath = photo.photo;
     const url = `${environment.fleetBaseUrl}${photoRelativePath}`;
-    return { ...dietPhoto, url };
+    return { ...photo, url };
   }
 }

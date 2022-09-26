@@ -1,24 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-gasoline-diet-form',
-  templateUrl: './gasoline-diet-form.component.html',
-  styleUrls: ['./gasoline-diet-form.component.scss'],
+  selector: 'app-common-payment-form',
+  templateUrl: './common-payment-form.component.html',
+  styleUrls: ['./common-payment-form.component.scss'],
 })
-export class GasolineDietFormComponent implements OnInit {
-  @Input() initLiters: number;
-  @Input() initAmount: number;
+export class CommonPaymentFormComponent implements OnInit {
+  @Input() initAmount = '';
   @Input() initDescription = '';
-
   form: FormGroup;
 
-  constructor(private route: ActivatedRoute, private fb: FormBuilder) {}
-
-  get liters(): AbstractControl {
-    return this.form.get('liters');
-  }
+  constructor(private fb: FormBuilder) {}
 
   get amount(): AbstractControl {
     return this.form.get('amount');
@@ -34,7 +27,6 @@ export class GasolineDietFormComponent implements OnInit {
 
   private initFormGroup() {
     this.form = this.fb.group({
-      liters: [this.initLiters, [Validators.required, Validators.min(0.1)]],
       amount: [this.initAmount, [Validators.required, Validators.min(0.1)]],
       description: [this.initDescription, []],
     });

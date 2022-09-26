@@ -17,18 +17,19 @@
       </ion-card-content>
     </ion-card>
 
+    <!--  -->
     <span [ngSwitch]="paymentType.value">
-      <app-gasoline-diet-form
-        [initAmount]="diet.amount"
-        [initLiters]="diet.liters"
-        [initDescription]="diet.description"
+      <app-gasoline-payment-form
+        [initAmount]="payment.amount"
+        [initLiters]="payment.liters"
+        [initDescription]="payment.description"
         *ngSwitchCase="'Gasolina'"
-      ></app-gasoline-diet-form>
-      <app-common-diet-form
-        [initAmount]="diet.amount"
-        [initDescription]="diet.description"
+      ></app-gasoline-payment-form>
+      <app-common-payment-form
+        [initAmount]="payment.amount"
+        [initDescription]="payment.description"
         *ngSwitchDefault
-      ></app-common-diet-form>
+      ></app-common-payment-form>
     </span>
 
     <ion-card *ngIf="photos.length === 0 && initPhotos.length === 0" class="new-msgs">
@@ -62,6 +63,16 @@
             </ion-col>
           </ion-row>
         </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Demand Payment -->
+    <ion-card>
+      <ion-card-content>
+        <ion-item lines="none">
+          <ion-label>Reclamar gasto</ion-label>
+          <ion-toggle formControlName="demand"></ion-toggle>
+        </ion-item>
       </ion-card-content>
     </ion-card>
   </form>

@@ -2,9 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Camera, CameraResultType } from '@capacitor/camera';
-import { CommonDietFormComponent } from 'src/app/components/diets/forms/common-diet-form/common-diet-form.component';
-import { GasolineDietFormComponent } from 'src/app/components/diets/forms/gasoline-diet-form/gasoline-diet-form.component';
-import { CreatePayment, DietType, Reservation } from 'src/app/core/models';
+import { CommonPaymentFormComponent } from 'src/app/components/diets/forms/common-payment-form/common-payment-form.component';
+import { GasolinePaymentFormComponent } from 'src/app/components/diets/forms/gasoline-payment-form/gasoline-payment-form.component';
+import { CreatePayment, PaymentType, Reservation } from 'src/app/core/models';
 import { AppRouter, SnackerService } from 'src/app/core/services';
 import { DietService } from 'src/app/core/services/api/diet.service';
 
@@ -14,8 +14,8 @@ import { DietService } from 'src/app/core/services/api/diet.service';
   styleUrls: ['./add-payment.page.scss'],
 })
 export class AddPaymentPage implements OnInit {
-  @ViewChild(CommonDietFormComponent) commonForm: CommonDietFormComponent;
-  @ViewChild(GasolineDietFormComponent) gasolineForm: GasolineDietFormComponent;
+  @ViewChild(CommonPaymentFormComponent) commonForm: CommonPaymentFormComponent;
+  @ViewChild(GasolinePaymentFormComponent) gasolineForm: GasolinePaymentFormComponent;
 
   toolbarTitle = 'Dieta y gastos';
   form: FormGroup;
@@ -35,12 +35,16 @@ export class AddPaymentPage implements OnInit {
     return this.form.get('paymentType');
   }
 
+  get demand(): AbstractControl {
+    return this.form.get('demand');
+  }
+
   ngOnInit(): void {
     this.form = this.initFormGroup();
     this.resolveData();
   }
 
-  async save() {
+  save() {
     const valid = this.isFormValid();
     if (!valid) {
       return;
@@ -48,10 +52,10 @@ export class AddPaymentPage implements OnInit {
 
     const newPayment = this.getPaymentByType();
     this.dietService.createPayment(newPayment).subscribe({
-      next: async (payment) => {
-        this.photos.forEach((photo) => this.addDietPhotoToPayment(photo, payment.id));
+      next: (payment) => {
+        this.photos.forEach((photo) => this.addPhotoToPayment(photo, payment.id));
         this.snacker.showSuccessful('La dieta ha sido añadida');
-        await this.appRouter.goToMyDiets(this.reservation.id);
+        this.appRouter.goToMyDiets(this.reservation.id);
       },
       error: () => {
         this.snacker.showFailed('Error al añadir la dieta');
@@ -59,7 +63,7 @@ export class AddPaymentPage implements OnInit {
     });
   }
 
-  addDietPhotoToPayment(photo: string, payment: string) {
+  addPhotoToPayment(photo: string, payment: string) {
     this.dietService.addPhotoToPayment({ payment, photo }).subscribe({ next: () => {} });
   }
 
@@ -83,7 +87,7 @@ export class AddPaymentPage implements OnInit {
 
   private getPaymentByType() {
     switch (this.paymentType.value) {
-      case DietType.Gasolina:
+      case PaymentType.Gasolina:
         return this.getGasolinePayment();
       default:
         return this.getCommonPayment();
@@ -92,9 +96,10 @@ export class AddPaymentPage implements OnInit {
 
   private getGasolinePayment() {
     const { liters, amount, description } = this.gasolineForm.form.value;
-    const type = DietType.Gasolina;
+    const type = PaymentType.Gasolina;
     const diet = this.dietId;
-    const payment: CreatePayment = { diet, type, liters, amount, description };
+    const demand = this.demand.value;
+    const payment: CreatePayment = { diet, type, liters, amount, description, demand };
     return payment;
   }
 
@@ -102,13 +107,15 @@ export class AddPaymentPage implements OnInit {
     const { amount, description } = this.commonForm.form.value;
     const type = this.paymentType.value;
     const diet = this.dietId;
-    const payment: CreatePayment = { diet, type, amount, description };
+    const demand = this.demand.value;
+    const payment: CreatePayment = { diet, type, amount, description, demand };
     return payment;
   }
 
   private initFormGroup(): FormGroup {
     return this.fb.group({
-      paymentType: ['', [Validators.required]],
+      paymentType: [PaymentType.Otros, [Validators.required]],
+      demand: [false, [Validators.required]],
     });
   }
 
@@ -125,7 +132,7 @@ export class AddPaymentPage implements OnInit {
       return false;
     }
     switch (this.paymentType.value) {
-      case DietType.Gasolina:
+      case PaymentType.Gasolina:
         return this.isGasolineFormValid();
       default:
         return this.isCommonFormValid();

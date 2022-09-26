@@ -22,9 +22,11 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'edit-diet/:dietId',
+    path: 'edit-payment/:dietId',
     loadChildren: () =>
-      import('src/app/pages/diets/edit-diet/edit-diet.module').then((m) => m.EditDietPageModule),
+      import('src/app/pages/diets/edit-payment/edit-payment.module').then(
+        (m) => m.EditPaymentPageModule
+      ),
   },
 ];
 

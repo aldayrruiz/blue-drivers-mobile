@@ -2,21 +2,27 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Camera, CameraResultType } from '@capacitor/camera';
-import { CommonDietFormComponent } from 'src/app/components/diets/forms/common-diet-form/common-diet-form.component';
-import { GasolineDietFormComponent } from 'src/app/components/diets/forms/gasoline-diet-form/gasoline-diet-form.component';
-import { CreateDietPhoto, DietType, PatchPayment, Payment, Reservation } from 'src/app/core/models';
+import { CommonPaymentFormComponent } from 'src/app/components/diets/forms/common-payment-form/common-payment-form.component';
+import { GasolinePaymentFormComponent } from 'src/app/components/diets/forms/gasoline-payment-form/gasoline-payment-form.component';
+import {
+  CreateDietPhoto,
+  PatchPayment,
+  Payment,
+  PaymentType,
+  Reservation,
+} from 'src/app/core/models';
 import { AppRouter, SnackerService } from 'src/app/core/services';
 import { DietService } from 'src/app/core/services/api/diet.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-edit-diet',
-  templateUrl: './edit-diet.page.html',
-  styleUrls: ['./edit-diet.page.scss'],
+  selector: 'app-edit-payment',
+  templateUrl: './edit-payment.page.html',
+  styleUrls: ['./edit-payment.page.scss'],
 })
-export class EditDietPage implements OnInit {
-  @ViewChild(CommonDietFormComponent) commonForm: CommonDietFormComponent;
-  @ViewChild(GasolineDietFormComponent) gasolineForm: GasolineDietFormComponent;
+export class EditPaymentPage implements OnInit {
+  @ViewChild(CommonPaymentFormComponent) commonForm: CommonPaymentFormComponent;
+  @ViewChild(GasolinePaymentFormComponent) gasolineForm: GasolinePaymentFormComponent;
 
   toolbarTitle = 'Dieta y gastos';
   form: FormGroup;
@@ -40,12 +46,16 @@ export class EditDietPage implements OnInit {
     return this.form.get('paymentType');
   }
 
+  get demand(): AbstractControl {
+    return this.form.get('demand');
+  }
+
   ngOnInit(): void {
     this.resolveData();
     this.form = this.initFormGroup();
   }
 
-  async save() {
+  save() {
     const valid = this.isFormValid();
     if (!valid) {
       return;
@@ -53,13 +63,13 @@ export class EditDietPage implements OnInit {
 
     const newPayment = this.getPaymentByType();
     this.dietService.patchPayment(this.payment.id, newPayment).subscribe({
-      next: async (payment) => {
+      next: (payment) => {
         // Añadir las fotos nuevas.
         this.photos.forEach((photo) => this.addDietPhotoToPayment(photo, payment.id));
         // Eliminar las fotos antiguas.
         this.photosToRemove.forEach((photo) => this.deletePhotoPermanently(photo));
-        await this.snacker.showSuccessful('Pago actualizado');
-        await this.appRouter.goToMyDiets(this.reservation.id);
+        this.snacker.showSuccessful('Pago actualizado');
+        this.appRouter.goToMyDiets(this.reservation.id);
       },
       error: () => {
         this.snacker.showFailed('Error al añadir el pago');
@@ -96,7 +106,7 @@ export class EditDietPage implements OnInit {
 
   private getPaymentByType() {
     switch (this.paymentType.value) {
-      case DietType.Gasolina:
+      case PaymentType.Gasolina:
         return this.getGasolinePayment();
       default:
         return this.getCommonPayment();
@@ -105,21 +115,24 @@ export class EditDietPage implements OnInit {
 
   private getGasolinePayment() {
     const { liters, amount, description } = this.gasolineForm.form.value;
-    const type = DietType.Gasolina;
-    const payment: PatchPayment = { type, liters, amount, description };
+    const type = PaymentType.Gasolina;
+    const demand = this.demand.value;
+    const payment: PatchPayment = { type, liters, amount, description, demand };
     return payment;
   }
 
   private getCommonPayment() {
     const { amount, description } = this.commonForm.form.value;
     const type = this.paymentType.value;
-    const payment: PatchPayment = { type, amount, description };
+    const demand = this.demand.value;
+    const payment: PatchPayment = { type, amount, description, demand };
     return payment;
   }
 
   private initFormGroup(): FormGroup {
     return this.fb.group({
-      dietType: [this.payment.type, [Validators.required]],
+      paymentType: [this.payment.type, [Validators.required]],
+      demand: [this.payment.demand, [Validators.required]],
     });
   }
 
@@ -137,7 +150,7 @@ export class EditDietPage implements OnInit {
       return false;
     }
     switch (this.paymentType.value) {
-      case DietType.Gasolina:
+      case PaymentType.Gasolina:
         return this.isGasolineFormValid();
       default:
         return this.isCommonFormValid();

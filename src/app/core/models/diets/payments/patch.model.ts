@@ -1,8 +1,9 @@
-import { DietType } from '../type.model';
+import { PaymentType } from './type.model';
 
 export interface PatchPayment {
-  type: DietType;
+  type: PaymentType;
   liters?: number;
   amount: number;
   description?: string;
+  demand: boolean;
 }

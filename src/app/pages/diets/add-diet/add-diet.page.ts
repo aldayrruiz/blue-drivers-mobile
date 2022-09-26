@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { eachDayOfInterval, Interval, isWithinInterval, setHours } from 'date-fns';
 import { DatetimeComponent } from 'src/app/components/datetime/datetime.component';
 import { Diet } from 'src/app/core/models';
-import { DateZonerHelper, SnackerService } from 'src/app/core/services';
+import { AppRouter, DateZonerHelper, SnackerService } from 'src/app/core/services';
 import { DietService } from 'src/app/core/services/api/diet.service';
 
 @Component({
@@ -24,8 +24,9 @@ export class AddDietPage implements OnInit {
   constructor(
     private dietService: DietService,
     private snacker: SnackerService,
+    private zoner: DateZonerHelper,
     private route: ActivatedRoute,
-    private zoner: DateZonerHelper
+    private appRouter: AppRouter
   ) {}
 
   ngOnInit(): void {
@@ -39,8 +40,11 @@ export class AddDietPage implements OnInit {
     const number_of_diets = this.numberOfDiets;
 
     this.dietService.patchDiet(this.diet.id, { start, end, number_of_diets }).subscribe({
-      next: async () => await this.snacker.showSuccessful('Dieta guardada'),
-      error: async () => await this.snacker.showFailed('Error al guardar dieta'),
+      next: () => {
+        this.snacker.showSuccessful('Dieta guardada');
+        this.appRouter.goToMyDiets(this.diet.reservation);
+      },
+      error: () => this.snacker.showFailed('Error al guardar dieta'),
     });
   }
 

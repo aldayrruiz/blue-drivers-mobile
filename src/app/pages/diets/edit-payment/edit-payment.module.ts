@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from 'src/app/components/shared-module.module';
-import { EditDietPageRoutingModule } from './edit-diet-routing.module';
-import { EditDietPage } from './edit-diet.page';
+import { EditPaymentPageRoutingModule } from './edit-payment-routing.module';
+import { EditPaymentPage } from './edit-payment.page';
 
 @NgModule({
   imports: [
@@ -13,8 +13,8 @@ import { EditDietPage } from './edit-diet.page';
     IonicModule,
     ReactiveFormsModule,
     SharedModule,
-    EditDietPageRoutingModule,
+    EditPaymentPageRoutingModule,
   ],
-  declarations: [EditDietPage],
+  declarations: [EditPaymentPage],
 })
-export class EditDietPageModule {}
+export class EditPaymentPageModule {}

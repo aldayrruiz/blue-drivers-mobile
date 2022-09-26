@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-export enum DietType {
+export enum PaymentType {
   Gasolina = 'Gasolina',
   Parking = 'Parking',
   Peaje = 'Peaje',

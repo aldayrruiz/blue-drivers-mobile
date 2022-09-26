@@ -45,7 +45,7 @@ export class MyDietsPage implements OnInit {
   }
 
   goToEditPayment(id: string) {
-    this.appRouter.goToEditDiet(this.reservation.id, id);
+    this.appRouter.goToEditPayment(this.reservation.id, id);
   }
 
   differentDay(event): boolean {
@@ -73,9 +73,9 @@ export class MyDietsPage implements OnInit {
     this.dietService.patchDiet(this.diet.id, { completed: true }).subscribe({
       next: async () => {
         this.completed = true;
-        await this.snacker.showSuccessful('Dieta completada correctamente');
+        this.snacker.showSuccessful('Dieta completada correctamente');
       },
-      error: async () => await this.snacker.showFailed('Error al completar dieta'),
+      error: async () => this.snacker.showFailed('Error al completar dieta'),
     });
   }
 
@@ -90,10 +90,10 @@ export class MyDietsPage implements OnInit {
   }
 
   /**
-   * Add a "photo" field. So it can be called in html like <img [src]="diet.photo" />
+   * Add a "photo" field. So it can be called in html like <img [src]="payment.photo" />
    */
   private serializePayments() {
-    this.payments = this.payments.map((diet) => this.serializePayment(diet));
+    this.payments = this.payments.map((payment) => this.serializePayment(payment));
   }
 
   private serializePayment(payment: Payment) {
@@ -117,7 +117,7 @@ export class MyDietsPage implements OnInit {
   private getCompleteDietAlertButtons() {
     return [
       { text: 'No', role: 'cancel' },
-      { text: 'Si', handler: async () => await this.markDietAsCompleted() },
+      { text: 'Si', handler: () => this.markDietAsCompleted() },
     ];
   }
 
@@ -127,11 +127,11 @@ export class MyDietsPage implements OnInit {
       .deletePayment(id)
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe({
-        next: async () => {
-          await this.snacker.showSuccessful('Pago eliminado correctamente');
+        next: () => {
+          this.snacker.showSuccessful('Pago eliminado correctamente');
           this.payments = this.payments.filter((payment) => payment.id !== id);
         },
-        error: async () => await this.snacker.showFailed('Error al eliminar pago'),
+        error: () => this.snacker.showFailed('Error al eliminar pago'),
       });
   }
 }

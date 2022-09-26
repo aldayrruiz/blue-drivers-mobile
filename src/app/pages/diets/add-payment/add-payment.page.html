@@ -18,8 +18,8 @@
     </ion-card>
 
     <span [ngSwitch]="paymentType.value">
-      <app-gasoline-diet-form *ngSwitchCase="'Gasolina'"></app-gasoline-diet-form>
-      <app-common-diet-form *ngSwitchDefault></app-common-diet-form>
+      <app-gasoline-payment-form *ngSwitchCase="'Gasolina'"></app-gasoline-payment-form>
+      <app-common-payment-form *ngSwitchDefault></app-common-payment-form>
     </span>
 
     <ion-card *ngIf="photos.length === 0" class="new-msgs">
@@ -43,6 +43,16 @@
             </ion-col>
           </ion-row>
         </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Demand Payment -->
+    <ion-card>
+      <ion-card-content>
+        <ion-item lines="none">
+          <ion-label>Reclamar gasto</ion-label>
+          <ion-toggle formControlName="demand"></ion-toggle>
+        </ion-item>
       </ion-card-content>
     </ion-card>
   </form>

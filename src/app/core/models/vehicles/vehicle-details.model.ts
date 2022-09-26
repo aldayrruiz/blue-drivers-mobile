@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Device, Reservation, VehicleFuel } from '..';
-import { InsuranceCompany } from '../insurance-companies/insurance-company.model';
+import { Device, InsuranceCompany, Reservation, VehicleFuel, VehicleType } from '..';
 
 /**
  * This interface is used to charge the vehicle details page.
@@ -16,6 +15,7 @@ export interface VehicleDetails {
   reservations: Reservation[];
   gps_device: Device;
   fuel: VehicleFuel;
+  type: VehicleType;
   insurance_company: InsuranceCompany;
   policy_number: string;
   icon: number;

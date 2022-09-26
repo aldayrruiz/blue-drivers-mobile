@@ -7,6 +7,4 @@ export interface CreateReservationByDate {
   description: string;
   owner?: string;
   vehicles: string[];
-  // Recurrent
-  weekdays?: number[];
 }

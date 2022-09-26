@@ -14,4 +14,5 @@ export interface Reservation {
   is_recurrent: boolean;
   recurrent?: Recurrent;
   diet?: Diet;
+  is_driver_needed: boolean;
 }

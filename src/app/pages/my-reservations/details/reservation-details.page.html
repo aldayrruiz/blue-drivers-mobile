@@ -12,6 +12,9 @@
 
   <ion-card>
     <ion-item style="height: 31px" lines="none">
+      <ion-badge color="primary" *ngIf="reservation.is_driver_needed" slot="end">
+        Conductor
+      </ion-badge>
       <ion-badge color="warning" *ngIf="reservation.is_recurrent" slot="end">
         Recurrente
       </ion-badge>

@@ -51,6 +51,7 @@ export class ReserveByDatePage implements OnInit {
   weekdays: WeekdayCheckbox[];
   isRecurrent: boolean;
   recurrent: Recurrent;
+  isDriverNeeded = false;
   private icons: VehicleIcon[];
 
   constructor(
@@ -194,7 +195,6 @@ export class ReserveByDatePage implements OnInit {
       ...this.getCommonData(),
       start: serializeDate(this.start.datetime),
       end: serializeDate(this.end.datetime),
-      weekdays: this.weekdaySrv.getValuesFromCheckBoxes(this.weekdays),
     };
     return newReservation;
   }
@@ -216,6 +216,7 @@ export class ReserveByDatePage implements OnInit {
       title: this.reservationCommonForm.title.value,
       description: this.reservationCommonForm.description.value,
       vehicles: this.getVehiclesIds(this.vehicles),
+      is_driver_needed: this.isDriverNeeded,
     };
   }
 

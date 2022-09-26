@@ -47,6 +47,16 @@
   <!-- Title and description -->
   <app-reservation-common-form></app-reservation-common-form>
 
+  <!-- Is Driver Needed -->
+  <ion-card>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-label>¿Es necesario un conductor?</ion-label>
+        <ion-toggle [(ngModel)]="isDriverNeeded"></ion-toggle>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
   <!-- Is recurrent -->
   <ion-card>
     <ion-card-content>

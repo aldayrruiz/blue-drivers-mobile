@@ -79,8 +79,13 @@
       [routerLink]="[reservation.id]"
       [ngClass]="reservationAlreadyStarted(reservation.start) ? 'opaque' : ''"
     >
-      <ion-item *ngIf="reservation.is_recurrent" style="height: 35px" lines="none">
-        <ion-badge color="warning" slot="end">Recurrente</ion-badge>
+      <ion-item style="height: 35px" lines="none">
+        <ion-badge *ngIf="reservation.is_driver_needed" color="primary" slot="end">
+          Conductor
+        </ion-badge>
+        <ion-badge *ngIf="reservation.is_recurrent" color="warning" slot="end"
+          >Recurrente</ion-badge
+        >
       </ion-item>
       <ion-card-content>
         <app-my-reservation-information

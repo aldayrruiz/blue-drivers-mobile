@@ -5,4 +5,5 @@ export interface CreateRecurrentReservation {
   endTime: string;
   recurrent: string;
   vehicles: string[];
+  is_driver_needed: boolean;
 }

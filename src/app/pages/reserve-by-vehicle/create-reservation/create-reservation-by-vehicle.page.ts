@@ -30,6 +30,7 @@ export class CreateReservationByVehiclePage implements OnInit {
   initStart: string;
   initEnd: string;
   isRecurrent = false;
+  isDriverNeeded = false;
 
   constructor(
     private reservationService: ReservationService,
@@ -86,6 +87,7 @@ export class CreateReservationByVehiclePage implements OnInit {
       end: new Date(end).toJSON(),
       description: this.reservationCommonForm.description.value,
       vehicle: this.vehicle.id,
+      is_driver_needed: this.isDriverNeeded,
     };
   }
 

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { finalize } from 'rxjs/operators';
 import { Diet, Payment, Reservation } from 'src/app/core/models';
-import { AppRouter, LoadingService, SnackerService } from 'src/app/core/services';
+import { AppRouter, AssetsService, LoadingService, SnackerService } from 'src/app/core/services';
 import { DietService } from 'src/app/core/services/api/diet.service';
 import { environment } from 'src/environments/environment';
 
@@ -18,15 +18,20 @@ export class MyDietsPage implements OnInit {
   diet: Diet;
   payments: Payment[] = [];
   completed = false;
+  numberOfDiets: number;
+  numberOfDietsImg: string;
 
   constructor(
+    private assetsService: AssetsService,
     private loadingSrv: LoadingService,
     private alertCtrl: AlertController,
     private dietService: DietService,
     private snacker: SnackerService,
     private route: ActivatedRoute,
     private appRouter: AppRouter
-  ) {}
+  ) {
+    this.numberOfDietsImg = this.assetsService.getUrl('icon/diets/number-of-diets.jpeg');
+  }
 
   ngOnInit() {
     this.resolveData();
@@ -69,6 +74,18 @@ export class MyDietsPage implements OnInit {
     await alertElement.present(); // Mostrar al usuario
   }
 
+  setNumberOfDietsToZero(event: any) {
+    event.stopPropagation();
+    const number_of_diets = 0;
+    this.dietService.patchDiet(this.diet.id, { number_of_diets }).subscribe({
+      next: () => {
+        this.numberOfDiets = 0;
+        this.snacker.showSuccessful('Número de dietas actualizado correctamente');
+      },
+      error: () => this.snacker.showFailed('Error al actualizar número de dietas'),
+    });
+  }
+
   private markDietAsCompleted() {
     this.dietService.patchDiet(this.diet.id, { completed: true }).subscribe({
       next: async () => {
@@ -86,6 +103,7 @@ export class MyDietsPage implements OnInit {
       this.completed = this.diet.completed;
       this.payments = this.diet.payments;
       this.serializePayments();
+      this.numberOfDiets = Number(this.diet.number_of_diets);
     });
   }
 

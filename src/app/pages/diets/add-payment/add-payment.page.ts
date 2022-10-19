@@ -20,7 +20,8 @@ export class AddPaymentPage implements OnInit {
   toolbarTitle = 'Dieta y gastos';
   form: FormGroup;
   reservation: Reservation;
-  photos: string[] = [];
+  isThereAPhoto = false;
+  photo: string;
   dietId: string;
 
   constructor(
@@ -53,7 +54,7 @@ export class AddPaymentPage implements OnInit {
     const newPayment = this.getPaymentByType();
     this.dietService.createPayment(newPayment).subscribe({
       next: (payment) => {
-        this.photos.forEach((photo) => this.addPhotoToPayment(photo, payment.id));
+        this.addPhotoToPayment(this.photo, payment.id);
         this.snacker.showSuccessful('La dieta ha sido añadida');
         this.appRouter.goToMyDiets(this.reservation.id);
       },
@@ -64,6 +65,9 @@ export class AddPaymentPage implements OnInit {
   }
 
   addPhotoToPayment(photo: string, payment: string) {
+    if (!this.isThereAPhoto) {
+      return;
+    }
     this.dietService.addPhotoToPayment({ payment, photo }).subscribe({ next: () => {} });
   }
 
@@ -75,14 +79,16 @@ export class AddPaymentPage implements OnInit {
         resultType: CameraResultType.DataUrl,
       });
 
-      this.photos.push(image.dataUrl);
+      this.photo = image.dataUrl;
+      this.isThereAPhoto = true;
     } catch (error) {
       console.log('User did not take a photo');
     }
   }
 
-  removePhoto(index: number) {
-    this.photos.splice(index, 1);
+  removePhoto() {
+    this.photo = '';
+    this.isThereAPhoto = false;
   }
 
   private getPaymentByType() {

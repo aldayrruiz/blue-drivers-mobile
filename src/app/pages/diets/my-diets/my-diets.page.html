@@ -32,8 +32,30 @@
   </ion-card>
 
   <!-- No pagos -->
-  <ion-card *ngIf="payments.length === 0">
+  <ion-card *ngIf="payments.length === 0 && numberOfDiets === 0">
     <ion-card-content class="ion-text-center"> No tiene ninguna dieta aún </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="numberOfDiets > 0">
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <img [src]="numberOfDietsImg" />
+        </ion-avatar>
+        <ion-label>
+          <h2>Dieta - {{ diet.number_of_diets }}</h2>
+        </ion-label>
+        <ion-button
+          [disabled]="completed"
+          color="danger"
+          slot="end"
+          fill="clear"
+          (click)="setNumberOfDietsToZero($event)"
+        >
+          <ion-icon name="trash"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-card-content>
   </ion-card>
 
   <!-- Si hay dietas -->

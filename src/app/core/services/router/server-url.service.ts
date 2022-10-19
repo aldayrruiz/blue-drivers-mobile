@@ -20,4 +20,5 @@ export class ServerUrlService {
   getDiets = () => `${this.fleetUrl}${API.diets}`;
   getDietPayments = () => `${this.fleetUrl}${API.dietPayments}`;
   getDietPhotos = () => `${this.fleetUrl}${API.dietPhotos}`;
+  getMobile = () => `${this.fleetUrl}${API.mobile}`;
 }

@@ -15,8 +15,8 @@ export class AppComponent implements OnInit {
       return;
     }
     AppUpdate.getAppUpdateInfo().then((info: AppUpdateInfo) => {
-      const { currentVersion, availableVersion } = info;
-      if (Number(currentVersion) < Number(availableVersion)) {
+      const { availableVersion } = info;
+      if (Number('2.2') < Number(availableVersion)) {
         this.showNewVersionAvailable();
       }
     });

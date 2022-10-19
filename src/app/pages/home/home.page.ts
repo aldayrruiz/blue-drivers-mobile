@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppUpdate, AppUpdateInfo } from '@capawesome/capacitor-app-update';
-import { Platform } from '@ionic/angular';
+import { AlertController, Platform } from '@ionic/angular';
 import { homeButtons } from './home-buttons';
 
 @Component({
@@ -11,40 +11,39 @@ import { homeButtons } from './home-buttons';
 export class HomePage implements OnInit {
   toolbarTitle = 'Home';
   buttons = homeButtons;
-  public appUpdateInfo: AppUpdateInfo | undefined;
 
-  private readonly GH_URL = 'https://github.com/robingenz/capacitor-app-update';
-
-  constructor(private readonly platform: Platform) {}
+  constructor(private platform: Platform, private alertController: AlertController) {}
 
   ngOnInit() {
     if (!this.platform.is('capacitor')) {
       return;
     }
-    AppUpdate.getAppUpdateInfo().then((appUpdateInfo) => {
-      this.appUpdateInfo = appUpdateInfo;
-      console.log('appUpdateInfo', appUpdateInfo);
-      this.openAppStore();
+    AppUpdate.getAppUpdateInfo().then((info: AppUpdateInfo) => {
+      const { availableVersion } = info;
+      if (Number('2.2') < Number(availableVersion)) {
+        this.showNewVersionAvailable();
+      }
     });
   }
 
-  public openOnGithub(): void {
-    window.open(this.GH_URL, '_blank');
+  private async showNewVersionAvailable() {
+    const button = {
+      text: 'Actualizar',
+      role: 'confirm',
+      handler: async () => {
+        await this.openAppStore();
+      },
+    };
+
+    const alert = await this.alertController.create({
+      header: 'Nueva version disponible',
+      message: 'Pulsa en actualizar para descargar la nueva version',
+      buttons: [button],
+    });
+    await alert.present();
   }
 
-  public async openAppStore(): Promise<void> {
+  private async openAppStore(): Promise<void> {
     await AppUpdate.openAppStore();
-  }
-
-  public async performImmediateUpdate(): Promise<void> {
-    await AppUpdate.performImmediateUpdate();
-  }
-
-  public async startFlexibleUpdate(): Promise<void> {
-    await AppUpdate.startFlexibleUpdate();
-  }
-
-  public async completeFlexibleUpdate(): Promise<void> {
-    await AppUpdate.completeFlexibleUpdate();
   }
 }

@@ -4,27 +4,34 @@
       <ion-content>
         <ion-list class="custom-list" id="inbox-list">
           <!-- Account info -->
-          <ion-list-header> {{ fullname }} </ion-list-header>
-          <ion-note class="not-bottom-padding"> {{ email }}</ion-note>
+          <ion-list-header> {{ user?.fullname }} </ion-list-header>
+          <ion-note class="not-bottom-padding"> {{ user?.email }}</ion-note>
           <br />
           <br />
           <br />
           <br />
 
           <!-- Menu -->
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of pages">
-            <ion-item
-              routerDirection="root"
-              [routerLink]="[p.url]"
-              lines="none"
-              detail="false"
-              routerLinkActive="selected"
+          <ng-container *ngFor="let page of pages">
+            <!-- Si el menú item es de tipo admin, el usuario no debe tener el rol de USER, mostrar -->
+            <!-- Si el menú item NO es de tipo admin, mostrar -->
+            <ion-menu-toggle
+              auto-hide="false"
+              *ngIf="(page.admin && user?.role !== 'USER') || !page.admin"
             >
-              <!-- [routerLinkActiveOptions]="{ exact: true }" -->
-              <ion-icon slot="start" [src]="p.icon" [name]="p.icon"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
-            </ion-item>
-          </ion-menu-toggle>
+              <ion-item
+                routerDirection="root"
+                [routerLink]="[page.url]"
+                lines="none"
+                detail="false"
+                routerLinkActive="selected"
+              >
+                <!-- [routerLinkActiveOptions]="{ exact: true }" -->
+                <ion-icon slot="start" [src]="page.icon" [name]="page.icon"></ion-icon>
+                <ion-label>{{ page.title }}</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ng-container>
         </ion-list>
         <!-- Log out -->
         <div class="menu-footer">

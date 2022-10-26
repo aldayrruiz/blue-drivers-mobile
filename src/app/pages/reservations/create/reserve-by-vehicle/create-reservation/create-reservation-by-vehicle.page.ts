@@ -70,7 +70,7 @@ export class CreateReservationByVehiclePage implements OnInit {
       .subscribe(
         // newReservation is the response from server - executes if response was ok
         async (reservation) => {
-          await this.appRouter.goToReservationDetails(reservation.id);
+          await this.appRouter.goToMyReservationDetails(reservation.id);
           await this.showSuccessfulMsg();
         },
         // error is the message from the server - executes if response was not ok

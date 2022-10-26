@@ -23,8 +23,18 @@ export class AppRouter {
     return this.router.navigateByUrl(to, this.extras);
   }
 
-  async goToReservationDetails(id: string) {
+  async goToMyReservationDetails(id: string) {
     const to = `/members/my-reservations/${id}`;
+    return this.router.navigateByUrl(to, this.extras);
+  }
+
+  async goToAllReservations() {
+    const to = `/members/all-reservations`;
+    return this.router.navigateByUrl(to, this.extras);
+  }
+
+  async goToAllReservationDetails(id: string) {
+    const to = `/members/all-reservations/${id}`;
     return this.router.navigateByUrl(to, this.extras);
   }
 

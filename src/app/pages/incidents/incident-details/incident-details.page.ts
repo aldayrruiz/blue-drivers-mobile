@@ -37,7 +37,7 @@ export class IncidentDetailsPage implements OnInit {
   }
 
   goToReservationDetails() {
-    this.appRouter.goToReservationDetails(this.reservation.id);
+    this.appRouter.goToMyReservationDetails(this.reservation.id);
   }
 
   getIconSrcFromVehicle(vehicle: Vehicle) {

@@ -46,7 +46,7 @@ export class MyDietsPage implements OnInit {
   }
 
   goToReservation(reservationId: string) {
-    this.appRouter.goToReservationDetails(reservationId);
+    this.appRouter.goToMyReservationDetails(reservationId);
   }
 
   goToEditPayment(id: string) {

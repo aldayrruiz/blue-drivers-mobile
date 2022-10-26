@@ -42,7 +42,7 @@ export class ReserveByVehiclePage implements OnInit {
   ) {}
 
   async ngOnInit() {
-    await this.resolveData();
+    this.resolveData();
     this.userId = (await this.storage.getUser()).id;
     this.loadReservations(this.reservations);
   }
@@ -142,7 +142,7 @@ export class ReserveByVehiclePage implements OnInit {
     return date < current;
   };
 
-  private async resolveData() {
+  private resolveData() {
     this.route.data.subscribe((response) => {
       const { vehicle } = response.vehicleDetails;
       this.reservations = vehicle.reservations;

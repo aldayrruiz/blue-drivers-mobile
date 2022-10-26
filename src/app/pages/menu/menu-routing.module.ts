@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AdminGuard } from 'src/app/core/guards';
 import { MenuPage } from './menu.page';
 
 const routes: Routes = [
@@ -36,6 +37,7 @@ const routes: Routes = [
           import(
             'src/app/pages/reservations/all-reservations/calendar-list/all-reservations.module'
           ).then((m) => m.AllReservationsPageModule),
+        canLoad: [AdminGuard],
       },
       {
         path: 'create-by-date',

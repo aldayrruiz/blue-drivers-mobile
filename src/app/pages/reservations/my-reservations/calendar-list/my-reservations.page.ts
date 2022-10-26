@@ -128,12 +128,6 @@ export class MyReservationsPage implements OnInit {
     return reservations.sort((a, b) => (new Date(a.start) < new Date(b.start) ? -1 : 1));
   }
 
-  // Html Helper functions
-
-  private async goToReservation(id: string) {
-    await this.ghost.goToReservationDetails(id);
-  }
-
   // Ionic2 Calendar
 
   private next = () => this.myCal.slideNext();

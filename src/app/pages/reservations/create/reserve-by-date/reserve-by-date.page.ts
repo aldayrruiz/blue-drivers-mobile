@@ -104,7 +104,7 @@ export class ReserveByDatePage implements OnInit {
       .pipe(finalize(async () => await this.loadingSrv.dismiss()))
       .subscribe(
         async (reservation) => {
-          await this.appRouter.goToReservationDetails(reservation.id);
+          await this.appRouter.goToMyReservationDetails(reservation.id);
           await this.showSuccessfulMessage(false);
         },
         async (error) => {
@@ -129,7 +129,7 @@ export class ReserveByDatePage implements OnInit {
         async (response) => {
           const reservations = response.successfulReservations;
           if (reservations.length > 0) {
-            await this.appRouter.goToReservationDetails(reservations[0].id);
+            await this.appRouter.goToMyReservationDetails(reservations[0].id);
             await this.showSuccessfulMessage(true);
           } else {
             // * None reservation was created. Check the fields
@@ -168,7 +168,7 @@ export class ReserveByDatePage implements OnInit {
         async (response) => {
           const reservations = response.successfulReservations;
           if (reservations.length > 0) {
-            await this.appRouter.goToReservationDetails(reservations[0].id);
+            await this.appRouter.goToMyReservationDetails(reservations[0].id);
             await this.showSuccessfulMessage(true);
           } else {
             await this.showNoneReservationsWasCreatedEvenForced();

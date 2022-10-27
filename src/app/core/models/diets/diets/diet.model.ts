@@ -8,4 +8,5 @@ export interface Diet {
   end: string;
   payments: Payment[];
   modified?: boolean;
+  number_of_diets: number;
 }

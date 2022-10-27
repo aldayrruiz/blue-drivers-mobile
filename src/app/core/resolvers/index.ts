@@ -10,6 +10,7 @@ export * from './positions/positions.resolver';
 export * from './reservation-templates/reservation-template.resolver';
 export * from './reservation-templates/reservation-templates.resolver';
 // Reservations
+export * from './reservations/all-reservations.resolver';
 export * from './reservations/my-reservations.resolver';
 export * from './reservations/reservation-details.resolver';
 export * from './reservations/reservations.resolver';

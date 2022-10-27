@@ -10,9 +10,8 @@ import { homeButtons } from '../home/home-buttons';
   styleUrls: ['./menu.page.scss'],
 })
 export class MenuPage implements OnInit {
-  fullname: string;
   version = environment.version;
-  email: string;
+  user: any;
 
   pages = [
     { title: 'Home', url: ROUTE.HOME, icon: 'home-outline' },
@@ -28,8 +27,7 @@ export class MenuPage implements OnInit {
 
   async ngOnInit() {
     const user = await this.storage.getUser();
-    this.email = user.email;
-    this.fullname = user.fullname;
+    this.user = user;
   }
 
   async logOut() {

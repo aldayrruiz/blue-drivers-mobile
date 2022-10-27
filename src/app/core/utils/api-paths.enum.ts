@@ -12,4 +12,5 @@ export enum API {
   register = '/api/register/create_fake',
   reservationTemplates = '/api/reservation-templates',
   lastPositions = '/api/positions',
+  mobile = '/api/mobile',
 }

@@ -11,6 +11,7 @@ export class MyReservationInformationComponent implements OnInit {
   @Input() editable: boolean;
   @Input() reservation: Reservation;
   @Input() lines: string;
+  @Input() showOwner: boolean;
 
   private icons: VehicleIcon[];
   constructor(private vehicleIconProvider: VehicleIconProvider, private appRouter: AppRouter) {
@@ -25,7 +26,7 @@ export class MyReservationInformationComponent implements OnInit {
   }
 
   async goToReservation(id: string) {
-    await this.appRouter.goToReservationDetails(id);
+    await this.appRouter.goToMyReservationDetails(id);
   }
 
   differentDay(event): boolean {

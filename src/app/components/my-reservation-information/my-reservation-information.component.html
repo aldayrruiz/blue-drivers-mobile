@@ -19,6 +19,7 @@
         {{ reservation.vehicle.brand }} {{ reservation.vehicle.model }}
         {{ reservation.vehicle.number_plate }}
       </h3>
+      <h3 *ngIf="showOwner">{{ reservation.owner.fullname }} - {{ reservation.owner.email }}</h3>
       <h3>{{ reservation.title }}</h3>
       <ion-icon *ngIf="reservation?.diet?.modified" size="small" name="document-text"></ion-icon>
     </ion-label>

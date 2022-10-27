@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Storage } from '@capacitor/storage';
+import { Preferences } from '@capacitor/preferences';
 import { TenantStorage, UserStorage } from '../../models';
 
 export enum Key {
@@ -30,14 +30,14 @@ export class StorageService {
   }
 
   async clearAll() {
-    return await Storage.clear();
+    return await Preferences.clear();
   }
 
   private async store(key: string, value: string) {
-    return Storage.set({ key, value });
+    return Preferences.set({ key, value });
   }
 
   private async get(key: string) {
-    return Storage.get({ key }).then((value) => value.value);
+    return Preferences.get({ key }).then((value) => value.value);
   }
 }

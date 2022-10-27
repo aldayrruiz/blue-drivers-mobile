@@ -10,18 +10,19 @@ const routes: Routes = [
   },
   {
     path: 'members',
-    loadChildren: () => import('./pages/menu/menu.module').then((m) => m.MenuPageModule),
+    loadChildren: () => import('src/app/pages/menu/menu.module').then((m) => m.MenuPageModule),
     canLoad: [AuthGuard],
   },
   {
     path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then((m) => m.LoginPageModule),
+    loadChildren: () =>
+      import('src/app/pages/auth/login/login.module').then((m) => m.LoginPageModule),
     canLoad: [AutoLoginGuard],
   },
   {
     path: 'recover-password',
     loadChildren: () =>
-      import('./pages/recover-password/recover-password.module').then(
+      import('src/app/pages/auth/recover-password/recover-password.module').then(
         (m) => m.RecoverPasswordPageModule
       ),
   },

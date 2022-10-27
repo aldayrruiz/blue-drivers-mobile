@@ -80,9 +80,9 @@ export class MyDietsPage implements OnInit {
     this.dietService.patchDiet(this.diet.id, { number_of_diets }).subscribe({
       next: () => {
         this.numberOfDiets = 0;
-        this.snacker.showSuccessful('Número de dietas actualizado correctamente');
+        this.snacker.showSuccessful('Se ha eliminado la dieta correctamente');
       },
-      error: () => this.snacker.showFailed('Error al actualizar número de dietas'),
+      error: () => this.snacker.showFailed('Error al eliminar la dieta'),
     });
   }
 

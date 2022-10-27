@@ -60,7 +60,11 @@
       let-noEventsLabel="noEventsLabel"
     >
       <ion-list fullscreen>
-        <ion-item lines="none" *ngFor="let event of selectedDate.events">
+        <ion-item
+          lines="none"
+          *ngFor="let event of selectedDate.events"
+          (click)="goToAllReservationDetails(event.id)"
+        >
           <ion-icon slot="start" name="document-text-outline"></ion-icon>
           <!-- Reservation start and end in different days -->
           <ion-label class="ion-text-wrap" *ngIf="differentDay(event); else sameDay">
@@ -110,6 +114,7 @@
         <app-my-reservation-information
           [reservation]="reservation"
           [editable]="false"
+          [showOwner]="true"
           lines="none"
         ></app-my-reservation-information>
       </ion-card-content>

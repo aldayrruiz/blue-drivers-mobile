@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg width="500mm" height="700mm" viewBox="0 0 210 297" version="1.1" id="svg11695"
+  inkscape:version="1.1.2 (b8e25be833, 2022-02-05)" sodipodi:docname="icono reservas todas.svg"
+  xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+  xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg"
+  xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview id="namedview11697" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0"
+    inkscape:pageshadow="2" inkscape:pageopacity="0.0" inkscape:pagecheckerboard="0" inkscape:document-units="mm"
+    showgrid="false" inkscape:zoom="0.8" inkscape:cx="397.32751" inkscape:cy="561.95447" inkscape:window-width="1920"
+    inkscape:window-height="1001" inkscape:window-x="-9" inkscape:window-y="-9" inkscape:window-maximized="1"
+    inkscape:current-layer="layer1" />
+  <defs id="defs11692" />
+  <g inkscape:label="Capa 1" inkscape:groupmode="layer" id="layer1">
+    <path
+      d="M 164.7252,118.12323 127.7761,81.17417 c -0.794,-0.79402 -1.8706,-1.24011 -2.9935,-1.24011 H 69.6027 c -7.4729,0 -13.5525,6.079597 -13.5525,13.552487 V 201.84824 c 0,7.47289 6.0796,13.55249 13.5525,13.55249 h 82.8096 c 7.4729,0 13.5525,-6.0796 13.5525,-13.55249 v -80.73178 c 2e-4,-1.12263 -0.4459,-2.19948 -1.2396,-2.99323 z M 129.016,94.387717 151.5114,116.88339 H 129.016 Z M 152.4125,206.93406 H 69.6027 c -2.8043,0 -5.0858,-2.2815 -5.0858,-5.08582 V 93.486547 c 0,-2.80432 2.2815,-5.08582 5.0858,-5.08582 h 50.9466 v 32.715733 c 0,2.33786 1.8955,4.23333 4.2333,4.23333 h 32.7158 v 76.49845 c 0,2.80432 -2.2815,5.08582 -5.0859,5.08582 z M 141.276,150.26719 c 0,2.33786 -1.8955,4.23334 -4.2334,4.23334 h -52.07 c -2.3378,0 -4.2333,-1.89548 -4.2333,-4.23334 0,-2.33786 1.8955,-4.23333 4.2333,-4.23333 h 52.07 c 2.3382,0 4.2334,1.89521 4.2334,4.23333 z m 0,28.89224 c 0,2.33785 -1.8955,4.23333 -4.2334,4.23333 h -52.07 c -2.3378,0 -4.2333,-1.89548 -4.2333,-4.23333 0,-2.33786 1.8955,-4.23334 4.2333,-4.23334 h 52.07 c 2.3382,0 4.2334,1.89548 4.2334,4.23334 z"
+      id="path2835" style="fill:#666666;fill-opacity:1;stroke-width:0.264583" />
+    <circle style="fill:#666666;fill-opacity:1;stroke-width:0" id="path11283" cx="75.764214" cy="227.06139"
+      r="8.6481118" />
+    <circle style="fill:#666666;fill-opacity:1;stroke-width:0" id="path11283-8" cx="99.259819" cy="227.06139"
+      r="8.6481118" />
+    <circle style="fill:#666666;fill-opacity:1;stroke-width:0" id="path11283-8-7" cx="146.25078" cy="227.06139"
+      r="8.6481118" />
+    <circle style="fill:#666666;fill-opacity:1;stroke-width:0" id="path11283-8-5" cx="122.75542" cy="227.06139"
+      r="8.6481118" />
+  </g>
+</svg>

@@ -11,7 +11,7 @@ export class MyReservationInformationComponent implements OnInit {
   @Input() editable: boolean;
   @Input() reservation: Reservation;
   @Input() lines: string;
-  @Input() showOwnerFullname: boolean;
+  @Input() showOwner: boolean;
 
   private icons: VehicleIcon[];
   constructor(private vehicleIconProvider: VehicleIconProvider, private appRouter: AppRouter) {

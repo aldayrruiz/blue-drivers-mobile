@@ -6,7 +6,7 @@ export const homeButtons = [
   { title: 'Mis reservas', icon: 'document-text-outline', url: ROUTE.MY_RESERVATIONS },
   {
     title: 'Todas las reservas',
-    icon: 'document-text-outline',
+    icon: 'documents-outline',
     url: ROUTE.ALL_RESERVATIONS,
     admin: true,
   },

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppUpdate, AppUpdateInfo } from '@capawesome/capacitor-app-update';
 import { AlertController, Platform } from '@ionic/angular';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -16,8 +15,8 @@ export class AppComponent implements OnInit {
       return;
     }
     AppUpdate.getAppUpdateInfo().then((info: AppUpdateInfo) => {
-      const { availableVersion } = info;
-      if (Number(environment.version) < Number(availableVersion)) {
+      const { currentVersion, availableVersion } = info;
+      if (Number(currentVersion) < Number(availableVersion)) {
         this.showNewVersionAvailable();
       }
     });

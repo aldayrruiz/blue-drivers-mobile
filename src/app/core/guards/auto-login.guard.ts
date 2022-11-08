@@ -6,13 +6,9 @@ import { AppRouter, StorageService } from '../services';
 export class AutoLoginGuard implements CanLoad {
   constructor(private storage: StorageService, private appRouter: AppRouter) {}
 
-  /**
-   *
-   * @returns
-   */
   async canLoad(): Promise<boolean> {
-    const tenant = await this.storage.getTenant();
-    if (tenant) {
+    const user = await this.storage.getUser();
+    if (user) {
       // If user is logged in, redirect to home
       await this.appRouter.goToHome();
       return false;

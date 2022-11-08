@@ -9,7 +9,7 @@ import {
   ErrorMessageService,
   LoadingService,
   LoginService,
-  PasswordRecover,
+  StorageService,
   TenantService,
 } from 'src/app/core/services';
 import { emailValidators, passwordValidators } from 'src/app/core/utils/validators';
@@ -28,13 +28,13 @@ export class LoginPage implements OnInit {
 
   constructor(
     private errorMessage: ErrorMessageService,
-    private passwordRecover: PasswordRecover,
     private alertController: AlertController,
     private tenantService: TenantService,
     private loginService: LoginService,
     private loadingSrv: LoadingService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private storage: StorageService
   ) {}
 
   get username(): AbstractControl {
@@ -45,8 +45,12 @@ export class LoginPage implements OnInit {
     return this.credentials.get('password');
   }
 
-  ngOnInit() {
-    this.initFormGroup();
+  get rememberEmail(): AbstractControl {
+    return this.credentials.get('rememberEmail');
+  }
+
+  async ngOnInit() {
+    await this.initFormGroup();
   }
 
   async login(): Promise<void> {
@@ -59,6 +63,16 @@ export class LoginPage implements OnInit {
     }
 
     const credentials = this.getCredentials();
+
+    if (this.rememberEmail.value) {
+      await this.storage.storeLogin({
+        email: this.username.value,
+        rememberEmail: this.rememberEmail.value,
+      });
+    } else {
+      console.log('Clearing data login');
+      await this.storage.clearOnlyLogin();
+    }
 
     this.loginService
       .login(credentials)
@@ -83,10 +97,6 @@ export class LoginPage implements OnInit {
           await alert.present();
         }
       );
-  }
-
-  async forgotPassword() {
-    this.passwordRecover.recover('email.com');
   }
 
   async changeTenant() {
@@ -118,11 +128,19 @@ export class LoginPage implements OnInit {
     return false;
   }
 
-  private initFormGroup() {
+  private async initFormGroup() {
     this.credentials = this.fb.group({
       username: ['', emailValidators],
       password: ['', passwordValidators],
+      rememberEmail: [false, passwordValidators],
     });
+
+    const login = await this.storage.getLoginEmail();
+
+    if (login) {
+      this.username.setValue(login.email);
+      this.rememberEmail.setValue(login.rememberEmail);
+    }
   }
 
   private getCredentials() {

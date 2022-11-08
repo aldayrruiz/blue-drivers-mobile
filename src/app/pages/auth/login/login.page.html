@@ -32,6 +32,14 @@
             <span *ngIf="password.errors?.required">Password is required</span>
             <span *ngIf="password.errors?.minlength">Password needs to be 6 characters</span>
           </div>
+          <ion-item lines="none" style="text-align: right">
+            <ion-label style="font-size: 14px">Recordar email</ion-label>
+            <ion-checkbox
+              formControlName="rememberEmail"
+              style="margin-right: 2px"
+              slot="end"
+            ></ion-checkbox>
+          </ion-item>
           <ion-button
             class="ion-margin-vertical"
             color="danger"

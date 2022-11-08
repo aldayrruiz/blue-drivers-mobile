@@ -22,7 +22,7 @@ export class MenuPage implements OnInit {
   constructor(
     private loginService: LoginService,
     private storage: StorageService,
-    private ghost: AppRouter
+    private appRouter: AppRouter
   ) {}
 
   async ngOnInit() {
@@ -32,6 +32,6 @@ export class MenuPage implements OnInit {
 
   async logOut() {
     await this.loginService.logout();
-    await this.ghost.goToLogin();
+    await this.appRouter.goToLogin();
   }
 }

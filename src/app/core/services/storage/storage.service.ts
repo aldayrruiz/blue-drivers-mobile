@@ -5,6 +5,7 @@ import { TenantStorage, UserStorage } from '../../models';
 export enum Key {
   user = 'user',
   tenant = 'tenant',
+  login = 'login',
 }
 
 @Injectable({ providedIn: 'root' })
@@ -29,8 +30,26 @@ export class StorageService {
     return JSON.parse(await this.get(Key.tenant));
   }
 
+  async storeLogin(login: { email: string; rememberEmail: boolean }) {
+    const stringified = JSON.stringify(login);
+    return this.store(Key.login, stringified);
+  }
+
+  async getLoginEmail() {
+    return JSON.parse(await this.get(Key.login));
+  }
+
   async clearAll() {
     return await Preferences.clear();
+  }
+
+  async clearOnlyAuthRelated() {
+    await Preferences.remove({ key: Key.user });
+    await Preferences.remove({ key: Key.tenant });
+  }
+
+  async clearOnlyLogin() {
+    await Preferences.remove({ key: Key.login });
   }
 
   private async store(key: string, value: string) {

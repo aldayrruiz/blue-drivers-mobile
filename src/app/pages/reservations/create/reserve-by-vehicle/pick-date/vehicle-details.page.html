@@ -4,7 +4,7 @@
 
 <ion-content>
   <app-vehicle-information [vehicle]="vehicle"></app-vehicle-information>
-  <ion-segment (ionChange)="segmentChanged($event)" [(value)]="segmentValue">
+  <ion-segment (ionChange)="segmentChanged($event)" [value]="segmentValue">
     <ion-segment-button value="reserve">
       <ion-label>Reservar</ion-label>
     </ion-segment-button>
@@ -37,10 +37,8 @@
 
     <calendar
       [eventSource]="eventSource"
-      [calendarMode]="calendar.mode"
       [currentDate]="calendar.currentDate"
       (onTitleChanged)="onViewTitleChanged($event)"
-      (onRangeChanged)="reloadSource(startTime, endTime)"
       (onTimeSelected)="onTimeSelected($event)"
       [monthviewDisplayEventTemplate]="cal_template"
       [monthviewEventDetailTemplate]="template"

@@ -3,7 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({ name: 'essential' })
 export class EssentialDatePipe implements PipeTransform {
-  transform(date: Date | string, day: number, format: string = 'EEE, d MMM yyyy, HH:mm'): string {
+  transform(date?: Date | string, format: string = 'EEE, d MMM yyyy, HH:mm'): string {
     if (date === null) {
       return '';
     }

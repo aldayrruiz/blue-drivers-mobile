@@ -10,4 +10,5 @@ export interface Payment {
   description: string;
   photos: CreateDietPhoto[];
   demand: boolean;
+  photo?: string;
 }

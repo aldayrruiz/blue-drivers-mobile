@@ -79,4 +79,16 @@ export class ReservationService {
     const path = `${reservationUrl}/${id}/`;
     return this.http.delete<void>(path, options);
   }
+
+  /**
+   * Sends a PATCH HTTP request to the server to update the resource.
+   *
+   * @param id Reservation's id to update
+   * @returns
+   */
+  finish(id: string): Observable<void> {
+    const reservationUrl = this.urlSrv.getReservations();
+    const path = `${reservationUrl}/${id}/finish/`;
+    return this.http.patch<void>(path, {});
+  }
 }

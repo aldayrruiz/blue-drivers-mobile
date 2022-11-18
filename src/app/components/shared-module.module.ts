@@ -9,7 +9,7 @@ import { DatetimeComponent } from './datetime/datetime.component';
 import { CommonPaymentFormComponent } from './diets/forms/common-payment-form/common-payment-form.component';
 import { GasolinePaymentFormComponent } from './diets/forms/gasoline-payment-form/gasoline-payment-form.component';
 import { HomeButtonComponent } from './home-button/home-button.component';
-import { IncidentTypeComponent } from './incident-type/incident-type.component';
+import { IncidentStatusComponent } from './incident-status/incident-status.component';
 import { MyReservationInformationComponent } from './my-reservation-information/my-reservation-information.component';
 import { ReservationCommonFormComponent } from './reservation-common-form/reservation-common-form.component';
 import { ShowHidePasswordComponent } from './show-hide-password/show-hide-password.component';
@@ -19,7 +19,7 @@ import { VehicleInformationComponent } from './vehicle-information/vehicle-infor
 
 @NgModule({
   declarations: [
-    IncidentTypeComponent,
+    IncidentStatusComponent,
     TicketStatusComponent,
     ShowHidePasswordComponent,
     ToolbarComponent,
@@ -34,7 +34,7 @@ import { VehicleInformationComponent } from './vehicle-information/vehicle-infor
   ],
   imports: [CommonModule, IonicModule, FormsModule, ReactiveFormsModule, CustomPipesModule],
   exports: [
-    IncidentTypeComponent,
+    IncidentStatusComponent,
     TicketStatusComponent,
     ShowHidePasswordComponent,
     ToolbarComponent,

@@ -1,26 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { API } from 'src/app/core/utils/api-paths.enum';
 import { environment } from 'src/environments/environment';
 import { LoginResponse } from '../../models/auth/login-response.model';
 import { StorageService } from '../storage/storage.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class LoginService {
-  isAuth: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-
-  constructor(private storage: StorageService, private http: HttpClient) {
-    this.loadStorageVariables();
-  }
-
-  async loadStorageVariables() {
-    const user = await this.storage.getUser();
-    this.isAuth.next(Boolean(user));
-  }
+  constructor(private storage: StorageService, private http: HttpClient) {}
 
   login(body: { username: string; password: string }) {
     const path = `${environment.fleetBaseUrl}${API.login}/`;
@@ -29,16 +17,12 @@ export class LoginService {
         const user = await this.storeUser(response);
         await this.storeTenant(response);
         return user;
-      }),
-      tap(() => {
-        this.isAuth.next(true);
       })
     );
   }
 
   async logout() {
-    this.isAuth.next(false);
-    await this.storage.clearAll();
+    await this.storage.clearOnlyAuthRelated();
   }
 
   private async storeUser(response: LoginResponse) {

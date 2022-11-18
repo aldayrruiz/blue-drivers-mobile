@@ -44,7 +44,7 @@
       </ion-item>
       <div *ngIf="(password.dirty || password.touched) && password.errors" class="errors">
         <span *ngIf="password.errors?.required">Contraseña is obligatoria</span>
-        <span *ngIf="password.errors?.minlength">Contraseña necesita mas de 5 carácteres</span>
+        <span *ngIf="password.errors?.minlength">Contraseña necesita mas de 5 caracteres</span>
       </div>
       <!-- Password 2 -->
       <ion-item>
@@ -58,7 +58,7 @@
       </ion-item>
       <div *ngIf="(password2.dirty || password2.touched) && password2.errors" class="errors">
         <span *ngIf="password2.errors?.required">Contraseña es obligatoria</span>
-        <span *ngIf="password2.errors?.minlength">Contraseña necesita mas de 5 carácteres</span>
+        <span *ngIf="password2.errors?.minlength">Contraseña necesita mas de 5 caracteres</span>
       </div>
     </div>
     <ion-button

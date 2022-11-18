@@ -21,7 +21,6 @@ export class AllReservationsPage implements OnInit {
   selectedMonth: number;
   vehicleTypeLabel = vehicleTypeLabel;
   calendar = {
-    mode: 'month',
     currentDate: new Date(),
     noEventsLabel: 'No hay reservas aún',
   };

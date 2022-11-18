@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController } from '@ionic/angular';
-import { ItemReorderEventDetail } from '@ionic/core';
+import { AlertController, ItemReorderEventDetail } from '@ionic/angular';
 import { finalize } from 'rxjs/operators';
 import { DateComponent } from 'src/app/components/date/date.component';
 import { DatetimeComponent } from 'src/app/components/datetime/datetime.component';

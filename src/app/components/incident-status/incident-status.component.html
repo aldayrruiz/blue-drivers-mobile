@@ -1,0 +1,4 @@
+<ion-item class="ion-no-padding" lines="none">
+  <ion-badge slot="end" *ngIf="incident.solved" color="success">Solucionado</ion-badge>
+  <ion-badge slot="end" *ngIf="!incident.solved" color="warning">Pendiente</ion-badge>
+</ion-item>

@@ -29,7 +29,7 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <ion-reorder-group (ionItemReorder)="doReorder($event)" disabled="false">
+        <ion-reorder-group (ionItemReorder)="doReorder($any($event))" disabled="false">
           <ion-item *ngFor="let vehicle of vehicles" lines="none">
             <ion-avatar slot="start">
               <img [src]="getIconSrcFromVehicle(vehicle)" />

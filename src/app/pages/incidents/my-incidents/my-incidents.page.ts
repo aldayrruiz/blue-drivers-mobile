@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Incident, Vehicle } from 'src/app/core/models';
+import { getIncidentTypeLabel, Incident, Vehicle } from 'src/app/core/models';
 import { VehicleIcon, VehicleIconProvider } from 'src/app/core/services';
 
 @Component({
@@ -9,8 +9,14 @@ import { VehicleIcon, VehicleIconProvider } from 'src/app/core/services';
   styleUrls: ['./my-incidents.page.scss'],
 })
 export class MyIncidentsPage implements OnInit {
+  // Variables
   toolbarTitle = 'Mis Incidencias';
   incidents: Incident[] = [];
+
+  // Functions
+  getIncidentTypeLabel = getIncidentTypeLabel;
+
+  // Private variables
   private icons: VehicleIcon[];
 
   constructor(private vehicleIconProvider: VehicleIconProvider, private route: ActivatedRoute) {

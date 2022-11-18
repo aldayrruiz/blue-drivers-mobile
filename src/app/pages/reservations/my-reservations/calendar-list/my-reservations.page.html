@@ -3,7 +3,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-segment (ionChange)="segmentChanged($event)" [(value)]="segmentValue">
+  <ion-segment (ionChange)="segmentChanged($event)" [value]="segmentValue">
     <ion-segment-button value="calendar">
       <ion-label>Calendario</ion-label>
     </ion-segment-button>
@@ -33,7 +33,6 @@
     </ion-row>
     <calendar
       [eventSource]="eventSource"
-      [calendarMode]="calendar.mode"
       [currentDate]="calendar.currentDate"
       (onTitleChanged)="onViewTitleChanged($event)"
       (onTimeSelected)="onTimeSelected($event)"

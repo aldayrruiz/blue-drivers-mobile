@@ -84,6 +84,30 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
     }
   }
 
+  async goToMyDiets() {
+    await this.appRouter.goToMyDiets(this.reservation.id);
+  }
+
+  async showFinishReservationAlert() {
+    const buttons = this.getFinishReservationAlertButtons();
+    const alertElement = await this.alertCtrl.create({
+      message: 'Al elegir "Si" se finalizará la reserva.',
+      buttons,
+    });
+
+    await alertElement.present(); // Mostrar al usuario
+  }
+
+  async showCancelAlert() {
+    const buttons = this.getCancelReservationAlertButtons();
+    const alertElement = await this.alertCtrl.create({
+      message: '¿Esta seguro?',
+      buttons,
+    });
+
+    await alertElement.present(); // Mostrar al usuario
+  }
+
   isReservationOccurringNow() {
     const start = new Date(this.reservation.start);
     const end = new Date(this.reservation.end);
@@ -92,26 +116,23 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
     return start < now && now < end;
   }
 
-  alreadyStarted(reservation: Reservation): boolean {
-    const start = new Date(reservation.start);
+  alreadyStarted(): boolean {
+    const start = new Date(this.reservation.start);
     const now = new Date();
 
     return start <= now;
   }
 
+  alreadyEnded(): boolean {
+    const end = new Date(this.reservation.end);
+    const now = new Date();
+
+    return now >= end;
+  }
+
   getIconSrcFromVehicle(vehicle: Vehicle) {
     const icon = this.icons.filter((i) => i.value === vehicle.icon)[0];
     return icon.src;
-  }
-
-  async showCancelAlert() {
-    const buttons = this.getAlertButtons();
-    const alertElement = await this.alertCtrl.create({
-      message: '¿Esta seguro?',
-      buttons,
-    });
-
-    await alertElement.present(); // Mostrar al usuario
   }
 
   differentDay(event): boolean {
@@ -121,24 +142,14 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
     return start.getUTCDay() !== end.getUTCDay();
   }
 
-  async goToMyDiets() {
-    await this.appRouter.goToMyDiets(this.reservation.id);
-  }
-
   private storeReservationInTab() {
     this.tabStorage.setCurrentReservation(this.reservation);
   }
 
-  private getAlertButtons() {
+  private getCancelReservationAlertButtons() {
     const buttons = [
-      {
-        text: 'No',
-        role: 'cancel',
-      },
-      {
-        text: 'Si',
-        handler: async () => await this.cancelReservation(false),
-      },
+      { text: 'No', role: 'cancel' },
+      { text: 'Si', handler: async () => await this.cancelReservation(false) },
     ];
 
     const cancelRecurrentButton = {
@@ -163,6 +174,33 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
         async () => {
           await this.appRouter.goToMyReservations();
           const message = 'Operación realizada con éxito';
+          this.snacker.showSuccessful(message);
+        },
+        async (error) => {
+          const message = this.errorMessage.get(error);
+          this.snacker.showFailed(message);
+        }
+      );
+  }
+
+  private getFinishReservationAlertButtons() {
+    const buttons = [
+      { text: 'No', role: 'cancel' },
+      { text: 'Si', handler: async () => await this.finishReservation() },
+    ];
+    return buttons;
+  }
+
+  private async finishReservation() {
+    await this.loadingSrv.present();
+
+    this.reservationService
+      .finish(this.reservation.id)
+      .pipe(finalize(async () => await this.loadingSrv.dismiss()))
+      .subscribe(
+        async () => {
+          await this.appRouter.goToMyReservations();
+          const message = 'Se ha finalizado la reserva';
           this.snacker.showSuccessful(message);
         },
         async (error) => {

@@ -4,8 +4,8 @@
 
 <ion-content>
   <ion-card *ngFor="let incident of incidents" [routerLink]="[incident.id]">
-    <app-incident-type [type]="incident.type"></app-incident-type>
-    <ion-card-content>
+    <app-incident-status [incident]="incident"></app-incident-status>
+    <ion-card-content class="ion-no-padding ion-padding-horizontal ion-padding-bottom">
       <ion-item lines="none">
         <ion-avatar slot="start">
           <img [src]="getIconSrcFromVehicle(incident.reservation.vehicle)" />
@@ -15,7 +15,7 @@
             {{ incident.reservation.vehicle.brand }} {{ incident.reservation.vehicle.model }}
             {{ incident.reservation.vehicle.number_plate }}
           </h2>
-          <p>{{ incident.description }}</p>
+          <h3>{{ getIncidentTypeLabel(incident.type) }}</h3>
           <ion-note>{{ incident.date_stored | essential | titlecase }}</ion-note>
         </ion-label>
       </ion-item>

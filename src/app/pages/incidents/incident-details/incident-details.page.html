@@ -5,15 +5,14 @@
 <ion-content>
   <app-vehicle-information [vehicle]="vehicle"></app-vehicle-information>
   <ion-card class="border border-radius no-box-shadow ion-padding">
+    <app-incident-status [incident]="incident"></app-incident-status>
     <img *ngIf="photoUrl" class="max-width" [src]="photoUrl" alt="Foto del incidente" />
-    <app-incident-type [type]="incident.type"></app-incident-type>
-    <ion-card-header>
-      <ion-card-subtitle>
-        {{ vehicle.brand + ' ' + vehicle.model + ' ' + vehicle.number_plate | uppercase }}
-      </ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content>
+    <ion-card-content class="ion-no-padding ion-padding-horizontal ion-padding-bottom">
+      <h4>{{ vehicle.brand + ' ' + vehicle.model + ' ' + vehicle.number_plate | uppercase }}</h4>
       <p>{{ incident.description }}</p>
+      <p *ngIf="incident.solver_message">
+        Comentario de la resolución: {{ incident.solver_message }}
+      </p>
       <ion-note>{{ incident.date_stored | essential | titlecase }}</ion-note>
       <br />
       <ion-note>{{ incident.self_responsible ? 'Causada por mí' : 'Encontrada por mí' }}</ion-note>

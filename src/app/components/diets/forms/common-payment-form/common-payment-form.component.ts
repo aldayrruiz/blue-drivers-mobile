@@ -7,7 +7,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
   styleUrls: ['./common-payment-form.component.scss'],
 })
 export class CommonPaymentFormComponent implements OnInit {
-  @Input() initAmount = '';
+  @Input() initAmount: number;
   @Input() initDescription = '';
   form: FormGroup;
 

@@ -10,6 +10,8 @@ export interface Incident {
   type: IncidentType;
   photo: string;
   self_responsible: boolean;
+  solved: boolean;
+  solver_message: string;
 }
 
 export const getIncidentTypeLabel = (type: IncidentType) => {

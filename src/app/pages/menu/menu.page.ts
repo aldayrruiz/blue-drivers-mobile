@@ -4,6 +4,13 @@ import { ROUTE } from 'src/app/core/utils/routing/menu';
 import { environment } from 'src/environments/environment';
 import { homeButtons } from '../home/home-buttons';
 
+interface HomeButton {
+  title: string;
+  url: string;
+  icon: string;
+  admin?: boolean;
+}
+
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.page.html',
@@ -13,7 +20,7 @@ export class MenuPage implements OnInit {
   version = environment.version;
   user: any;
 
-  pages = [
+  pages: HomeButton[] = [
     { title: 'Home', url: ROUTE.HOME, icon: 'home-outline' },
     ...homeButtons,
     { title: 'Mi cuenta', url: ROUTE.ACCOUNT, icon: 'person-outline' },

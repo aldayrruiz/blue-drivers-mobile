@@ -2,13 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CalendarComponent } from 'ionic2-calendar';
 import { Reservation, Vehicle } from 'src/app/core/models';
-import {
-  AppRouter,
-  MyReservationsTabStorage,
-  VehicleIcon,
-  VehicleIconProvider,
-} from 'src/app/core/services';
-import { MyDateService } from 'src/app/core/services/my-date.service';
+import { MyReservationsTabStorage, VehicleIcon, VehicleIconProvider } from 'src/app/core/services';
 import { alreadyStarted } from 'src/app/core/utils/dates/dates';
 
 @Component({
@@ -18,28 +12,27 @@ import { alreadyStarted } from 'src/app/core/utils/dates/dates';
 })
 export class MyReservationsPage implements OnInit {
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
+
+  // Variables
   toolbarTitle = 'Mis Reservas';
   segmentValue = 'calendar';
   viewTitle: string;
+  eventSource = [];
   calendar = {
-    mode: 'month',
     currentDate: new Date(),
     noEventsLabel: 'No tienes reservas',
   };
+  reservationsListMode: Reservation[] = [];
 
-  private reservationAlreadyStarted = alreadyStarted;
-  private getTimeReserved = this.dateSrv.getTimeReserved;
+  // Functions
+  reservationAlreadyStarted = alreadyStarted;
   private reservationsCalendarMode: Reservation[] = [];
-  private reservationsListMode: Reservation[] = [];
-  private eventSource = [];
   private icons: VehicleIcon[];
 
   constructor(
     private vehicleIconProvider: VehicleIconProvider,
     private tabStorage: MyReservationsTabStorage,
-    private dateSrv: MyDateService,
-    private route: ActivatedRoute,
-    private ghost: AppRouter
+    private route: ActivatedRoute
   ) {
     this.icons = this.vehicleIconProvider.getIcons();
   }
@@ -64,6 +57,17 @@ export class MyReservationsPage implements OnInit {
     const end = new Date(event.end);
 
     return start.getUTCDay() !== end.getUTCDay();
+  }
+
+  // Ionic2 Calendar
+
+  next = () => this.myCal.slideNext();
+
+  back = () => this.myCal.slidePrev();
+
+  onTimeSelected(event): void {
+    const date = new Date(event.selectedTime);
+    this.tabStorage.selectDate(date);
   }
 
   private refreshComponentData(): void {
@@ -126,16 +130,5 @@ export class MyReservationsPage implements OnInit {
 
   private orderReservationsByStart(reservations: Reservation[]) {
     return reservations.sort((a, b) => (new Date(a.start) < new Date(b.start) ? -1 : 1));
-  }
-
-  // Ionic2 Calendar
-
-  private next = () => this.myCal.slideNext();
-
-  private back = () => this.myCal.slidePrev();
-
-  private onTimeSelected(event): void {
-    const date = new Date(event.selectedTime);
-    this.tabStorage.selectDate(date);
   }
 }

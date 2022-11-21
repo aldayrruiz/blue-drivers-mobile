@@ -3,7 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({ name: 'onlyDate' })
 export class OnlyDatePipe implements PipeTransform {
-  transform(date: Date | string, day: number, format: string = 'd MMM yyyy'): string {
+  transform(date: Date | string, format: string = 'd MMM yyyy'): string {
     if (date === null) {
       return '';
     }

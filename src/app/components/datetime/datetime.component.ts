@@ -10,6 +10,7 @@ export class DatetimeComponent implements OnInit {
   @Input() datetime: string;
   @Input() isRecurrent = false;
   @Input() disabled = false;
+  @Input() slot = 'end';
 
   // id is useful when you create many DatetimeComponents, so their functionality does not overlap
   id = String(Math.floor(Math.random() * 500) + 1);

@@ -21,6 +21,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'add-operation',
+    loadChildren: () =>
+      import('src/app/pages/maintenance/add-operation/add-operation.module').then(
+        (m) => m.AddOperationPageModule
+      ),
+  },
+  {
     path: 'my-diets',
     loadChildren: () =>
       import('src/app/pages/diets/my-diets/my-diets.module').then((m) => m.MyDietsPageModule),

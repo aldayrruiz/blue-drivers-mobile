@@ -10,7 +10,13 @@ import { CommonPaymentFormComponent } from './diets/forms/common-payment-form/co
 import { GasolinePaymentFormComponent } from './diets/forms/gasoline-payment-form/gasoline-payment-form.component';
 import { HomeButtonComponent } from './home-button/home-button.component';
 import { IncidentStatusComponent } from './incident-status/incident-status.component';
+import { CleaningFormComponent } from './maintenance/cleaning-form/cleaning-form.component';
+import { ItvFormComponent } from './maintenance/itv-form/itv-form.component';
+import { OdometerFormComponent } from './maintenance/odometer-form/odometer-form.component';
+import { RevisionFormComponent } from './maintenance/revision-form/revision-form.component';
+import { WheelsFormComponent } from './maintenance/wheels-form/wheels-form.component';
 import { MyReservationInformationComponent } from './my-reservation-information/my-reservation-information.component';
+import { PhotosComponent } from './photos/photos.component';
 import { ReservationCommonFormComponent } from './reservation-common-form/reservation-common-form.component';
 import { ShowHidePasswordComponent } from './show-hide-password/show-hide-password.component';
 import { TicketStatusComponent } from './ticket-status/ticket-status.component';
@@ -31,6 +37,12 @@ import { VehicleInformationComponent } from './vehicle-information/vehicle-infor
     MyReservationInformationComponent,
     CommonPaymentFormComponent,
     GasolinePaymentFormComponent,
+    CleaningFormComponent,
+    ItvFormComponent,
+    OdometerFormComponent,
+    RevisionFormComponent,
+    WheelsFormComponent,
+    PhotosComponent,
   ],
   imports: [CommonModule, IonicModule, FormsModule, ReactiveFormsModule, CustomPipesModule],
   exports: [
@@ -46,6 +58,12 @@ import { VehicleInformationComponent } from './vehicle-information/vehicle-infor
     MyReservationInformationComponent,
     CommonPaymentFormComponent,
     GasolinePaymentFormComponent,
+    CleaningFormComponent,
+    ItvFormComponent,
+    OdometerFormComponent,
+    RevisionFormComponent,
+    WheelsFormComponent,
+    PhotosComponent,
   ],
 })
 export class SharedModule {}

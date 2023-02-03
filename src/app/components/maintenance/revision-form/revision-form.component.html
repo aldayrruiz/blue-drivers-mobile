@@ -1,0 +1,57 @@
+<form [formGroup]="form">
+  <!-- Kms -->
+  <ion-card>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-input
+          placeholder="Kilómetros"
+          formControlName="kilometers"
+          type="number"
+          required
+        ></ion-input>
+        km
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Motive -->
+  <ion-card>
+    <ion-card-content>
+      <ion-select formControlName="motive" placeholder="Motivo" interface="action-sheet">
+        <ion-select-option value="Kilometraje">Kilometraje</ion-select-option>
+        <ion-select-option value="Date">Fecha</ion-select-option>
+      </ion-select>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Garage -->
+  <ion-card>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-input formControlName="garage" placeholder="Taller" type="text" required> </ion-input>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Next revision -->
+  <ion-card>
+    <ion-card-content>
+      <app-date title="Siguiente revisión" [date]="initNextRevision" #nextRevision></app-date>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Next Kms -->
+  <ion-card>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-input
+          placeholder="Kilómetros próximos"
+          formControlName="nextKilometers"
+          type="number"
+          required
+        ></ion-input>
+        km
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</form>

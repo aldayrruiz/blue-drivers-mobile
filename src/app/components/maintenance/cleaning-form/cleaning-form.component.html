@@ -1,0 +1,11 @@
+<form [formGroup]="form">
+  <!-- type -->
+  <ion-card>
+    <ion-card-content>
+      <ion-select placeholder="Tipo" interface="action-sheet" formControlName="type">
+        <ion-select-option value="Inside">Limpieza por dentro</ion-select-option>
+        <ion-select-option value="Outside">Limpieza por fuera</ion-select-option>
+      </ion-select>
+    </ion-card-content>
+  </ion-card>
+</form>

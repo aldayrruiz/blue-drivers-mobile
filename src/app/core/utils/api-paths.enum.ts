@@ -13,4 +13,5 @@ export enum API {
   reservationTemplates = '/api/reservation-templates',
   lastPositions = '/api/positions',
   mobile = '/api/mobile',
+  maintenance = '/api/maintenance',
 }

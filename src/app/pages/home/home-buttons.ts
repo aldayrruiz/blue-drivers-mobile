@@ -13,4 +13,5 @@ export const homeButtons = [
   { title: 'Mis conflictos', icon: '/assets/icon/home/gavel.svg', url: ROUTE.MY_TICKETS },
   { title: 'Mis incidencias', icon: 'warning-outline', url: ROUTE.MY_INCIDENTS },
   { title: 'Mapa', icon: '/assets/icon/home/map.svg', url: ROUTE.MAP },
+  { title: 'Mantenimiento', icon: 'construct-outline', url: ROUTE.MAINTENANCE },
 ];

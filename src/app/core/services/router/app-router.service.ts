@@ -58,6 +58,11 @@ export class AppRouter {
     return this.router.navigateByUrl(to, this.extras);
   }
 
+  async goToMaintenance() {
+    const to = `/members/maintenance`;
+    return this.router.navigateByUrl(to, this.extras);
+  }
+
   async goToVehiclesDetails(id: string) {
     const to = `members/vehicles/${id}`;
     return this.router.navigateByUrl(to, this.extras);

@@ -1,6 +1,6 @@
 <ion-item [id]="id" lines="none">
-  <ion-label> {{ title }} </ion-label>
-  <ion-text slot="end">
+  <ion-label *ngIf="title"> {{ title }} </ion-label>
+  <ion-text [slot]="slot">
     {{ (!isRecurrent ? datetime : null) | essential }}
     {{ (isRecurrent ? datetime : null) | onlyTime }}
   </ion-text>

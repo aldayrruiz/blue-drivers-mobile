@@ -1,0 +1,27 @@
+<form [formGroup]="form">
+  <!-- Place -->
+  <ion-card>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-input formControlName="place" placeholder="Lugar" type="text" required> </ion-input>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Result (passed) -->
+  <ion-card>
+    <ion-card-content>
+      <ion-select formControlName="passed" placeholder="Resultado" interface="action-sheet">
+        <ion-select-option [value]="true">Favorable</ion-select-option>
+        <ion-select-option [value]="false">Desfavorable</ion-select-option>
+      </ion-select>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Next revision -->
+  <ion-card>
+    <ion-card-content>
+      <app-date title="Siguiente revisión" [date]="initDate" #nextRevision></app-date>
+    </ion-card-content>
+  </ion-card>
+</form>

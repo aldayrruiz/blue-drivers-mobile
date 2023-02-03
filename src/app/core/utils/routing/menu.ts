@@ -7,6 +7,7 @@ export enum ROUTE {
   RESERVE_BY_DATE = '/members/create-by-date',
   MY_TICKETS = '/members/my-tickets',
   MY_INCIDENTS = '/members/my-incidents',
+  MAINTENANCE = '/members/maintenance',
   MAP = '/members/map',
   ACCOUNT = '/members/account',
 }

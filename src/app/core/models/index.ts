@@ -16,6 +16,25 @@ export * from './incidents/incident-type.model';
 export * from './incidents/incident.model';
 // Insurance companies
 export * from './insurance-companies/insurance-company.model';
+// Maintenance
+export * from './maintenance/cleaning/cleaning.model';
+export * from './maintenance/cleaning/create.model';
+export * from './maintenance/cleaning/photo.model';
+export * from './maintenance/cleaning/type.model';
+export * from './maintenance/itv/create.model';
+export * from './maintenance/itv/itv.model';
+export * from './maintenance/itv/photo.model';
+export * from './maintenance/odometer/create.model';
+export * from './maintenance/odometer/odometer.model';
+export * from './maintenance/odometer/photo.model';
+export * from './maintenance/operation.model';
+export * from './maintenance/revision/create.model';
+export * from './maintenance/revision/photo.model';
+export * from './maintenance/revision/revision.model';
+export * from './maintenance/wheels/location.model';
+export * from './maintenance/wheels/operation.model';
+export * from './maintenance/wheels/photo.model';
+export * from './maintenance/wheels/wheels.model';
 // Positions
 export * from './positions/position.model';
 // Reservation templates

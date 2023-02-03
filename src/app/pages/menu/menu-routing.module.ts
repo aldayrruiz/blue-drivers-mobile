@@ -69,6 +69,13 @@ const routes: Routes = [
         path: 'map',
         loadChildren: () => import('src/app/pages/map/map.module').then((m) => m.MapPageModule),
       },
+      {
+        path: 'maintenance',
+        loadChildren: () =>
+          import('src/app/pages/maintenance/pick-vehicle/pick-vehicle.module').then(
+            (m) => m.PickVehiclePageModule
+          ),
+      },
     ],
   },
 ];

@@ -1,0 +1,69 @@
+<form [formGroup]="form">
+  <!-- Location -->
+  <ion-card>
+    <ion-card-content>
+      <ion-select formControlName="location" placeholder="Ubicación" interface="action-sheet">
+        <ion-select-option value="Front">Delanteros</ion-select-option>
+        <ion-select-option value="Back">Traseros</ion-select-option>
+        <ion-select-option value="Both">Delanteros y Traseros</ion-select-option>
+      </ion-select>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Kms -->
+  <ion-card>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-input
+          placeholder="Kilómetros"
+          formControlName="kilometers"
+          type="number"
+          required
+        ></ion-input>
+        km
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Operation -->
+  <ion-card>
+    <ion-card-content>
+      <ion-select formControlName="operation" placeholder="Operación" interface="action-sheet">
+        <ion-select-option value="Inspection">Inspección</ion-select-option>
+        <ion-select-option value="Substitution">Sustitución</ion-select-option>
+      </ion-select>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Result (passed) -->
+  <ion-card>
+    <ion-card-content>
+      <ion-select formControlName="passed" placeholder="Resultado" interface="action-sheet">
+        <ion-select-option [value]="true">Favorable</ion-select-option>
+        <ion-select-option [value]="false">Desfavorable</ion-select-option>
+      </ion-select>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Next revision -->
+  <ion-card *ngIf="operation.value === 'Substitution'">
+    <ion-card-content>
+      <app-date title="Siguiente revisión" [date]="initNextRevision" #nextRevision></app-date>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Next Kms -->
+  <ion-card *ngIf="operation.value === 'Substitution'">
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-input
+          placeholder="Kilómetros próximos"
+          formControlName="nextKilometers"
+          type="number"
+          required
+        ></ion-input>
+        km
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</form>

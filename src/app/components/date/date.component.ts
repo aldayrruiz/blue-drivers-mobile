@@ -14,4 +14,8 @@ export class DateComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+
+  getDateSerialized() {
+    return new Date(this.date).toJSON();
+  }
 }

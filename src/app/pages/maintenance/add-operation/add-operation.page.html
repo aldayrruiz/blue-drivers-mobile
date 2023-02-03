@@ -1,0 +1,48 @@
+<ion-header>
+  <app-toolbar [title]="toolbarTitle"></app-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Type -->
+  <ion-card>
+    <ion-card-content>
+      <ion-select
+        placeholder="Tipo de operación"
+        interface="action-sheet"
+        [(ngModel)]="operationType"
+      >
+        <ion-select-option value="Cleaning">Limpieza</ion-select-option>
+        <ion-select-option value="Itv">ITV</ion-select-option>
+        <ion-select-option value="Odometer">Kilometraje</ion-select-option>
+        <ion-select-option value="Revision">Revisión</ion-select-option>
+        <ion-select-option value="Wheels">Neumáticos</ion-select-option>
+      </ion-select>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Date -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Fecha de operación</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <app-datetime [slot]="'start'" [datetime]="initDate" #date></app-datetime>
+    </ion-card-content>
+  </ion-card>
+
+  <ng-container [ngSwitch]="operationType">
+    <app-cleaning-form *ngSwitchCase="'Cleaning'" #cleaningForm></app-cleaning-form>
+    <app-itv-form *ngSwitchCase="'Itv'" #itvForm></app-itv-form>
+    <app-odometer-form *ngSwitchCase="'Odometer'" #odometerForm></app-odometer-form>
+    <app-revision-form *ngSwitchCase="'Revision'" #revisionForm></app-revision-form>
+    <app-wheels-form *ngSwitchCase="'Wheels'" #wheelsForm></app-wheels-form>
+  </ng-container>
+
+  <!-- Photos -->
+  <app-photos #photos></app-photos>
+
+  <!-- Save button -->
+  <ion-button class="ion-margin ion-text-center" color="danger" expand="block" (click)="save()">
+    <ion-icon class="ion-margin-end" name="save"></ion-icon> Guardar
+  </ion-button>
+</ion-content>

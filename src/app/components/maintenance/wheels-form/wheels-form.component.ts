@@ -11,7 +11,7 @@ import { DateComponent } from '../../date/date.component';
   styleUrls: ['./wheels-form.component.scss'],
 })
 export class WheelsFormComponent implements OnInit {
-  @ViewChild('nextRevision') datetimeComponent: DateComponent;
+  @ViewChild('nextRevision') dateComponent: DateComponent;
   initNextRevision: string;
   form: FormGroup;
 
@@ -48,7 +48,7 @@ export class WheelsFormComponent implements OnInit {
     const operation: WheelsOperation = this.operation.value;
     const passed: boolean = this.passed.value;
     const next_kilometers: number = this.nextKilometers.value;
-    const next_revision = this.datetimeComponent.getDateSerialized();
+    const next_revision = this.dateComponent?.getDateSerialized();
     return { location, kilometers, operation, passed, next_revision, next_kilometers };
   }
 

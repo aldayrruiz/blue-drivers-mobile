@@ -16,6 +16,7 @@
         <ion-select-option value="Odometer">Kilometraje</ion-select-option>
         <ion-select-option value="Revision">Revisión</ion-select-option>
         <ion-select-option value="Wheels">Neumáticos</ion-select-option>
+        <ion-select-option value="Repairment">Reparación</ion-select-option>
       </ion-select>
     </ion-card-content>
   </ion-card>
@@ -36,6 +37,7 @@
     <app-odometer-form *ngSwitchCase="'Odometer'" #odometerForm></app-odometer-form>
     <app-revision-form *ngSwitchCase="'Revision'" #revisionForm></app-revision-form>
     <app-wheels-form *ngSwitchCase="'Wheels'" #wheelsForm></app-wheels-form>
+    <app-repairment-form *ngSwitchCase="'Repairment'" #repairmentForm></app-repairment-form>
   </ng-container>
 
   <!-- Photos -->

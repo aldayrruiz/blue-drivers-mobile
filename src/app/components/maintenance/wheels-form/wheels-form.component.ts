@@ -46,7 +46,7 @@ export class WheelsFormComponent implements OnInit {
     const location: WheelsLocation = this.location.value;
     const kilometers: number = this.kilometers.value;
     const operation: WheelsOperation = this.operation.value;
-    const passed: boolean = this.passed.value;
+    const passed: boolean = this.getPassed(this.passed.value, operation);
     const next_kilometers: number = this.nextKilometers.value;
     const next_revision = this.dateComponent?.getDateSerialized();
     return { location, kilometers, operation, passed, next_revision, next_kilometers };
@@ -66,7 +66,7 @@ export class WheelsFormComponent implements OnInit {
     if (this.operation.getError('required')) {
       errors.push('La operación es requerida');
     }
-    if (this.passed.getError('required')) {
+    if (this.getPassed(this.passed.value, this.operation.value) === undefined) {
       errors.push('El resultado es requerido');
     }
     if (this.operation.value === WheelsOperation.Substitution) {
@@ -94,5 +94,12 @@ export class WheelsFormComponent implements OnInit {
     const now = new Date();
     const nextYear = addYears(now, 1);
     this.initNextRevision = this.zoner.toMyZone(nextYear);
+  }
+
+  private getPassed(passed: boolean, wheelsOPeration: WheelsOperation) {
+    if (wheelsOPeration === WheelsOperation.Substitution) {
+      return true;
+    }
+    return passed;
   }
 }

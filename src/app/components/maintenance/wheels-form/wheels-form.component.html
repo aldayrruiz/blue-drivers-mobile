@@ -36,7 +36,7 @@
   </ion-card>
 
   <!-- Result (passed) -->
-  <ion-card>
+  <ion-card *ngIf="operation.value === 'Inspection'">
     <ion-card-content>
       <ion-select formControlName="passed" placeholder="Resultado" interface="action-sheet">
         <ion-select-option [value]="true">Favorable</ion-select-option>

@@ -6,4 +6,5 @@ export enum MaintenanceOperationType {
   Odometer = 'Odometer',
   Revision = 'Revision',
   Wheels = 'Wheels',
+  Repairment = 'Repairment',
 }

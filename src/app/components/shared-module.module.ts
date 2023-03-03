@@ -13,6 +13,7 @@ import { IncidentStatusComponent } from './incident-status/incident-status.compo
 import { CleaningFormComponent } from './maintenance/cleaning-form/cleaning-form.component';
 import { ItvFormComponent } from './maintenance/itv-form/itv-form.component';
 import { OdometerFormComponent } from './maintenance/odometer-form/odometer-form.component';
+import { RepairmentFormComponent } from './maintenance/repairment-form/repairment-form.component';
 import { RevisionFormComponent } from './maintenance/revision-form/revision-form.component';
 import { WheelsFormComponent } from './maintenance/wheels-form/wheels-form.component';
 import { MyReservationInformationComponent } from './my-reservation-information/my-reservation-information.component';
@@ -40,6 +41,7 @@ import { VehicleInformationComponent } from './vehicle-information/vehicle-infor
     CleaningFormComponent,
     ItvFormComponent,
     OdometerFormComponent,
+    RepairmentFormComponent,
     RevisionFormComponent,
     WheelsFormComponent,
     PhotosComponent,
@@ -61,6 +63,7 @@ import { VehicleInformationComponent } from './vehicle-information/vehicle-infor
     CleaningFormComponent,
     ItvFormComponent,
     OdometerFormComponent,
+    RepairmentFormComponent,
     RevisionFormComponent,
     WheelsFormComponent,
     PhotosComponent,

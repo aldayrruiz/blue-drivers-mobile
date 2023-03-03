@@ -6,9 +6,11 @@ import {
   CreateCleaning,
   CreateItv,
   CreateOdometer,
+  CreateRepairment,
   CreateRevision,
   ItvPhoto,
   OdometerPhoto,
+  RepairmentPhoto,
   RevisionPhoto,
   WheelsPhoto,
 } from '../../models';
@@ -29,6 +31,12 @@ export class MaintenanceService {
     const url = this.urlSrv.getMaintenance();
     const path = `${url}/itvs/`;
     return this.http.post<CreateItv>(path, itv);
+  }
+
+  createRepairment(repairment: CreateRepairment): Observable<CreateRepairment> {
+    const url = this.urlSrv.getMaintenance();
+    const path = `${url}/repairments/`;
+    return this.http.post<CreateRepairment>(path, repairment);
   }
 
   createRevision(revision: CreateRevision): Observable<CreateRevision> {
@@ -59,6 +67,12 @@ export class MaintenanceService {
     const url = this.urlSrv.getMaintenance();
     const path = `${url}/itv-photos/`;
     return this.http.post<ItvPhoto>(path, photo);
+  }
+
+  addPhotosToRepairment(photo: RepairmentPhoto): Observable<RepairmentPhoto> {
+    const url = this.urlSrv.getMaintenance();
+    const path = `${url}/repairment-photos/`;
+    return this.http.post<RepairmentPhoto>(path, photo);
   }
 
   addPhotosToRevision(photo: RevisionPhoto): Observable<RevisionPhoto> {

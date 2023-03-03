@@ -1,0 +1,56 @@
+<form [formGroup]="form">
+  <!-- Location -->
+  <ion-card>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-input
+          placeholder="Ubicación"
+          formControlName="location"
+          type="text"
+          required
+        ></ion-input>
+      </ion-item>
+    </ion-card-content>
+    <div
+      *ngIf="(location.dirty || location.touched) && location.errors"
+      class="errors"
+      style="border-radius: 0px"
+    >
+      <span *ngIf="location.errors?.required">Este campo es obligatorio</span>
+      <span *ngIf="location.errors?.maxlength">El número de caracteres máximo es 50</span>
+    </div>
+  </ion-card>
+
+  <!-- Kms -->
+  <ion-card>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-input
+          placeholder="Kilómetros"
+          formControlName="kilometers"
+          type="number"
+          required
+        ></ion-input>
+        km
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Descripción -->
+  <ion-card>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-textarea
+          placeholder="Descripción"
+          formControlName="description"
+          type="text"
+          required
+        ></ion-textarea>
+      </ion-item>
+    </ion-card-content>
+    <div *ngIf="(description.dirty || description.touched) && description.errors" class="errors">
+      <span *ngIf="description.errors?.required">Este campo es obligatorio</span>
+      <span *ngIf="description.errors?.maxlength">El número de caracteres máximo es 100</span>
+    </div>
+  </ion-card>
+</form>

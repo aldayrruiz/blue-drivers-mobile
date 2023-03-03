@@ -4,6 +4,7 @@ import { DatetimeComponent } from 'src/app/components/datetime/datetime.componen
 import { CleaningFormComponent } from 'src/app/components/maintenance/cleaning-form/cleaning-form.component';
 import { ItvFormComponent } from 'src/app/components/maintenance/itv-form/itv-form.component';
 import { OdometerFormComponent } from 'src/app/components/maintenance/odometer-form/odometer-form.component';
+import { RepairmentFormComponent } from 'src/app/components/maintenance/repairment-form/repairment-form.component';
 import { RevisionFormComponent } from 'src/app/components/maintenance/revision-form/revision-form.component';
 import { WheelsFormComponent } from 'src/app/components/maintenance/wheels-form/wheels-form.component';
 import { PhotosComponent } from 'src/app/components/photos/photos.component';
@@ -12,10 +13,12 @@ import {
   CreateCleaning,
   CreateItv,
   CreateOdometer,
+  CreateRepairment,
   CreateRevision,
   ItvPhoto,
   MaintenanceOperationType,
   OdometerPhoto,
+  RepairmentPhoto,
   RevisionPhoto,
   Vehicle,
   WheelsPhoto,
@@ -40,6 +43,7 @@ export class AddOperationPage implements OnInit {
   @ViewChild('cleaningForm') cleaningFormComponent: CleaningFormComponent;
   @ViewChild('itvForm') itvFormComponent: ItvFormComponent;
   @ViewChild('odometerForm') odometerFormComponent: OdometerFormComponent;
+  @ViewChild('repairmentForm') repairmentFormComponent: RepairmentFormComponent;
   @ViewChild('revisionForm') revisionFormComponent: RevisionFormComponent;
   @ViewChild('wheelsForm') wheelsFormComponent: WheelsFormComponent;
 
@@ -84,6 +88,9 @@ export class AddOperationPage implements OnInit {
         break;
       case MaintenanceOperationType.Wheels:
         this.saveWheels(commonData);
+        break;
+      case MaintenanceOperationType.Repairment:
+        this.saveRepairment(commonData);
         break;
     }
   }
@@ -189,12 +196,36 @@ export class AddOperationPage implements OnInit {
     });
   }
 
+  private saveRepairment(commonData: CommonData) {
+    const errors = this.repairmentFormComponent.getErrors();
+    if (errors.length > 0) {
+      this.showErrors(errors);
+      return;
+    }
+    const repairmentData = this.repairmentFormComponent.getData();
+    const data: CreateRepairment = { ...commonData, ...repairmentData };
+    this.maintenanceService.createRepairment(data).subscribe({
+      next: (repairment: CreateRepairment) => {
+        const photos = this.getPhotosToAddToRepairment(repairment.id);
+        photos.forEach((photo) => {
+          this.maintenanceService.addPhotosToRepairment(photo).subscribe();
+        });
+        this.snacker.showSuccessful('Reparación creada correctamente');
+        this.appRouter.goToMaintenance();
+      },
+    });
+  }
+
   private getPhotosToAddToCleaning(cleaning: string): CleaningPhoto[] {
     return this.photosComponent.photos.map((photo) => ({ cleaning, photo }));
   }
 
   private getPhotosToAddToItv(itv: string): ItvPhoto[] {
     return this.photosComponent.photos.map((photo) => ({ itv, photo }));
+  }
+
+  private getPhotosToAddToRepairment(repairment: string): RepairmentPhoto[] {
+    return this.photosComponent.photos.map((photo) => ({ repairment, photo }));
   }
 
   private getPhotosToAddToRevision(revision: string): RevisionPhoto[] {

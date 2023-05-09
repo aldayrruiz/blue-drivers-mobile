@@ -1,0 +1,34 @@
+<ion-header>
+  <app-toolbar [title]="toolbarTitle"></app-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" padding>
+  <app-vehicle-information [vehicle]="vehicle"></app-vehicle-information>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button color="danger" expand="block" (click)="openDoorsBySMS()">
+          <ion-icon slot="start" name="chatbubbles"></ion-icon>
+          Abrir puertas por SMS
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button color="danger" expand="block" (click)="openDoorsByBluetooth()">
+          <ion-icon slot="start" name="bluetooth"></ion-icon>
+          Abrir puertas por Bluetooth
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button color="danger" expand="block" (click)="openDoorsByGPRS()">
+          <ion-icon slot="start" name="globe"></ion-icon>
+          Abrir puertas por GPRS
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

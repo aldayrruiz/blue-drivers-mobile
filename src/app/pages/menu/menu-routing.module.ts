@@ -76,6 +76,12 @@ const routes: Routes = [
             (m) => m.PickVehiclePageModule
           ),
       },
+
+      {
+        path: 'doors',
+        loadChildren: () =>
+          import('src/app/pages/doors/doors.module').then((m) => m.DoorsPageModule),
+      },
     ],
   },
 ];

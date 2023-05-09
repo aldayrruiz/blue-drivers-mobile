@@ -10,4 +10,5 @@ export enum ROUTE {
   MAINTENANCE = '/members/maintenance',
   MAP = '/members/map',
   ACCOUNT = '/members/account',
+  DOORS = '/members/doors',
 }

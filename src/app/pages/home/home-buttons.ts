@@ -14,4 +14,5 @@ export const homeButtons = [
   { title: 'Mis incidencias', icon: 'warning-outline', url: ROUTE.MY_INCIDENTS },
   { title: 'Mapa', icon: '/assets/icon/home/map.svg', url: ROUTE.MAP },
   { title: 'Mantenimiento', icon: 'construct-outline', url: ROUTE.MAINTENANCE },
+  { title: 'Control de puertas', icon: 'key-outline', url: ROUTE.DOORS },
 ];

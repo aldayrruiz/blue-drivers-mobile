@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Incident, Reservation, Vehicle } from 'src/app/core/models';
-import { AppRouter, VehicleIcon, VehicleIconProvider } from 'src/app/core/services';
+import { AppRouter, VehicleIconProvider } from 'src/app/core/services';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -17,15 +17,11 @@ export class IncidentDetailsPage implements OnInit {
   vehicle: Vehicle;
   photoUrl: string;
 
-  private icons: VehicleIcon[];
-
   constructor(
     private vehicleIconProvider: VehicleIconProvider,
     private route: ActivatedRoute,
     private appRouter: AppRouter
-  ) {
-    this.icons = this.vehicleIconProvider.getIcons();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.route.data.subscribe(async (response) => {
@@ -36,13 +32,12 @@ export class IncidentDetailsPage implements OnInit {
     });
   }
 
-  goToReservationDetails() {
-    this.appRouter.goToMyReservationDetails(this.reservation.id);
+  async goToReservationDetails() {
+    await this.appRouter.goToMyReservationDetails(this.reservation.id);
   }
 
   getIconSrcFromVehicle(vehicle: Vehicle) {
-    const icon = this.icons.filter((i) => i.value === vehicle.icon)[0];
-    return icon.src;
+    return this.vehicleIconProvider.getFullUrlOrDefaultFromVehicle(vehicle.icon);
   }
 
   private async getPhotoUrl(incident: Incident) {

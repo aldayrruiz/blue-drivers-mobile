@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Ticket, Vehicle } from 'src/app/core/models';
-import { VehicleIcon, VehicleIconProvider } from 'src/app/core/services';
+import { VehicleIconProvider } from 'src/app/core/services';
 
 @Component({
   selector: 'app-my-tickets',
@@ -12,11 +12,8 @@ export class MyTicketsPage implements OnInit {
   toolbarTitle = 'Mis conflictos';
 
   tickets: Ticket[] = [];
-  private icons: VehicleIcon[];
 
-  constructor(private vehicleIconProvider: VehicleIconProvider, private route: ActivatedRoute) {
-    this.icons = this.vehicleIconProvider.getIcons();
-  }
+  constructor(private vehicleIconProvider: VehicleIconProvider, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.data.subscribe((response) => {
@@ -25,7 +22,6 @@ export class MyTicketsPage implements OnInit {
   }
 
   getIconSrcFromVehicle(vehicle: Vehicle) {
-    const icon = this.icons.filter((i) => i.value === vehicle.icon)[0];
-    return icon.src;
+    return this.vehicleIconProvider.getFullUrlOrDefaultFromVehicle(vehicle.icon);
   }
 }

@@ -18,5 +18,5 @@ export interface VehicleDetails {
   type: VehicleType;
   insurance_company: InsuranceCompany;
   policy_number: string;
-  icon: number;
+  icon: string;
 }

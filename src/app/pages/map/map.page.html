@@ -13,14 +13,14 @@
           <img [src]="positionMarker?.iconUrl" />
         </ion-avatar>
         <ion-grid>
-          <ion-row>
+          <ion-row class="ion-justify-content-between">
             <ion-col>
               <ion-label>
-                <h3>{{ positionMarker.vehicle.brand }} {{ positionMarker.vehicle.model }}</h3>
                 <h2>{{ positionMarker.vehicle.number_plate }}</h2>
+                <h3>{{ positionMarker.vehicle.brand }} {{ positionMarker.vehicle.model }}</h3>
               </ion-label>
             </ion-col>
-            <ion-col>
+            <ion-col size="4">
               <ion-label>
                 <h3>
                   <ion-icon name="time-outline"></ion-icon>
@@ -28,7 +28,7 @@
                 </h3>
                 <h3>
                   <ion-icon name="speedometer-outline"></ion-icon>
-                  {{ positionMarker?.position?.speed | toKph | number: '1.0-0' }} km/h
+                  {{ positionMarker?.position?.speed | toKph | number : '1.0-0' }} km/h
                 </h3>
               </ion-label>
             </ion-col>

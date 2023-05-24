@@ -16,7 +16,6 @@ import {
   ReservationService,
   SnackerService,
   StorageService,
-  VehicleIcon,
   VehicleIconProvider,
   WeekdaysService,
 } from 'src/app/core/services';
@@ -46,7 +45,6 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
   private userMarker: L.Marker;
   private userIcon: L.Icon<L.IconOptions>;
   private vehicleIcon: L.Icon<L.IconOptions>;
-  private icons: VehicleIcon[];
 
   constructor(
     private vehicleIconProvider: VehicleIconProvider,
@@ -65,8 +63,6 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
     private appRouter: AppRouter,
     private router: Router
   ) {
-    this.icons = this.vehicleIconProvider.getIcons();
-    this.initIcons();
     this.resolveData();
   }
 
@@ -131,8 +127,7 @@ export class ReservationDetailsPage implements OnInit, AfterViewInit {
   }
 
   getIconSrcFromVehicle(vehicle: Vehicle) {
-    const icon = this.icons.filter((i) => i.value === vehicle.icon)[0];
-    return icon.src;
+    return this.vehicleIconProvider.getFullUrlOrDefaultFromVehicle(vehicle.icon);
   }
 
   differentDay(event): boolean {

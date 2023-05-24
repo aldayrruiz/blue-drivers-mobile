@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CalendarComponent } from 'ionic2-calendar';
 import { Reservation, Vehicle } from 'src/app/core/models';
-import { MyReservationsTabStorage, VehicleIcon, VehicleIconProvider } from 'src/app/core/services';
+import { MyReservationsTabStorage, VehicleIconProvider } from 'src/app/core/services';
 import { alreadyStarted } from 'src/app/core/utils/dates/dates';
 
 @Component({
@@ -27,15 +27,12 @@ export class MyReservationsPage implements OnInit {
   // Functions
   reservationAlreadyStarted = alreadyStarted;
   private reservationsCalendarMode: Reservation[] = [];
-  private icons: VehicleIcon[];
 
   constructor(
     private vehicleIconProvider: VehicleIconProvider,
     private tabStorage: MyReservationsTabStorage,
     private route: ActivatedRoute
-  ) {
-    this.icons = this.vehicleIconProvider.getIcons();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.refreshComponentData();
@@ -48,8 +45,7 @@ export class MyReservationsPage implements OnInit {
   }
 
   getIconSrcFromVehicle(vehicle: Vehicle) {
-    const icon = this.icons.filter((i) => i.value === vehicle.icon)[0];
-    return icon.src;
+    return this.vehicleIconProvider.getFullUrlOrDefaultFromVehicle(vehicle.icon);
   }
 
   differentDay(event): boolean {

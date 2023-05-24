@@ -5,7 +5,6 @@ import {
   AppRouter,
   SnackerService,
   TicketService,
-  VehicleIcon,
   VehicleIconProvider,
 } from 'src/app/core/services';
 
@@ -20,17 +19,13 @@ export class TicketDetailsPage implements OnInit {
   vehicle: Vehicle;
   ticket: Ticket;
 
-  private icons: VehicleIcon[];
-
   constructor(
     private vehicleIconProvider: VehicleIconProvider,
     private ticketService: TicketService,
     private snacker: SnackerService,
     private route: ActivatedRoute,
     private appRouter: AppRouter
-  ) {
-    this.icons = this.vehicleIconProvider.getIcons();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.route.data.subscribe((response) => {
@@ -45,18 +40,17 @@ export class TicketDetailsPage implements OnInit {
       async () => {
         await this.appRouter.goBack(this.route);
         const msg = 'Conflicto cancelado con éxito';
-        this.snacker.showSuccessful(msg);
+        await this.snacker.showSuccessful(msg);
       },
       async () => {
         const msg = 'Error cancelando el conflicto';
-        this.snacker.showFailed(msg);
+        await this.snacker.showFailed(msg);
       }
     );
   }
 
   getIconSrcFromVehicle(vehicle: Vehicle) {
-    const icon = this.icons.filter((i) => i.value === vehicle.icon)[0];
-    return icon.src;
+    return this.vehicleIconProvider.getFullUrlOrDefaultFromVehicle(vehicle.icon);
   }
 
   differentDay(event): boolean {

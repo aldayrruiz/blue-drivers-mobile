@@ -14,6 +14,8 @@ export * from './auth/password-recover.service';
 export * from './cal-modal.service';
 // Error
 export * from './error/error-message.service';
+export * from './images/image.service';
+export * from './images/vehicle-icon.service';
 export * from './my-date.service';
 export * from './router/app-router.service';
 // Router
@@ -25,6 +27,5 @@ export * from './storage';
 export * from './view/datepicker.service';
 export * from './view/loading.service';
 export * from './view/snacker.service';
-export * from './view/vehicle-icon.service';
 // None
 export * from './weekdays.service';

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Reservation, Vehicle } from 'src/app/core/models';
-import { AppRouter, VehicleIcon, VehicleIconProvider } from 'src/app/core/services';
+import { AppRouter, VehicleIconProvider } from 'src/app/core/services';
 
 @Component({
   selector: 'app-my-reservation-information',
@@ -13,16 +13,12 @@ export class MyReservationInformationComponent implements OnInit {
   @Input() lines: string;
   @Input() showOwner: boolean;
 
-  private icons: VehicleIcon[];
-  constructor(private vehicleIconProvider: VehicleIconProvider, private appRouter: AppRouter) {
-    this.icons = this.vehicleIconProvider.getIcons();
-  }
+  constructor(private vehicleIconProvider: VehicleIconProvider, private appRouter: AppRouter) {}
 
   ngOnInit() {}
 
   getIconSrcFromVehicle(vehicle: Vehicle) {
-    const icon = this.icons.filter((i) => i.value === vehicle.icon)[0];
-    return icon.src;
+    return this.vehicleIconProvider.getFullUrlOrDefaultFromVehicle(vehicle.icon);
   }
 
   async goToReservation(id: string) {

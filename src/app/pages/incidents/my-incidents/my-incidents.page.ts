@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { getIncidentTypeLabel, Incident, Vehicle } from 'src/app/core/models';
-import { VehicleIcon, VehicleIconProvider } from 'src/app/core/services';
+import { VehicleIconProvider } from 'src/app/core/services';
 
 @Component({
   selector: 'app-my-incidents',
@@ -16,12 +16,7 @@ export class MyIncidentsPage implements OnInit {
   // Functions
   getIncidentTypeLabel = getIncidentTypeLabel;
 
-  // Private variables
-  private icons: VehicleIcon[];
-
-  constructor(private vehicleIconProvider: VehicleIconProvider, private route: ActivatedRoute) {
-    this.icons = this.vehicleIconProvider.getIcons();
-  }
+  constructor(private vehicleIconProvider: VehicleIconProvider, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.data.subscribe((response) => {
@@ -30,7 +25,6 @@ export class MyIncidentsPage implements OnInit {
   }
 
   getIconSrcFromVehicle(vehicle: Vehicle) {
-    const icon = this.icons.filter((i) => i.value === vehicle.icon)[0];
-    return icon.src;
+    return this.vehicleIconProvider.getFullUrlOrDefaultFromVehicle(vehicle.icon);
   }
 }

@@ -1,6 +1,6 @@
 <ion-item [lines]="lines">
   <ion-avatar slot="start">
-    <img [src]="getIconSrcFromVehicle(reservation.vehicle)" />
+    <img [src]="getIconSrcFromVehicle(reservation.vehicle)" alt="vehicle icon" />
   </ion-avatar>
   <ion-label class="ion-text-wrap" *ngIf="differentDay(reservation); else sameDay">
     <h2>De {{ reservation.start | essential | titlecase }}</h2>
@@ -13,7 +13,7 @@
   </ion-label>
   <ng-template #sameDay>
     <ion-label class="ion-text-wrap">
-      <h2>{{ reservation.start | date: 'fullDate' | titlecase }}</h2>
+      <h2>{{ reservation.start | date : 'fullDate' | titlecase }}</h2>
       <h2>De {{ reservation.start | onlyTime }} a {{ reservation.end | onlyTime }} hrs</h2>
       <h3>
         {{ reservation.vehicle.brand }} {{ reservation.vehicle.model }}

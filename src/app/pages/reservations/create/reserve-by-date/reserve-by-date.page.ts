@@ -14,7 +14,6 @@ import {
   LoadingService,
   ReservationService,
   SnackerService,
-  VehicleIcon,
   VehicleIconProvider,
   WeekdayCheckbox,
   WeekdaysService,
@@ -51,7 +50,6 @@ export class ReserveByDatePage implements OnInit {
   isRecurrent: boolean;
   recurrent: Recurrent;
   isDriverNeeded = false;
-  private icons: VehicleIcon[];
 
   constructor(
     private vehicleIconProvider: VehicleIconProvider,
@@ -64,9 +62,7 @@ export class ReserveByDatePage implements OnInit {
     private snacker: SnackerService,
     private route: ActivatedRoute,
     private appRouter: AppRouter
-  ) {
-    this.icons = this.vehicleIconProvider.getIcons();
-  }
+  ) {}
 
   ngOnInit() {
     this.initData();
@@ -182,8 +178,7 @@ export class ReserveByDatePage implements OnInit {
   }
 
   getIconSrcFromVehicle(vehicle: Vehicle) {
-    const icon = this.icons.filter((i) => i.value === vehicle.icon)[0];
-    return icon.src;
+    return this.vehicleIconProvider.getFullUrlOrDefaultFromVehicle(vehicle.icon);
   }
 
   /**

@@ -1,12 +1,12 @@
 <ion-card>
   <ion-item lines="none">
     <ion-avatar slot="start">
-      <img [src]="iconSrc" />
+      <img [src]="getIconFromVehicle(vehicle)" alt="vehicle icon" />
     </ion-avatar>
     <ion-label>
-      <h1>{{ vehicle.brand }} {{ vehicle.model }}</h1>
+      <h1>{{ vehicle.number_plate }}</h1>
       <h2>{{ getVehicleTypeLabel(vehicle.type) }}</h2>
-      <h3>{{ vehicle.number_plate }}</h3>
+      <h3>{{ vehicle.brand }} {{ vehicle.model }}</h3>
     </ion-label>
     <span [ngSwitch]="vehicle.fuel">
       <ion-icon *ngSwitchCase="'DIESEL'" size="large" src="/assets/icon/fuel/diesel.svg">

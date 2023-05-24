@@ -3,7 +3,7 @@ import { ActivatedRoute, IsActiveMatchOptions, Router } from '@angular/router';
 import * as L from 'leaflet';
 import { Observable, Subject } from 'rxjs';
 import { Position, Vehicle } from 'src/app/core/models';
-import { PositionService, VehicleIcon, VehicleIconProvider } from 'src/app/core/services';
+import { PositionService, VehicleIconProvider } from 'src/app/core/services';
 import { MapConfiguration } from 'src/app/core/utils/leaflet/map-configuration';
 import { MapCreator } from 'src/app/core/utils/leaflet/map-creator';
 
@@ -23,18 +23,15 @@ const refreshTime = 10000;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapPage implements OnInit, AfterViewInit {
-  vehicleSelected: Vehicle;
-  iconSrcSelected = '';
   positionMarkers$: Observable<MyMarker[]>;
   toolbarTitle = 'Mapa';
   expanded: boolean[];
 
-  private icons: VehicleIcon[];
   private map: L.Map;
   private vehicles: Vehicle[];
-  private positions;
+  private positions: Position[];
   private positionMarkers: MyMarker[] = [];
-  private positionMarkersSubject = new Subject<MyMarker[]>();
+  private positionMarkersSubject: Subject<MyMarker[]> = new Subject<MyMarker[]>();
 
   constructor(
     private vehicleIconProvider: VehicleIconProvider,
@@ -43,16 +40,14 @@ export class MapPage implements OnInit, AfterViewInit {
     private router: Router
   ) {
     this.positionMarkers$ = this.positionMarkersSubject.asObservable();
-    this.icons = this.vehicleIconProvider.getIcons();
   }
 
   ngOnInit() {
-    this.expanded = new Array(this.icons.length).fill(false);
     this.listenForNewPositions();
     this.resolveData();
-    const initPositionMarkers = this.vehicles.map((vehicle) => {
-      const icon = this.getIconFromVehicle(vehicle);
-      return this.getMyMarkerInit(icon.src);
+    const initPositionMarkers: MyMarker[] = this.vehicles.map((vehicle: Vehicle) => {
+      const icon: string = this.getIconFromVehicle(vehicle);
+      return this.getMyMarkerInit(icon);
     });
     this.updateMarkers(initPositionMarkers);
   }
@@ -88,7 +83,7 @@ export class MapPage implements OnInit, AfterViewInit {
   private initMarkers(vehicles: Vehicle[], positions: Position[]) {
     const positionsMarkers = vehicles.map((vehicle) => {
       const icon = this.getIconFromVehicle(vehicle);
-      const leafIcon = this.createLeafIcon(icon.src);
+      const leafIcon = this.createLeafIcon(icon);
       const position = this.findPosition(positions, vehicle);
       const marker = this.addMarkerToMap(position, leafIcon);
       const iconUrl = leafIcon.options.iconUrl;
@@ -108,14 +103,12 @@ export class MapPage implements OnInit, AfterViewInit {
       this.positionSrv.getAll().subscribe((positions) => {
         this.positions = positions;
         // this.positions = this.getFakePositions();
-        const positionMarkers = this.positionMarkers.map((oldCustomMarker, i) => {
+        const positionMarkers = this.positionMarkers.map((oldCustomMarker: MyMarker) => {
           const vehicle = oldCustomMarker.vehicle;
           const oldMarker = oldCustomMarker.marker;
-          // * If marker is on map remove it and get his icon (to put the same). Otherwise do not anything.
+          // * If marker is on map remove it and get his icon (to put the same). Otherwise, do not anything.
           oldMarker?.remove();
-          const icon =
-            (oldMarker?.getIcon() as L.Icon<L.IconOptions>) ||
-            this.createLeafIcon(this.icons[i].src);
+          const icon = oldMarker?.getIcon() as L.Icon<L.IconOptions>;
           // * Set a new marker on map with previous icon or a new one.
           const position = this.findPosition(this.positions, vehicle);
           const marker = this.addMarkerToMap(position, icon);
@@ -134,8 +127,7 @@ export class MapPage implements OnInit, AfterViewInit {
     }
 
     const latLng = this.latLng(position);
-    const marker = L.marker(latLng, { icon }).addTo(this.map);
-    return marker;
+    return L.marker(latLng, { icon }).addTo(this.map);
   }
 
   private resolveData(): void {
@@ -152,6 +144,7 @@ export class MapPage implements OnInit, AfterViewInit {
       iconSize: [22, 22], // size of the icon
       iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
       popupAnchor: [0, 0], // point from which the popup should open relative to the iconAnchor
+      className: 'leaflet-vehicle-icon',
     });
   }
 
@@ -216,8 +209,7 @@ export class MapPage implements OnInit, AfterViewInit {
     return Math.floor(Math.random() * (-5 + 8 + 1) - 5);
   }
 
-  private getIconFromVehicle(vehicle: Vehicle) {
-    const icon = this.icons.filter((i) => i.value === vehicle.icon)[0];
-    return icon;
+  private getIconFromVehicle(vehicle: Vehicle): string {
+    return this.vehicleIconProvider.getFullUrlOrDefaultFromVehicle(vehicle.icon);
   }
 }

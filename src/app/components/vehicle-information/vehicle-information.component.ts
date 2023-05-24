@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Vehicle, vehicleTypeLabel } from 'src/app/core/models';
-import { VehicleIcon, VehicleIconProvider } from 'src/app/core/services';
+import { VehicleIconProvider } from 'src/app/core/services';
 
 @Component({
   selector: 'app-vehicle-information',
@@ -9,19 +9,13 @@ import { VehicleIcon, VehicleIconProvider } from 'src/app/core/services';
 })
 export class VehicleInformationComponent implements OnInit {
   @Input() vehicle: Vehicle;
-
-  iconSrc = 'assets/icon/vehicles/yellow-vehicle.png';
   getVehicleTypeLabel = vehicleTypeLabel;
 
   constructor(private vehicleIconProvider: VehicleIconProvider) {}
 
-  ngOnInit(): void {
-    const icons = this.vehicleIconProvider.getIcons();
-    this.iconSrc = this.getIconFromVehicle(icons, this.vehicle).src;
-  }
+  ngOnInit(): void {}
 
-  private getIconFromVehicle(icons: VehicleIcon[], vehicle: Vehicle) {
-    const icon = icons.filter((i) => i.value === vehicle.icon)[0];
-    return icon;
+  getIconFromVehicle(vehicle: Vehicle) {
+    return this.vehicleIconProvider.getFullUrlOrDefaultFromVehicle(vehicle.icon);
   }
 }

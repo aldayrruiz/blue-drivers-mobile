@@ -141,7 +141,7 @@ export class MapPage implements OnInit, AfterViewInit {
   private createLeafIcon(iconSrc: string) {
     return L.icon({
       iconUrl: iconSrc,
-      iconSize: [22, 22], // size of the icon
+      iconSize: [35, 35], // size of the icon
       iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
       popupAnchor: [0, 0], // point from which the popup should open relative to the iconAnchor
       className: 'leaflet-vehicle-icon',
